@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     * Справочник городов для событий.
+     */
+    public function up(): void
+    {
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->char('country_code', 2)->default('RU');
+            $table->boolean('is_active')->default(true);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cities');
+    }
+};
