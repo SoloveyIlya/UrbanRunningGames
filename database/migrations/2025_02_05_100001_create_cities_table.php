@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->char('country_code', 2)->default('RU');
             $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 

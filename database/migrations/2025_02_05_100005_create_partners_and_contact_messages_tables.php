@@ -33,11 +33,11 @@ return new class extends Migration
         Schema::create('contact_messages', function (Blueprint $table) {
             $table->id();
             $table->string('full_name');
-            $table->string('topic', 64)->default('other'); // participation, merch, partnership, other
+            $table->enum('topic', ['participation', 'merch', 'partnership', 'other'])->default('other');
             $table->string('phone', 32)->nullable();
             $table->string('email', 255)->nullable();
             $table->text('message');
-            $table->string('status', 32)->default('new'); // new, in_progress, closed, spam
+            $table->enum('status', ['new', 'in_progress', 'closed', 'spam'])->default('new');
             $table->string('ip', 45)->nullable();
             $table->string('user_agent', 512)->nullable();
             $table->timestamps();
