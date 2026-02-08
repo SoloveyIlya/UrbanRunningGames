@@ -13,14 +13,17 @@ class MediaAsset extends Model
         'type',
         'disk',
         'path',
+        'thumbnail_path',
         'mime_type',
+        'size_bytes',
         'width',
         'height',
         'original_name',
+        'created_by_admin_id',
     ];
 
     /**
-     * URL для отображения (публичный диск).
+     * URL для отображения (относительный путь — всегда тот же хост, что и страница).
      */
     public function getUrlAttribute(): ?string
     {
@@ -28,7 +31,21 @@ class MediaAsset extends Model
             return null;
         }
 
-        return Storage::disk($this->disk ?: 'public')->url($this->path);
+        return '/storage/' . ltrim($this->path, '/');
+    }
+
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        if (empty($this->thumbnail_path)) {
+            return $this->url;
+        }
+
+        $disk = $this->disk ?: 'public';
+        if (! Storage::disk($disk)->exists($this->thumbnail_path)) {
+            return $this->url;
+        }
+
+        return '/storage/' . ltrim($this->thumbnail_path, '/');
     }
 
     public function isImage(): bool

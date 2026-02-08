@@ -38,7 +38,7 @@
                     <div class="photo-item">
                         @if($item->isImage())
                             <a href="{{ $item->url }}" target="_blank" rel="noopener" class="photo-link">
-                                <img src="{{ $item->url }}" alt="" loading="lazy">
+                                <img src="{{ $item->thumbnail_url ?? $item->url }}" alt="" loading="lazy" data-full="{{ $item->url }}">
                             </a>
                         @else
                             <a href="{{ $item->url }}" target="_blank" rel="noopener" class="photo-link photo-link-file">
