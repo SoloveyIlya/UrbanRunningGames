@@ -29,4 +29,24 @@ class Album extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function coverMedia()
+    {
+        return $this->belongsTo(MediaAsset::class, 'cover_media_id');
+    }
+
+    /**
+     * Фото/медиа в альбоме (через pivot album_items с sort_order).
+     */
+    public function items()
+    {
+        return $this->belongsToMany(MediaAsset::class, 'album_items', 'album_id', 'media_id')
+            ->withPivot('sort_order')
+            ->orderBy('album_items.sort_order');
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->whereNotNull('published_at');
+    }
 }

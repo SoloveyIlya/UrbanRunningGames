@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\PartnerController;
@@ -23,6 +24,10 @@ Route::get('/rules', [RulesController::class, 'index'])->name('rules');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{slug}', [EventController::class, 'show'])->name('events.show');
 Route::get('/archive', [EventController::class, 'archive'])->name('events.archive');
+
+// Фотогалерея (альбомы по событиям)
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/gallery/album/{album}', [GalleryController::class, 'show'])->name('gallery.show');
 
 // Контакты
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
