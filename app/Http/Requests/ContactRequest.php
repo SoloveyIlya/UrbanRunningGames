@@ -19,6 +19,7 @@ class ContactRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:32'],
             'email' => ['nullable', 'email', 'max:255'],
             'message' => ['required', 'string', 'min:10'],
+            'consent' => ['required', 'accepted'],
         ];
     }
 
@@ -30,6 +31,8 @@ class ContactRequest extends FormRequest
             'message.required' => 'Пожалуйста, напишите ваше сообщение',
             'message.min' => 'Сообщение должно содержать минимум 10 символов',
             'email.email' => 'Пожалуйста, укажите корректный email адрес',
+            'consent.required' => 'Необходимо согласие на обработку персональных данных',
+            'consent.accepted' => 'Необходимо согласие на обработку персональных данных',
         ];
     }
 }
