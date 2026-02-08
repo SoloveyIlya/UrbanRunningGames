@@ -32,16 +32,17 @@
             </div>
         @endif
 
-        @if($album->items->count() > 0)
+        @php($galleryPhotos = $album->getGalleryPhotos())
+        @if($galleryPhotos->isNotEmpty())
             <div class="photos-grid">
-                @foreach($album->items as $item)
+                @foreach($galleryPhotos as $photo)
                     <div class="photo-item">
-                        @if($item->isImage())
-                            <a href="{{ $item->url }}" target="_blank" rel="noopener" class="photo-link">
-                                <img src="{{ $item->thumbnail_url ?? $item->url }}" alt="" loading="lazy" data-full="{{ $item->url }}">
+                        @if($photo['is_image'])
+                            <a href="{{ $photo['url'] }}" target="_blank" rel="noopener" class="photo-link">
+                                <img src="{{ $photo['thumb'] }}" alt="" loading="lazy" decoding="async" data-full="{{ $photo['url'] }}" width="400" height="400">
                             </a>
                         @else
-                            <a href="{{ $item->url }}" target="_blank" rel="noopener" class="photo-link photo-link-file">
+                            <a href="{{ $photo['url'] }}" target="_blank" rel="noopener" class="photo-link photo-link-file">
                                 Скачать файл
                             </a>
                         @endif

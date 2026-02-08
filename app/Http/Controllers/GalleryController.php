@@ -16,7 +16,7 @@ class GalleryController extends Controller
     {
         $events = Event::where('status', 'published')
             ->whereHas('albums', fn ($q) => $q->published())
-            ->with(['albums' => fn ($q) => $q->published()->with('coverMedia')->withCount('items')->orderBy('sort_order')])
+            ->with(['albums' => fn ($q) => $q->published()->with(['coverMedia', 'media'])->withCount('items')->orderBy('sort_order')])
             ->orderBy('starts_at', 'desc')
             ->get();
 
@@ -32,7 +32,7 @@ class GalleryController extends Controller
             abort(404);
         }
 
-        $album->load(['event', 'coverMedia', 'items']);
+        $album->load(['event', 'coverMedia', 'items', 'media']);
 
         return view('gallery.show', compact('album'));
     }

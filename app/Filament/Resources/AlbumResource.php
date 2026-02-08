@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class AlbumResource extends Resource
 {
@@ -54,11 +55,12 @@ class AlbumResource extends Resource
                             ->nullable()
                             ->columnSpanFull(),
                         Forms\Components\Select::make('cover_media_id')
-                            ->label('Обложка альбома')
+                            ->label('Обложка (legacy)')
                             ->options(fn (?Album $record) => $record ? $record->items()->pluck('original_name', 'id')->toArray() : [])
                             ->searchable()
                             ->nullable()
-                            ->visible(fn (?Album $record) => $record && $record->items()->count() > 0),
+                            ->visible(fn (?Album $record) => $record && $record->items()->count() > 0)
+                            ->helperText('Только для старых альбомов. У новых обложка = первое фото.'),
                         Forms\Components\DateTimePicker::make('published_at')
                             ->label('Опубликован')
                             ->nullable()
@@ -71,6 +73,21 @@ class AlbumResource extends Resource
                             ->default(0),
                     ])
                     ->columns(2),
+                ...(class_exists(SpatieMediaLibraryFileUpload::class) ? [
+                    Forms\Components\Section::make('Фото альбома (медиа)')
+                        ->schema([
+                            SpatieMediaLibraryFileUpload::make('photos')
+                                ->collection(Album::MEDIA_COLLECTION_PHOTOS)
+                                ->label('Фото')
+                                ->multiple()
+                                ->maxFiles(100)
+                                ->image()
+                                ->maxSize(50 * 1024)
+                                ->reorderable()
+                                ->columnSpanFull(),
+                        ])
+                        ->collapsible(),
+                ] : []),
             ]);
     }
 
@@ -85,10 +102,10 @@ class AlbumResource extends Resource
                 Tables\Columns\TextColumn::make('event.title')
                     ->label('Событие')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('items_count')
+                Tables\Columns\TextColumn::make('photos_count')
                     ->label('Фото')
-                    ->counts('items')
-                    ->sortable(),
+                    ->getStateUsing(fn (Album $record) => $record->photos_count)
+                    ->sortable(false),
                 Tables\Columns\IconColumn::make('published_at')
                     ->label('Опубликован')
                     ->boolean()

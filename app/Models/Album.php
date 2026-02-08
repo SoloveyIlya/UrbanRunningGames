@@ -4,10 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Album extends Model
+class Album extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
+
+    public const MEDIA_COLLECTION_PHOTOS = 'photos';
 
     protected $fillable = [
         'event_id',
@@ -25,6 +32,21 @@ class Album extends Model
         ];
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::MEDIA_COLLECTION_PHOTOS)
+            ->useDisk(config('media-library.disk_name', 'public'));
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->height(400)
+            ->sharpen(10)
+            ->nonQueued();
+    }
+
     public function event()
     {
         return $this->belongsTo(Event::class);
@@ -36,13 +58,60 @@ class Album extends Model
     }
 
     /**
-     * Фото/медиа в альбоме (через pivot album_items с sort_order).
+     * Фото/медиа в альбоме (через pivot album_items).
      */
     public function items()
     {
         return $this->belongsToMany(MediaAsset::class, 'album_items', 'album_id', 'media_id')
             ->withPivot('sort_order')
             ->orderBy('album_items.sort_order');
+    }
+
+    /**
+     * Список фото для галереи. Приоритет у Spatie Media (коллекция photos), иначе legacy items.
+     * Элемент: ['url', 'thumb', 'is_image'].
+     */
+    public function getGalleryPhotos(): Collection
+    {
+        $media = $this->getMedia(self::MEDIA_COLLECTION_PHOTOS);
+        if ($media->isNotEmpty()) {
+            return $media->map(fn ($m) => [
+                'url' => $m->getUrl(),
+                'thumb' => $m->getUrl('thumb') ?: $m->getUrl(),
+                'is_image' => true,
+            ]);
+        }
+        return $this->items->map(fn (MediaAsset $item) => [
+            'url' => $item->url,
+            'thumb' => $item->thumbnail_url ?? $item->url,
+            'is_image' => $item->isImage(),
+        ]);
+    }
+
+    /**
+     * URL обложки: первое фото Spatie (thumb) или legacy cover_media.
+     */
+    public function getCoverUrl(): ?string
+    {
+        $first = $this->getFirstMedia(self::MEDIA_COLLECTION_PHOTOS);
+        if ($first) {
+            return $first->getUrl('thumb') ?: $first->getUrl();
+        }
+        if ($this->coverMedia && $this->coverMedia->isImage()) {
+            return $this->coverMedia->thumbnail_url ?? $this->coverMedia->url;
+        }
+        return null;
+    }
+
+    /**
+     * Количество фото (Spatie + legacy).
+     */
+    public function getPhotosCountAttribute(): int
+    {
+        $legacyCount = array_key_exists('items_count', $this->getAttributes())
+            ? (int) $this->items_count
+            : $this->items()->count();
+        return $this->getMedia(self::MEDIA_COLLECTION_PHOTOS)->count() + $legacyCount;
     }
 
     public function scopePublished($query)

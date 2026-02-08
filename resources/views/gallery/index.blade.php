@@ -28,15 +28,15 @@
                         @foreach($event->albums as $album)
                             <a href="{{ route('gallery.show', $album) }}" class="album-card">
                                 <div class="album-cover">
-                                    @if($album->coverMedia && $album->coverMedia->isImage())
-                                        <img src="{{ $album->coverMedia->url }}" alt="{{ $album->title }}">
+                                    @if($album->getCoverUrl())
+                                        <img src="{{ $album->getCoverUrl() }}" alt="{{ $album->title }}" loading="lazy" decoding="async" width="400" height="300">
                                     @else
                                         <div class="album-cover-placeholder">
                                             <span>Фото</span>
                                         </div>
                                     @endif
-                                    @if($album->items_count > 0)
-                                        <span class="album-count">{{ $album->items_count }}</span>
+                                    @if($album->photos_count > 0)
+                                        <span class="album-count">{{ $album->photos_count }}</span>
                                     @endif
                                 </div>
                                 <div class="album-info">
