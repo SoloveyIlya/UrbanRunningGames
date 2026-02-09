@@ -89,9 +89,12 @@
                     <!-- TODO: Добавить Cloudflare Turnstile антиспам -->
                     <div class="form-group">
                         <label>
-                            <input type="checkbox" required>
+                            <input type="checkbox" name="consent" value="1" required {{ old('consent') ? 'checked' : '' }}>
                             Я согласен с <a href="{{ route('legal.consent') }}" target="_blank">обработкой персональных данных</a> *
                         </label>
+                        @error('consent')
+                            <span class="error">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary">Отправить сообщение</button>

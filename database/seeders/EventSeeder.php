@@ -6,7 +6,6 @@ use App\Models\City;
 use App\Models\Event;
 use App\Models\Partner;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class EventSeeder extends Seeder
 {
