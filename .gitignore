@@ -20,6 +20,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+/public/js/filament
+/public/css/filament
 Homestead.json
 Homestead.yaml
 Thumbs.db
