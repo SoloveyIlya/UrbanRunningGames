@@ -111,7 +111,23 @@ class Album extends Model implements HasMedia
         $legacyCount = array_key_exists('items_count', $this->getAttributes())
             ? (int) $this->items_count
             : $this->items()->count();
-        return $this->getMedia(self::MEDIA_COLLECTION_PHOTOS)->count() + $legacyCount;
+
+        // Prefer already-loaded media relation or eager-loaded counts to avoid N+1 queries.
+        if ($this->relationLoaded('media')) {
+            $spatieCount = $this->media
+                ->where('collection_name', self::MEDIA_COLLECTION_PHOTOS)
+                ->count();
+        } elseif (array_key_exists('media_count', $this->getAttributes())) {
+            // Use eager-loaded media_count if present (from withCount('media')).
+            $spatieCount = (int) $this->media_count;
+        } else {
+            // Fallback: efficient count query filtered by collection_name.
+            $spatieCount = $this->media()
+                ->where('collection_name', self::MEDIA_COLLECTION_PHOTOS)
+                ->count();
+        }
+
+        return $spatieCount + $legacyCount;
     }
 
     public function scopePublished($query)

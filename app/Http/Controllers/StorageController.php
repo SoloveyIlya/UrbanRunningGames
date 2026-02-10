@@ -22,7 +22,15 @@ class StorageController extends Controller
             abort(404);
         }
         $path = substr($uriPath, 8); // убираем "storage/"
-        $path = str_replace(['../', '..\\'], '', $path);
+        // Decode and normalize the path, then reject any traversal segments.
+        $path = urldecode($path);
+        $path = str_replace('\\', '/', $path);
+        $segments = explode('/', $path);
+        foreach ($segments as $segment) {
+            if ($segment === '..') {
+                abort(404);
+            }
+        }
         $path = ltrim($path, '/');
 
         $exists = Storage::disk('public')->exists($path);

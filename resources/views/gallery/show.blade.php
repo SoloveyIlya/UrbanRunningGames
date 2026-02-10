@@ -39,7 +39,7 @@
                     <div class="photo-item">
                         @if($photo['is_image'])
                             <a href="{{ $photo['url'] }}" target="_blank" rel="noopener" class="photo-link">
-                                <img src="{{ $photo['thumb'] }}" alt="" loading="lazy" decoding="async" data-full="{{ $photo['url'] }}" width="400" height="400">
+                                <img src="{{ $photo['thumb'] }}" alt="{{ $album->title }} - Фото {{ $loop->iteration }}" loading="lazy" decoding="async" data-full="{{ $photo['url'] }}" width="400" height="400">
                             </a>
                         @else
                             <a href="{{ $photo['url'] }}" target="_blank" rel="noopener" class="photo-link photo-link-file">
