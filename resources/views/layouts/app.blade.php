@@ -28,6 +28,7 @@
                 <li><a href="{{ route('rules') }}">Правила</a></li>
                 <li><a href="{{ route('events.index') }}">События</a></li>
                 <li><a href="{{ route('events.archive') }}">Архив</a></li>
+                <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
                 <li><a href="{{ route('partners') }}">Партнёры</a></li>
                 <li><a href="{{ route('rating') }}">Рейтинг</a></li>
                 <li><a href="{{ route('contact') }}">Контакты</a></li>
@@ -67,6 +68,7 @@
                     <ul>
                         <li><a href="{{ route('about') }}">О команде</a></li>
                         <li><a href="{{ route('events.index') }}">События</a></li>
+                        <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
                         <li><a href="{{ route('partners') }}">Партнёры</a></li>
                         <li><a href="{{ route('contact') }}">Контакты</a></li>
                     </ul>

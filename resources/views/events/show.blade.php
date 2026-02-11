@@ -81,13 +81,13 @@
                 <h2>Фотогалерея</h2>
                 <div class="albums-grid">
                     @foreach($event->albums as $album)
-                        <div class="album-card">
+                        <a href="{{ route('gallery.show', $album) }}" class="album-card">
                             <h4>{{ $album->title }}</h4>
                             @if($album->description)
                                 <p>{{ $album->description }}</p>
                             @endif
-                            <a href="#" class="btn btn-sm">Смотреть альбом</a>
-                        </div>
+                            <span class="btn btn-sm">Смотреть альбом</span>
+                        </a>
                     @endforeach
                 </div>
             </div>

@@ -20,7 +20,7 @@ class EventController extends Controller
     {
         $event = Event::where('slug', $slug)
             ->where('status', 'published')
-            ->with(['city', 'partners', 'albums'])
+            ->with(['city', 'partners', 'albums' => fn ($q) => $q->published()->orderBy('sort_order')])
             ->firstOrFail();
 
         return view('events.show', compact('event'));
