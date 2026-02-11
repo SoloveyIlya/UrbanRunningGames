@@ -60,21 +60,46 @@
                 @if($product->hasAttributes())
                     <div class="product-detail-attributes">
                         <h3>Доступные варианты</h3>
-                        <ul class="product-variants-list">
-                            @foreach($product->variants as $variant)
-                                <li>
-                                    <span class="variant-label">{{ $variant->attribute_label }}</span>
-                                    @if($variant->price_override !== null)
-                                        <span class="variant-price">{{ $variant->display_price }}</span>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
+                        <form action="{{ route('cart.add') }}" method="POST" class="product-add-to-cart-form">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <ul class="product-variants-list product-variants-choose">
+                                @foreach($product->variants as $variant)
+                                    <li>
+                                        <label class="variant-option">
+                                            <input type="radio" name="variant_id" value="{{ $variant->id }}" required>
+                                            <span class="variant-label">{{ $variant->attribute_label }}</span>
+                                            @if($variant->price_override !== null)
+                                                <span class="variant-price">{{ $variant->display_price }}</span>
+                                            @endif
+                                        </label>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <div class="product-add-qty">
+                                <label for="qty">Количество:</label>
+                                <input type="number" id="qty" name="quantity" value="1" min="1" max="99">
+                            </div>
+                            <div class="product-detail-actions">
+                                <button type="submit" class="btn btn-primary">В корзину</button>
+                                <a href="{{ route('shop.index') }}" class="btn btn-secondary">← В каталог</a>
+                            </div>
+                        </form>
                     </div>
+                @else
+                    <form action="{{ route('cart.add') }}" method="POST" class="product-add-to-cart-form">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <div class="product-add-qty">
+                            <label for="qty">Количество:</label>
+                            <input type="number" id="qty" name="quantity" value="1" min="1" max="99">
+                        </div>
+                        <div class="product-detail-actions">
+                            <button type="submit" class="btn btn-primary">В корзину</button>
+                            <a href="{{ route('shop.index') }}" class="btn btn-secondary">← В каталог</a>
+                        </div>
+                    </form>
                 @endif
-                <div class="product-detail-actions">
-                    <a href="{{ route('shop.index') }}" class="btn btn-secondary">← В каталог</a>
-                </div>
             </div>
         </div>
     </div>

@@ -7,6 +7,8 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RulesController;
@@ -38,6 +40,15 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 // Магазин мерча (каталог)
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/product/{product}', [ProductController::class, 'show'])->name('shop.show');
+
+// Корзина и оформление заявки
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
 // Партнёры и спонсоры
 Route::get('/partners', [PartnerController::class, 'index'])->name('partners');

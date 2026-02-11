@@ -33,6 +33,7 @@
                 <li><a href="{{ route('events.archive') }}">Архив</a></li>
                 <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
                 <li><a href="{{ route('shop.index') }}">Магазин</a></li>
+                <li><a href="{{ route('cart.index') }}" class="nav-cart-link">Корзина @if(\App\Http\Controllers\CartController::getCount() > 0)<span class="cart-count">({{ \App\Http\Controllers\CartController::getCount() }})</span>@endif</a></li>
                 <li><a href="{{ route('partners') }}">Партнёры</a></li>
                 <li><a href="{{ route('rating') }}">Рейтинг</a></li>
                 <li><a href="{{ route('contact') }}">Контакты</a></li>
@@ -44,6 +45,11 @@
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
             </div>
         @endif
 
