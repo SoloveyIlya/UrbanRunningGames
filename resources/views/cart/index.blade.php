@@ -64,8 +64,31 @@
                     </tbody>
                 </table>
             </div>
+            <div class="cart-promo">
+                @if($promo ?? null)
+                    <p class="cart-promo-applied">
+                        Промокод <strong>{{ $promo->code }}</strong> применён.
+                        Скидка: −{{ number_format($discount ?? 0, 0, ',', ' ') }} ₽
+                        <form action="{{ route('cart.promo.remove') }}" method="POST" class="cart-promo-remove-form">
+                            @csrf
+                            <button type="submit" class="btn btn-sm">Отменить</button>
+                        </form>
+                    </p>
+                @else
+                    <form action="{{ route('cart.promo.apply') }}" method="POST" class="cart-promo-form">
+                        @csrf
+                        <label for="promo_code">Промокод:</label>
+                        <input type="text" id="promo_code" name="code" placeholder="Введите код" maxlength="64" class="cart-promo-input">
+                        <button type="submit" class="btn btn-secondary">Применить</button>
+                    </form>
+                @endif
+            </div>
             <div class="cart-total">
-                <strong>Итого: {{ number_format($total, 0, ',', ' ') }} ₽</strong>
+                @if(($discount ?? 0) > 0)
+                    <p>Сумма: {{ number_format($total, 0, ',', ' ') }} ₽</p>
+                    <p>Скидка: −{{ number_format($discount, 0, ',', ' ') }} ₽</p>
+                @endif
+                <p><strong>Итого: {{ number_format($total_final ?? $total, 0, ',', ' ') }} ₽</strong></p>
             </div>
             <div class="cart-actions">
                 <a href="{{ route('shop.index') }}" class="btn btn-secondary">← Продолжить покупки</a>

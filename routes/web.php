@@ -46,6 +46,8 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/promo', [CartController::class, 'applyPromo'])->name('cart.promo.apply');
+Route::post('/cart/promo/remove', [CartController::class, 'removePromo'])->name('cart.promo.remove');
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');

@@ -1002,9 +1002,42 @@ footer {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+.cart-promo {
+    margin-bottom: 1rem;
+}
+.cart-promo-form,
+.cart-promo-applied {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.cart-promo-applied {
+    margin: 0;
+}
+.cart-promo-input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 140px;
+}
+.cart-promo-remove-form {
+    display: inline;
+}
+.checkout-discount {
+    color: #0a0;
+    margin: 0.25rem 0;
+}
+.order-confirmation-discount {
+    color: #0a0;
+    margin: 0.5rem 0 0 0;
+}
 .cart-total {
     font-size: 1.25rem;
     margin-bottom: 1.5rem;
+}
+.cart-total p {
+    margin: 0.25rem 0;
 }
 .cart-actions {
     display: flex;

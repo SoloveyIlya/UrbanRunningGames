@@ -28,6 +28,13 @@ class ViewOrder extends ViewRecord
                         TextEntry::make('created_at')->label('Дата заявки')->dateTime('d.m.Y H:i'),
                     ])
                     ->columns(2),
+                Section::make('Промокод')
+                    ->schema([
+                        TextEntry::make('promoCode.code')->label('Код')->placeholder('—'),
+                        TextEntry::make('discount_amount')->label('Скидка (₽)')->formatStateUsing(fn ($state) => $state !== null ? number_format((float) $state, 0, ',', ' ') . ' ₽' : '—'),
+                    ])
+                    ->columns(2)
+                    ->visible(fn ($record) => $record->promo_code_id !== null),
             ]);
     }
 }

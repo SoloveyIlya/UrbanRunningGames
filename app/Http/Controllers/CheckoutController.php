@@ -36,12 +36,17 @@ class CheckoutController extends Controller
             'email.email' => 'Некорректный email.',
         ]);
 
+        $discountAmount = isset($cart['discount']) ? (float) $cart['discount'] : 0;
+        $promoCodeId = $cart['promo']?->id ?? null;
+
         $order = Order::create([
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'email' => $validated['email'],
             'comment' => $validated['comment'] ?? null,
             'status' => 'new',
+            'promo_code_id' => $promoCodeId,
+            'discount_amount' => $discountAmount > 0 ? $discountAmount : null,
         ]);
 
         foreach ($cart['items'] as $row) {
@@ -54,6 +59,10 @@ class CheckoutController extends Controller
             ]);
         }
 
+        if ($promoCodeId) {
+            \App\Models\PromoCode::where('id', $promoCodeId)->increment('times_used');
+        }
+
         CartController::clearCart();
 
         return redirect()->route('order.confirmation', $order)->with('success', 'Заявка успешно отправлена.');
@@ -61,7 +70,7 @@ class CheckoutController extends Controller
 
     public function confirmation(Order $order)
     {
-        $order->load('items.product', 'items.productVariant');
+        $order->load('items.product', 'items.productVariant', 'promoCode');
         return view('order.confirmation', compact('order'));
     }
 }

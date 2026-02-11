@@ -40,6 +40,22 @@ class OrderResource extends Resource
                     ])
                     ->columns(2)
                     ->collapsible(),
+                Forms\Components\Section::make('Промокод')
+                    ->schema([
+                        Forms\Components\TextInput::make('promoCode.code')
+                            ->label('Промокод')
+                            ->disabled()
+                            ->dehydrated(false),
+                        Forms\Components\TextInput::make('discount_amount')
+                            ->label('Скидка (₽)')
+                            ->numeric()
+                            ->disabled()
+                            ->dehydrated(false),
+                    ])
+                    ->columns(2)
+                    ->collapsed()
+                    ->collapsible()
+                    ->visible(fn ($record) => $record && $record->promo_code_id),
                 Forms\Components\Section::make('Статус')
                     ->schema([
                         Forms\Components\Select::make('status')
@@ -71,6 +87,9 @@ class OrderResource extends Resource
                         'cancelled' => 'danger',
                         default => 'gray',
                     }),
+                Tables\Columns\TextColumn::make('promoCode.code')
+                    ->label('Промокод')
+                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('items_count')
                     ->label('Позиций')
                     ->counts('items'),

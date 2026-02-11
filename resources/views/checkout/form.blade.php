@@ -67,7 +67,10 @@
                         </li>
                     @endforeach
                 </ul>
-                <p class="checkout-total"><strong>Итого: {{ number_format($total, 0, ',', ' ') }} ₽</strong></p>
+                @if(($discount ?? 0) > 0)
+                    <p class="checkout-discount">Промокод {{ $promo->code ?? '' }}: −{{ number_format($discount, 0, ',', ' ') }} ₽</p>
+                @endif
+                <p class="checkout-total"><strong>Итого: {{ number_format($total_final ?? $total, 0, ',', ' ') }} ₽</strong></p>
             </div>
         </div>
     </div>

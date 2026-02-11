@@ -33,6 +33,9 @@
                     </li>
                 @endforeach
             </ul>
+            @if($order->promo_code_id && (float)($order->discount_amount ?? 0) > 0)
+                <p class="order-confirmation-discount">Промокод {{ $order->promoCode?->code }}: −{{ number_format((float)$order->discount_amount, 0, ',', ' ') }} ₽</p>
+            @endif
             <p class="order-confirmation-total"><strong>Итого: {{ $order->total_amount }}</strong></p>
 
             <div class="order-confirmation-actions">
