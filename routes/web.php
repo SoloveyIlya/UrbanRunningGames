@@ -7,6 +7,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\StorageController;
@@ -33,6 +34,10 @@ Route::get('/gallery/album/{album}', [GalleryController::class, 'show'])->name('
 // Контакты
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Магазин мерча (каталог)
+Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
+Route::get('/shop/product/{product}', [ProductController::class, 'show'])->name('shop.show');
 
 // Партнёры и спонсоры
 Route::get('/partners', [PartnerController::class, 'index'])->name('partners');

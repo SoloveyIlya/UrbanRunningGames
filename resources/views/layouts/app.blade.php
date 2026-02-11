@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Urban Running Games')</title>
-    @if(app()->environment('production'))
+    @php
+        $useVite = file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot'));
+    @endphp
+    @if($useVite)
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
         @php
@@ -29,6 +32,7 @@
                 <li><a href="{{ route('events.index') }}">События</a></li>
                 <li><a href="{{ route('events.archive') }}">Архив</a></li>
                 <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
+                <li><a href="{{ route('shop.index') }}">Магазин</a></li>
                 <li><a href="{{ route('partners') }}">Партнёры</a></li>
                 <li><a href="{{ route('rating') }}">Рейтинг</a></li>
                 <li><a href="{{ route('contact') }}">Контакты</a></li>
@@ -69,6 +73,7 @@
                         <li><a href="{{ route('about') }}">О команде</a></li>
                         <li><a href="{{ route('events.index') }}">События</a></li>
                         <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
+                        <li><a href="{{ route('shop.index') }}">Магазин</a></li>
                         <li><a href="{{ route('partners') }}">Партнёры</a></li>
                         <li><a href="{{ route('contact') }}">Контакты</a></li>
                     </ul>
@@ -94,6 +99,27 @@
         document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
             document.getElementById('navMenu')?.classList.toggle('active');
         });
+        // При 404: сначала пробуем data-full (полноразмерное), затем плейсхолдер
+        document.addEventListener('error', function(e) {
+            if (e.target && e.target.tagName !== 'IMG') return;
+            var img = e.target;
+            if (img.dataset.fallbackDone) {
+                img.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect fill="#eee" width="400" height="400"/><text x="50%" y="50%" fill="#999" font-family="sans-serif" font-size="14" text-anchor="middle" dy=".3em">Фото недоступно</text></svg>');
+                img.classList.add('img-placeholder');
+                return;
+            }
+            var fullUrl = img.getAttribute('data-full');
+            if (fullUrl) {
+                fullUrl = fullUrl.indexOf('http') === 0 ? fullUrl : (window.location.origin + (fullUrl.charAt(0) === '/' ? '' : '/') + fullUrl);
+                img.src = fullUrl;
+                img.removeAttribute('data-full');
+                img.dataset.fallbackDone = '1';
+                return;
+            }
+            img.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect fill="#eee" width="400" height="400"/><text x="50%" y="50%" fill="#999" font-family="sans-serif" font-size="14" text-anchor="middle" dy=".3em">Фото недоступно</text></svg>');
+            img.classList.add('img-placeholder');
+            console.warn('[Storage 404]', img.alt || img.getAttribute('src'), window.location.href);
+        }, true);
     </script>
     @stack('scripts')
 </body>

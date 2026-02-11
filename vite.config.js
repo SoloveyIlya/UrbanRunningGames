@@ -11,8 +11,13 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        host: true, // доступ с Windows при запуске Vite в WSL
         watch: {
             ignored: ['**/storage/framework/views/**'],
+        },
+        hmr: {
+            host: '127.0.0.1',
+            port: 5173,
         },
     },
 });
