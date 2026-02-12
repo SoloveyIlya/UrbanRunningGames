@@ -64,5 +64,10 @@ Route::get('/consent', [LegalController::class, 'consent'])->name('legal.consent
 Route::get('/terms', [LegalController::class, 'terms'])->name('legal.terms');
 Route::get('/returns', [LegalController::class, 'returns'])->name('legal.returns');
 
+// Админка: экспорт заявок в CSV (только для авторизованных)
+Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('orders-export-csv', [\App\Http\Controllers\Admin\OrderExportController::class, 'csv'])->name('orders.export.csv');
+});
+
 // Раздача файлов из storage (fallback: ловит /storage/... когда симлинк не работает). Явный маршрут для route:cache.
 Route::get('/storage/{path}', [StorageController::class, 'show'])->where('path', '.*');

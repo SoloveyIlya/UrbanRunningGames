@@ -45,12 +45,12 @@ class Order extends Model
     public static function statusOptions(): array
     {
         return [
-            'new' => 'Новая',
+            'new' => 'Создана',
+            'in_progress' => 'В обработке',
             'confirmed' => 'Подтверждена',
-            'in_progress' => 'В работе',
-            'shipped' => 'Отправлена',
-            'completed' => 'Выполнена',
             'cancelled' => 'Отменена',
+            'completed' => 'Завершена',
+            'shipped' => 'Отправлена',
         ];
     }
 }
