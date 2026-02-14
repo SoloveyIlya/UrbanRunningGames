@@ -34,7 +34,7 @@ class Event extends Model
 
         static::creating(function ($event) {
             if (empty($event->slug)) {
-                $event->slug = Str::slug($event->title);
+                $event->slug = static::uniqueSlug(Str::slug($event->title), $event->id);
             }
         });
     }
@@ -52,6 +52,27 @@ class Event extends Model
     public function albums()
     {
         return $this->hasMany(Album::class);
+    }
+
+    /**
+     * Возвращает уникальный slug: при совпадении добавляет суффикс -2, -3 и т.д.
+     */
+    public static function uniqueSlug(string $base, ?int $excludeId = null): string
+    {
+        $slug = $base;
+        $num = 1;
+        $query = static::query()->where('slug', $slug);
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId);
+        }
+        while ($query->exists()) {
+            $slug = $base . '-' . (++$num);
+            $query = static::query()->where('slug', $slug);
+            if ($excludeId !== null) {
+                $query->where('id', '!=', $excludeId);
+            }
+        }
+        return $slug;
     }
 
     public function isUpcoming(): bool
