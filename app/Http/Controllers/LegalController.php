@@ -2,27 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\SitePage;
 
 class LegalController extends Controller
 {
     public function privacy()
     {
-        return view('legal.privacy');
+        return $this->legalView('legal.privacy', SitePage::SLUG_PRIVACY, 'Политика конфиденциальности');
     }
 
     public function consent()
     {
-        return view('legal.consent');
+        return $this->legalView('legal.consent', SitePage::SLUG_CONSENT, 'Согласие на обработку данных');
     }
 
     public function terms()
     {
-        return view('legal.terms');
+        return $this->legalView('legal.terms', SitePage::SLUG_TERMS, 'Условия продажи мерча');
     }
 
     public function returns()
     {
-        return view('legal.returns');
+        return $this->legalView('legal.returns', SitePage::SLUG_RETURNS, 'Возврат и обмен');
+    }
+
+    private function legalView(string $view, string $slug, string $defaultTitle)
+    {
+        $page = SitePage::getBySlug($slug);
+
+        return view($view, [
+            'title' => $page?->title ?? $defaultTitle,
+            'content' => $page?->content,
+        ]);
     }
 }
