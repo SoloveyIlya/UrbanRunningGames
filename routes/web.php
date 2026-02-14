@@ -57,6 +57,7 @@ Route::get('/partners', [PartnerController::class, 'index'])->name('partners');
 
 // Сводный рейтинг
 Route::get('/rating', [RatingController::class, 'index'])->name('rating');
+Route::get('/rating/export', [RatingController::class, 'export'])->name('rating.export');
 
 // Юридические страницы
 Route::get('/privacy', [LegalController::class, 'privacy'])->name('legal.privacy');
