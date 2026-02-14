@@ -13,6 +13,22 @@ class StorageController extends Controller
     private const PLACEHOLDER_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect fill="#eee" width="400" height="400"/><text x="50%" y="50%" fill="#999" font-family="sans-serif" font-size="14" text-anchor="middle" dy=".3em">Фото недоступно</text></svg>';
 
     /**
+     * Раздача медиа по пути (URL: /media/gallery/...). Всегда обрабатывается Laravel — при отсутствии файла 200 + плейсхолдер.
+     */
+    public function showMedia(Request $request, string $path): StreamedResponse|Response
+    {
+        $path = urldecode($path);
+        $path = str_replace('\\', '/', $path);
+        $path = ltrim($path, '/');
+        foreach (explode('/', $path) as $segment) {
+            if ($segment === '..') {
+                return $this->placeholderResponse();
+            }
+        }
+        return $this->servePublicPath($request, $path);
+    }
+
+    /**
      * Раздача файлов из public-диска (запасной вариант, если симлинк не работает).
      * Если файла нет — отдаём плейсхолдер (200), чтобы не было 404 в галерее.
      */
@@ -38,6 +54,11 @@ class StorageController extends Controller
         }
         $path = ltrim($path, '/');
 
+        return $this->servePublicPath($request, $path);
+    }
+
+    private function servePublicPath(Request $request, string $path): StreamedResponse|Response
+    {
         $disk = Storage::disk('public');
         $exists = $disk->exists($path);
         $fullPath = $disk->path($path);

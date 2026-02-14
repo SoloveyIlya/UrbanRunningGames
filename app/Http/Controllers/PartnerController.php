@@ -9,7 +9,8 @@ class PartnerController extends Controller
 {
     public function index()
     {
-        $partners = Partner::where('is_active', true)
+        $partners = Partner::with('logoMedia')
+            ->where('is_active', true)
             ->orderBy('sort_order', 'asc')
             ->get()
             ->groupBy('level');

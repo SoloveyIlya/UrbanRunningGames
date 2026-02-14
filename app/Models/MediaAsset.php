@@ -23,7 +23,7 @@ class MediaAsset extends Model
     ];
 
     /**
-     * URL для отображения. Если файла нет на диске — возвращается плейсхолдер (без 404).
+     * URL для отображения. Идёт через маршрут /media/ (Laravel), при отсутствии файла отдаётся плейсхолдер (без 404).
      */
     public function getUrlAttribute(): ?string
     {
@@ -35,7 +35,7 @@ class MediaAsset extends Model
         if (! Storage::disk($disk)->exists($this->path)) {
             return self::placeholderDataUri();
         }
-        return '/storage/' . ltrim($this->path, '/');
+        return url('/media/' . ltrim($this->path, '/'));
     }
 
     public function getThumbnailUrlAttribute(): ?string
@@ -48,7 +48,7 @@ class MediaAsset extends Model
         if (! Storage::disk($disk)->exists($this->thumbnail_path)) {
             return $this->url;
         }
-        return '/storage/' . ltrim($this->thumbnail_path, '/');
+        return url('/media/' . ltrim($this->thumbnail_path, '/'));
     }
 
     public static function placeholderDataUri(): string

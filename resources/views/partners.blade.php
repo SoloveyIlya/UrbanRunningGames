@@ -14,15 +14,15 @@
         @if($partners->count() > 0)
             @foreach($partners as $level => $levelPartners)
                 @if($level)
-                    <h2>{{ ucfirst($level) }}</h2>
+                    <h2>{{ $level === 'sponsor' ? 'Спонсоры' : ($level === 'partner' ? 'Партнёры' : ucfirst($level)) }}</h2>
                 @else
                     <h2>Партнёры</h2>
                 @endif
                 <div class="partners-grid">
                     @foreach($levelPartners as $partner)
                         <div class="partner-card">
-                            @if($partner->logo_media_id)
-                                <img src="#" alt="{{ $partner->name }}" class="partner-logo">
+                            @if($partner->logoMedia?->url)
+                                <img src="{{ $partner->logoMedia->url }}" alt="{{ $partner->name }}" class="partner-logo" loading="lazy">
                             @endif
                             <h3>{{ $partner->name }}</h3>
                             @if($partner->description)

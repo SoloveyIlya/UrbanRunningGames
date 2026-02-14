@@ -30,4 +30,9 @@ class Partner extends Model
     {
         return $this->belongsToMany(Event::class, 'event_partners');
     }
+
+    public function logoMedia()
+    {
+        return $this->belongsTo(MediaAsset::class, 'logo_media_id');
+    }
 }

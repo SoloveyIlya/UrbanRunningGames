@@ -71,3 +71,6 @@ Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(funct
 
 // Раздача файлов из storage (fallback: ловит /storage/... когда симлинк не работает). Явный маршрут для route:cache.
 Route::get('/storage/{path}', [StorageController::class, 'show'])->where('path', '.*');
+
+// Раздача медиафайлов через Laravel (нет 404: при отсутствии файла отдаётся плейсхолдер). Используйте этот URL в приложении.
+Route::get('/media/{path}', [StorageController::class, 'showMedia'])->where('path', '.*')->name('media.show');
