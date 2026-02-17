@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TurnstileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -13,6 +14,10 @@ class ContactRequest extends FormRequest
 
     public function rules(): array
     {
+        $turnstileRules = config('turnstile.secret_key')
+            ? ['required', 'string', new TurnstileRule]
+            : ['nullable'];
+
         return [
             'full_name' => ['required', 'string', 'max:255'],
             'topic' => ['required', 'in:participation,merch,partnership,other'],
@@ -20,6 +25,7 @@ class ContactRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'message' => ['required', 'string', 'min:10'],
             'consent' => ['required', 'accepted'],
+            'cf-turnstile-response' => $turnstileRules,
         ];
     }
 
@@ -33,6 +39,7 @@ class ContactRequest extends FormRequest
             'email.email' => 'Пожалуйста, укажите корректный email адрес',
             'consent.required' => 'Необходимо согласие на обработку персональных данных',
             'consent.accepted' => 'Необходимо согласие на обработку персональных данных',
+            'cf-turnstile-response.required' => 'Пожалуйста, подтвердите, что вы не робот.',
         ];
     }
 }

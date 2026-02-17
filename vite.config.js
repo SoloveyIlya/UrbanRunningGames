@@ -15,9 +15,10 @@ export default defineConfig({
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
+        // Не задаём hmr.port — WebSocket будет на том же порту, что и dev-сервер (5173 или 5174, если 5173 занят)
         hmr: {
-            host: '127.0.0.1',
-            port: 5173,
+            host: 'localhost',
+            protocol: 'ws',
         },
     },
 });

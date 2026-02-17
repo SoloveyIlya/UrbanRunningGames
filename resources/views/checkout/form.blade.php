@@ -51,6 +51,7 @@
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
+                    <x-turnstile-widget />
                     <button type="submit" class="btn btn-primary">Отправить заявку</button>
                 </form>
             </div>
@@ -76,3 +77,9 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+    @if(config('turnstile.site_key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
+@endpush

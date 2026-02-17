@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutRequest;
+use App\Mail\OrderReceived;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -17,25 +19,14 @@ class CheckoutController extends Controller
         return view('checkout.form', $cart);
     }
 
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
         $cart = CartController::getCartForDisplay();
         if (empty($cart['items'])) {
             return redirect()->route('cart.index')->with('error', 'Корзина пуста.');
         }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:50',
-            'email' => 'required|email',
-            'comment' => 'nullable|string|max:2000',
-        ], [
-            'name.required' => 'Укажите имя.',
-            'phone.required' => 'Укажите телефон.',
-            'email.required' => 'Укажите email.',
-            'email.email' => 'Некорректный email.',
-        ]);
-
+        $validated = $request->validated();
         $discountAmount = isset($cart['discount']) ? (float) $cart['discount'] : 0;
         $promoCodeId = $cart['promo']?->id ?? null;
 
@@ -61,6 +52,12 @@ class CheckoutController extends Controller
 
         if ($promoCodeId) {
             \App\Models\PromoCode::where('id', $promoCodeId)->increment('times_used');
+        }
+
+        $adminEmail = config('mail.admin');
+        if ($adminEmail) {
+            $order->load('items.product', 'items.productVariant', 'promoCode');
+            Mail::to($adminEmail)->send(new OrderReceived($order));
         }
 
         CartController::clearCart();
