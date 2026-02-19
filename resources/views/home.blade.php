@@ -3,16 +3,10 @@
 @section('title', 'Главная - Urban Running Games')
 
 @section('content')
-<div class="hero">
-    <div class="container">
-        <h1>Urban Running Games</h1>
-        <p class="hero-subtitle">Командные забеги-игры в городской среде</p>
-        <div class="hero-actions">
-            <a href="{{ route('events.index') }}" class="btn btn-primary">Предстоящие события</a>
-            <a href="{{ route('about') }}" class="btn btn-secondary">О команде</a>
-        </div>
-    </div>
-</div>
+<x-hero :hero-video="$heroVideo">
+    <a href="{{ route('events.index') }}" class="btn btn-primary">Предстоящие события</a>
+    <a href="{{ route('about') }}" class="btn btn-secondary">О команде</a>
+</x-hero>
 
 <section class="upcoming-events">
     <div class="container">

@@ -26,9 +26,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Заполняем тестовыми данными события, города и партнёров
+        // Заполняем тестовыми данными события, города, партнёров, hero-видео
         $this->call([
             EventSeeder::class,
+            HeroVideoSeeder::class,
         ]);
     }
 }

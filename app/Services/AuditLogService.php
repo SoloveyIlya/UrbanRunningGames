@@ -63,6 +63,7 @@ class AuditLogService
             \App\Models\City::class => 'cities',
             \App\Models\SitePage::class => 'site_pages',
             \App\Models\ContactMessage::class => 'contact_messages',
+            \App\Models\HeroVideo::class => 'hero_videos',
         ];
 
         return $map[get_class($model)] ?? class_basename($model);

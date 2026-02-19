@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\PromoCode;
 use App\Models\RatingEntry;
 use App\Models\SitePage;
+use App\Models\HeroVideo;
 use App\Observers\AuditableObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
         RatingEntry::observe($observer);
         City::observe($observer);
         SitePage::observe($observer);
+        HeroVideo::observe($observer);
     }
 }
