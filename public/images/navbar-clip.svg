@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+  <defs>
+    <clipPath id="navbar-clip" clipPathUnits="objectBoundingBox">
+      <!-- Figma: 1376×88, path с C-кривыми и скошенной правой стороной -->
+      <path d="M 0 0.2273 C 0 0.1017 0.0065 0 0.0145 0 L 0.9847 0 C 0.996 0 1.003 0.191 0.997 0.343 L 0.977 0.888 C 0.974 0.957 0.969 1 0.964 1 L 0.0145 1 C 0.0065 1 0 0.898 0 0.773 L 0 0.227 Z"/>
+    </clipPath>
+  </defs>
+</svg>
