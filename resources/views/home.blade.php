@@ -4,8 +4,6 @@
 
 @section('content')
 <x-hero :hero-video="$heroVideo">
-    <a href="{{ route('events.index') }}" class="btn btn-primary">Предстоящие события</a>
-    <a href="{{ route('about') }}" class="btn btn-secondary">О команде</a>
 </x-hero>
 
 <section class="home-stats" aria-labelledby="home-stats-heading">
@@ -28,7 +26,7 @@
     </div>
     <div class="container home-stats__container">
         <h2 id="home-stats-heading" class="visually-hidden">Статистика проекта</h2>
-        <ul class="home-stats__grid">
+        <ul class="home-stats__grid home-stats__grid--columns">
             <li class="home-stats__item">
                 <span class="home-stats__number">12</span>
                 <span class="home-stats__label">оригинальных тематических забегов</span>
@@ -53,40 +51,146 @@
     </div>
 </section>
 
-<section class="upcoming-events">
+<section class="upcoming-races" aria-labelledby="upcoming-races-heading">
     <div class="container">
-        <h2>Ближайшие события</h2>
+        <h2 id="upcoming-races-heading" class="upcoming-races__title">Ближайшие гонки</h2>
         @if($upcomingEvents->count() > 0)
-            <div class="events-grid">
+            <div class="upcoming-races__list">
                 @foreach($upcomingEvents as $event)
-                    <div class="event-card">
-                        <div class="event-date">
-                            <span class="day">{{ $event->starts_at->format('d') }}</span>
-                            <span class="month">{{ $event->starts_at->translatedFormat('M') }}</span>
+                    @php
+                        $priorityAlbum = $event->albums->sortBy('sort_order')->first();
+                        $coverUrl = $event->cover_url ?? $priorityAlbum?->getCoverUrl();
+                    @endphp
+                    <article class="race-card race-card--horizontal">
+                        <div class="race-card__image-wrap">
+                            <div class="race-card__image {{ $coverUrl ? '' : 'race-card__image--no-photo' }}" @if($coverUrl) style="background-image: url('{{ e($coverUrl) }}');" @endif></div>
                         </div>
-                        <div class="event-info">
-                            <h3>{{ $event->title }}</h3>
-                            <p class="event-location">
-                                @if($event->city)
-                                    {{ $event->city->name }}
-                                @endif
-                                @if($event->location_text)
-                                    , {{ $event->location_text }}
-                                @endif
-                            </p>
-                            @if($event->description)
-                                <p class="event-description">{{ \Illuminate\Support\Str::limit($event->description, 100) }}</p>
-                            @endif
-                            <a href="{{ route('events.show', $event->slug) }}" class="btn btn-sm">Подробнее</a>
+                        <div class="race-card__body">
+                            <div class="race-card__head">
+                                <h3 class="race-card__name">{{ $event->title }}</h3>
+                                <span class="race-card__date">{{ $event->starts_at->format('d.m.Y') }}</span>
+                            </div>
+                            <dl class="race-card__params">
+                                <div class="race-card__param"><dt>Расстояние:</dt><dd>{{ $event->distance ?? '—' }}</dd></div>
+                                <div class="race-card__param"><dt>Локаций:</dt><dd>{{ $event->locations_count ?? '—' }}</dd></div>
+                                <div class="race-card__param"><dt>Лимит:</dt><dd>{{ $event->time_limit ?? '—' }}</dd></div>
+                                <div class="race-card__param"><dt>Команд:</dt><dd>{{ $event->teams_count ?? '—' }}</dd></div>
+                            </dl>
+                            <a href="{{ route('events.show', $event->slug) }}" class="btn btn--race">Подробнее</a>
                         </div>
-                    </div>
+                    </article>
                 @endforeach
+                <a href="{{ route('events.index') }}" class="race-card race-card--all">
+                    <svg class="race-card--all__svg" viewBox="0 0 618 327" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <filter id="raceCardAllFilter" x="0" y="0" width="618" height="327" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                <feOffset dy="4"/>
+                                <feGaussianBlur stdDeviation="2"/>
+                                <feComposite in2="hardAlpha" operator="out"/>
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+                            </filter>
+                            <linearGradient id="raceCardAllGradient" x1="4" y1="160" x2="614" y2="160" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#26203A"/>
+                                <stop offset="1" stop-color="#6958A0"/>
+                            </linearGradient>
+                        </defs>
+                        <g filter="url(#raceCardAllFilter)">
+                            <path d="M4 20C4 8.9543 12.9543 0 24 0H594C605.046 0 614 8.95431 614 20V210.716C614 216.02 611.893 221.107 608.142 224.858L519.858 313.142C516.107 316.893 511.02 319 505.716 319H24C12.9543 319 4 310.046 4 299V20Z" fill="url(#raceCardAllGradient)"/>
+                        </g>
+                    </svg>
+                    <span class="race-card--all__inner">
+                        <span class="race-card__all-text">Смотреть остальные гонки</span>
+                        <span class="race-card__all-arrow" aria-hidden="true">↗</span>
+                    </span>
+                </a>
             </div>
         @else
-            <p>Пока нет предстоящих событий. Следите за обновлениями!</p>
+            <p class="upcoming-races__empty">Пока нет предстоящих гонок. Следите за обновлениями!</p>
+            <div class="text-center mt-4">
+                <a href="{{ route('events.index') }}" class="btn btn--primary">Все гонки</a>
+            </div>
         @endif
-        <div class="text-center mt-4">
-            <a href="{{ route('events.index') }}" class="btn">Все события</a>
+    </div>
+</section>
+
+<section class="info-section" aria-labelledby="info-heading">
+    <div class="container">
+        <h2 id="info-heading" class="info-section__title">ИНФОРМАЦИЯ</h2>
+        <div class="info-accordion">
+            <div class="info-accordion__item" data-accordion-item>
+                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-1" id="info-btn-1" data-accordion-trigger>
+                    <span class="info-accordion__title-text">Коротко о главном</span>
+                    <span class="info-accordion__icon" aria-hidden="true">+</span>
+                </button>
+                <div id="info-body-1" class="info-accordion__body" role="region" aria-labelledby="info-btn-1" hidden>
+                    <div class="info-accordion__content">
+                        <a href="{{ route('home') }}">Главная</a>,
+                        <a href="{{ route('events.index') }}">Гонки</a>,
+                        <a href="{{ route('rating') }}">Рейтинг</a>,
+                        <a href="{{ route('gallery.index') }}">Фото</a>,
+                        <a href="{{ route('shop.index') }}">Магазин</a>,
+                        <a href="{{ route('about') }}">О нас</a>,
+                        <a href="{{ route('partners') }}">Партнёры</a>,
+                        <a href="{{ route('contact') }}">Контакты</a>.
+                    </div>
+                </div>
+            </div>
+            <div class="info-accordion__item" data-accordion-item>
+                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-2" id="info-btn-2" data-accordion-trigger>
+                    <span class="info-accordion__title-text">Программа Т-Банк Dagestan Wild Trail 2026</span>
+                    <span class="info-accordion__icon" aria-hidden="true">+</span>
+                </button>
+                <div id="info-body-2" class="info-accordion__body" role="region" aria-labelledby="info-btn-2" hidden>
+                    <div class="info-accordion__content">
+                        Информация о программе готовится.
+                    </div>
+                </div>
+            </div>
+            <div class="info-accordion__item" data-accordion-item>
+                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-3" id="info-btn-3" data-accordion-trigger>
+                    <span class="info-accordion__title-text">Основные условия</span>
+                    <span class="info-accordion__icon" aria-hidden="true">+</span>
+                </button>
+                <div id="info-body-3" class="info-accordion__body" role="region" aria-labelledby="info-btn-3" hidden>
+                    <div class="info-accordion__content">
+                        <a href="{{ route('partners') }}">Страница для партнёров</a> — условия сотрудничества и контакты.
+                    </div>
+                </div>
+            </div>
+            <div class="info-accordion__item" data-accordion-item>
+                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-4" id="info-btn-4" data-accordion-trigger>
+                    <span class="info-accordion__title-text">Место старта, финиша, выдача номеров и стартовых пакетов</span>
+                    <span class="info-accordion__icon" aria-hidden="true">+</span>
+                </button>
+                <div id="info-body-4" class="info-accordion__body" role="region" aria-labelledby="info-btn-4" hidden>
+                    <div class="info-accordion__content">
+                        <a href="{{ route('legal.privacy') }}">Политика конфиденциальности</a>,
+                        <a href="{{ route('legal.consent') }}">Согласие на обработку ПДн</a>.
+                    </div>
+                </div>
+            </div>
+            <div class="info-accordion__item" data-accordion-item>
+                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-5" id="info-btn-5" data-accordion-trigger>
+                    <span class="info-accordion__title-text">Где жить, как добраться до места старта</span>
+                    <span class="info-accordion__icon" aria-hidden="true">+</span>
+                </button>
+                <div id="info-body-5" class="info-accordion__body" role="region" aria-labelledby="info-btn-5" hidden>
+                    <div class="info-accordion__content">
+                        <a href="{{ route('legal.terms') }}">Условия продажи мерча</a>,
+                        <a href="{{ route('legal.returns') }}">Правила возвратов</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-section__action">
+            <a href="{{ route('legal.terms') }}" class="btn btn--info-position">
+                <span class="btn--info-position__text">ПОЛОЖЕНИЕ</span>
+                <span class="btn--info-position__arrow" aria-hidden="true">↗</span>
+            </a>
         </div>
     </div>
 </section>

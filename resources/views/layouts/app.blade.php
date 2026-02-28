@@ -34,6 +34,10 @@
             <clipPath id="home-stats-section-clip" clipPathUnits="objectBoundingBox">
                 <path d="M0 0.196 C0 0.189 0.00113 0.182 0.00322 0.176 L0.065 0.012 C0.068 0.004 0.072 0 0.077 0 H0.985 C0.993 0 1 0.014 1 0.031 V0.83 C1 0.838 0.998 0.846 0.995 0.852 L0.93 0.991 C0.927 0.997 0.923 1 0.919 1 H0.015 C0.0067 1 0 0.986 0 0.969 V0.196 Z"/>
             </clipPath>
+            <!-- Карточка «Смотреть остальные гонки» — скос правого нижнего угла (618×327 → objectBoundingBox) -->
+            <clipPath id="race-card-all-clip" clipPathUnits="objectBoundingBox">
+                <path d="M0.0065 0.061 C0.0065 0.027 0.021 0 0.039 0 H0.961 C0.979 0 0.994 0.061 0.994 0.061 V0.645 C0.994 0.661 0.99 0.676 0.984 0.688 L0.841 0.958 C0.835 0.969 0.827 0.976 0.818 0.976 H0.039 C0.0065 0.976 0.0065 0.914 0.0065 0.061 Z"/>
+            </clipPath>
         </defs>
     </svg>
     <nav class="navbar">
@@ -105,44 +109,29 @@
         @yield('content')
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Urban Running Games</h3>
-                    <p>Командные забеги-игры</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Навигация</h4>
-                    <ul>
-                        <li><a href="{{ route('about') }}">О команде</a></li>
-                        <li><a href="{{ route('events.index') }}">События</a></li>
-                        <li><a href="{{ route('gallery.index') }}">Фотогалерея</a></li>
-                        <li><a href="{{ route('shop.index') }}">Магазин</a></li>
-                        <li><a href="{{ route('partners') }}">Партнёры</a></li>
-                        <li><a href="{{ route('contact') }}">Контакты</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Юридическая информация</h4>
-                    <ul>
-                        <li><a href="{{ route('legal.privacy') }}">Политика конфиденциальности</a></li>
-                        <li><a href="{{ route('legal.consent') }}">Согласие на обработку ПДн</a></li>
-                        <li><a href="{{ route('legal.terms') }}">Условия продажи мерча</a></li>
-                        <li><a href="{{ route('legal.returns') }}">Правила возвратов</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} Urban Running Games. Все права защищены.</p>
-            </div>
-        </div>
-    </footer>
+    @include('partials.footer.footer')
 
     <script>
         // Мобильное меню
         document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
             document.getElementById('navMenu')?.classList.toggle('active');
+        });
+        // Аккордеон секции «Информация»
+        document.querySelectorAll('[data-accordion-trigger]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('[data-accordion-item]');
+                var body = document.getElementById(this.getAttribute('aria-controls'));
+                var isOpen = item.hasAttribute('data-open');
+                if (isOpen) {
+                    item.removeAttribute('data-open');
+                    this.setAttribute('aria-expanded', 'false');
+                    if (body) body.hidden = true;
+                } else {
+                    item.setAttribute('data-open', '');
+                    this.setAttribute('aria-expanded', 'true');
+                    if (body) body.hidden = false;
+                }
+            });
         });
         // При 404: сначала пробуем data-full (полноразмерное), затем плейсхолдер
         document.addEventListener('error', function(e) {

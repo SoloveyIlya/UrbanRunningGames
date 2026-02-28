@@ -73,6 +73,46 @@ class EventResource extends Resource
                             ->required(),
                     ])
                     ->columns(2),
+                Forms\Components\Section::make('Карточка на главной')
+                    ->description('Главная картинка и параметры для блока «Ближайшие гонки».')
+                    ->schema([
+                        Forms\Components\FileUpload::make('cover_image_upload')
+                            ->label('Главная картинка')
+                            ->image()
+                            ->maxSize(50 * 1024)
+                            ->disk('local')
+                            ->directory('livewire-tmp')
+                            ->visibility('private')
+                            ->helperText('Загрузите одну картинку — как в альбомах. Отображается на карточке события на главной.'),
+                        Forms\Components\Placeholder::make('cover_preview')
+                            ->label('Текущая обложка')
+                            ->content(fn (?Event $record) => $record && $record->coverMedia
+                                ? new \Illuminate\Support\HtmlString('<img src="' . e($record->coverMedia->thumbnail_url ?? $record->coverMedia->url) . '" alt="" style="max-width:200px;height:auto;border-radius:8px;">')
+                                : 'Не задана')
+                            ->visibleOn('edit'),
+                        Forms\Components\TextInput::make('distance')
+                            ->label('Расстояние')
+                            ->maxLength(64)
+                            ->placeholder('например: 19 км')
+                            ->nullable(),
+                        Forms\Components\TextInput::make('locations_count')
+                            ->label('Локаций')
+                            ->maxLength(64)
+                            ->placeholder('например: 17')
+                            ->nullable(),
+                        Forms\Components\TextInput::make('time_limit')
+                            ->label('Лимит')
+                            ->maxLength(64)
+                            ->placeholder('например: 3 часа')
+                            ->nullable(),
+                        Forms\Components\TextInput::make('teams_count')
+                            ->label('Команд')
+                            ->maxLength(64)
+                            ->placeholder('например: 40')
+                            ->nullable(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
                 Forms\Components\Section::make('Описание и правила')
                     ->schema([
                         Forms\Components\Textarea::make('description')

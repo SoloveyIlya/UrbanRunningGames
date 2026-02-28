@@ -19,6 +19,11 @@ class Event extends Model
         'description',
         'rules',
         'status',
+        'cover_media_id',
+        'distance',
+        'locations_count',
+        'time_limit',
+        'teams_count',
     ];
 
     protected function casts(): array
@@ -52,6 +57,22 @@ class Event extends Model
     public function albums()
     {
         return $this->hasMany(Album::class);
+    }
+
+    public function coverMedia()
+    {
+        return $this->belongsTo(\App\Models\MediaAsset::class, 'cover_media_id');
+    }
+
+    /**
+     * URL главной картинки события (для карточки на главной). Задаётся в админке.
+     */
+    public function getCoverUrlAttribute(): ?string
+    {
+        if ($this->coverMedia) {
+            return $this->coverMedia->thumbnail_url ?? $this->coverMedia->url;
+        }
+        return null;
     }
 
     /**

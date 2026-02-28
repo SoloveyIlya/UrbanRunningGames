@@ -16,7 +16,8 @@ class HomeController extends Controller
         $upcomingEvents = Event::where('status', 'published')
             ->where('starts_at', '>', now())
             ->orderBy('starts_at', 'asc')
-            ->limit(3)
+            ->with(['albums.media', 'city', 'coverMedia'])
+            ->limit(6)
             ->get();
 
         $partners = Partner::where('is_active', true)

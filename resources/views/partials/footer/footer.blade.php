@@ -1,0 +1,99 @@
+{{-- Футер в форме SVG (градиент #26203A → #6958A0) — контент как на макете --}}
+{{-- Спрайт иконок соцсетей для футера --}}
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="icon-footer-telegram" viewBox="0 0 30 30">
+      <path d="M15 0C6.71566 0 0 6.71566 0 15C0 23.2843 6.71566 30 15 30C23.2843 30 30 23.2843 30 15C30 6.71566 23.2843 0 15 0Z" fill="#40B3E0"/>
+      <path d="M22.2989 8.62852L19.6198 22.1364C19.6198 22.1364 19.2451 23.0732 18.2147 22.6235L12.0321 17.8835L9.78401 16.797L5.99956 15.5229C5.99956 15.5229 5.41878 15.3169 5.36253 14.8672C5.3064 14.4176 6.01831 14.1741 6.01831 14.1741L21.0624 8.27251C21.0624 8.27251 22.2989 7.72923 22.2989 8.62852Z" fill="white"/>
+      <path d="M11.5566 21.9849C11.5566 21.9849 11.3762 21.968 11.1513 21.256C10.9265 20.5441 9.78369 16.7971 9.78369 16.7971L18.8701 11.0268C18.8701 11.0268 19.3947 10.7083 19.376 11.0268C19.376 11.0268 19.4696 11.0829 19.1886 11.3452C18.9076 11.6076 12.0506 17.7713 12.0506 17.7713" fill="#D2E5F1"/>
+      <path d="M14.4024 19.701L11.957 21.9306C11.957 21.9306 11.7658 22.0757 11.5566 21.9848L12.0249 17.8433" fill="#B5CFE4"/>
+    </symbol>
+    <symbol id="icon-footer-vk" viewBox="50 0 30 30">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M65 30C73.2843 30 80 23.2843 80 15C80 6.71573 73.2843 0 65 0C56.7157 0 50 6.71573 50 15C50 23.2843 56.7157 30 65 30Z" fill="#3E6FA1"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M66.1992 18.4976C66.2379 17.902 66.5064 16.9749 67.1776 17.4805C67.5831 17.7868 67.9048 18.2305 68.2692 18.6201C68.6248 18.9994 69.0492 19.3309 69.8398 19.3105C70.3087 19.2984 71.6553 19.343 72.0061 19.2152C73.0663 18.8305 71.1879 17.0726 70.7292 16.6792C70.5361 16.5138 70.3198 16.2781 70.1544 16.103C69.9497 15.8867 69.8514 15.6675 70.014 15.3283L70.7248 14.3286C70.9353 14.0988 71.7139 12.9854 71.9021 12.6805C72.1731 12.2412 72.729 11.3775 72.0124 11.2391C71.6094 11.1612 70.301 11.2338 69.8031 11.2372C68.8223 11.2434 69.0216 11.1351 68.5377 12.2523C68.2155 12.9955 67.2206 14.7471 66.6932 14.947C65.7153 15.3176 66.4803 11.7709 66.0681 11.1573C65.8179 10.7852 64.6585 10.8317 64.1161 10.8389C63.4861 10.8467 62.6152 10.8801 62.4313 11.3997C62.4874 11.4476 62.426 11.4152 62.5348 11.4597C62.6132 11.4917 62.7356 11.4989 62.8687 11.5701C62.9868 11.6325 63.0942 11.7423 63.1556 11.841C63.4527 12.3162 63.4169 14.318 63.1711 14.8033C62.711 15.7101 61.3668 13.1625 61.1364 12.7086C60.8074 12.0607 60.6782 11.4307 60.3056 11.2696C60.0356 11.1534 58.5052 11.2183 58.0934 11.2251C57.7164 11.2309 57.3913 11.2904 57.5345 11.737C57.6066 11.962 57.7779 12.2789 57.8814 12.5059C58.5197 13.9067 59.5174 15.6263 60.3966 16.7915C61.389 18.1062 62.8561 19.2709 64.7108 19.2859C66.0429 19.2965 66.1435 19.3555 66.1992 18.4976Z" fill="white"/>
+    </symbol>
+    <symbol id="icon-footer-rutube" viewBox="100 0 30 30">
+      <defs>
+        <clipPath id="icon-footer-rutube-clip">
+          <circle cx="115" cy="15" r="15"/>
+        </clipPath>
+      </defs>
+      <g clip-path="url(#icon-footer-rutube-clip)">
+        <path d="M130 0H100V30H130V0Z" fill="#100943"/>
+        <path d="M130 15C138.284 15 145 8.28428 145 8.58307e-06C145 -8.28427 138.284 -15 130 -15C121.716 -15 115 -8.28427 115 8.58307e-06C115 8.28428 121.716 15 130 15Z" fill="#ED143B"/>
+        <path d="M118.531 14.3151H109.668V10.8079H118.531C119.049 10.8079 119.409 10.8981 119.589 11.0557C119.77 11.2133 119.882 11.5056 119.882 11.9325V13.1918C119.882 13.6417 119.77 13.934 119.589 14.0915C119.409 14.2491 119.049 14.3165 118.531 14.3165V14.3151ZM119.139 7.50134H105.909V22.5H109.668V17.6203H116.595L119.882 22.5H124.091L120.467 17.5974C121.803 17.3994 122.403 16.99 122.898 16.3152C123.393 15.6404 123.641 14.5616 123.641 13.1218V11.9972C123.641 11.1433 123.55 10.4685 123.393 9.9513C123.235 9.43409 122.965 8.98425 122.582 8.58018C122.178 8.19768 121.728 7.9283 121.187 7.74782C120.646 7.59025 119.971 7.5 119.139 7.5V7.50134Z" fill="white"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<footer class="footer" aria-label="Подвал сайта">
+    <div class="footer__shape-wrap">
+        <svg class="footer__shape" viewBox="0 0 1340 636" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+                <linearGradient id="footer-gradient" x1="0" y1="318" x2="1340" y2="318" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#26203A"/>
+                    <stop offset="1" stop-color="#6958A0"/>
+                </linearGradient>
+            </defs>
+            <path d="M0 124.69C0 120.189 1.51817 115.82 4.30899 112.288L87.05 7.59871C90.843 2.79948 96.6238 0 102.741 0H1320C1331.05 0 1340 8.9543 1340 20V527.716C1340 533.02 1337.89 538.107 1334.14 541.858L1245.86 630.142C1242.11 633.893 1237.02 636 1231.72 636H20C8.95429 636 0 627.046 0 616V124.69Z" fill="url(#footer-gradient)"/>
+        </svg>
+    </div>
+    <div class="footer__content-wrap">
+        <div class="container footer__container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--brand">
+                    <a href="{{ route('home') }}" class="footer__logo">
+                        <img src="{{ asset('images/logo/sprut.svg') }}" alt="SPRUT" class="footer__logo-img" width="120" height="39">
+                    </a>
+                    <div class="footer__social">
+                        <a href="https://t.me/urbanrunninggames" target="_blank" rel="noopener" class="footer__social-link footer__social-link--tg" aria-label="Telegram">
+                            <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-telegram"/></svg>
+                        </a>
+                        <a href="https://vk.com/urbanrunninggames" target="_blank" rel="noopener" class="footer__social-link footer__social-link--vk" aria-label="VK">
+                            <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-vk"/></svg>
+                        </a>
+                        <a href="#" class="footer__social-link footer__social-link--r" aria-label="RuTube">
+                            <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-rutube"/></svg>
+                        </a>
+                    </div>
+                    <div class="footer__contacts">
+                        <p class="footer__contacts-item--bold"><a href="mailto:main@sprut.run">main@sprut.run</a></p>
+                        <p class="footer__contacts-item--bold footer__contacts-item--spaced"><a href="tel:+79178060995">+7 (917) 806-09-95</a></p>
+                        <p>Понедельник–пятница — 9:00–18:00</p>
+                        <p>В дни мероприятий — 6:00–0:00</p>
+                        <p>Отвечаем в Telegram</p>
+                    </div>
+                </div>
+                <div class="footer__col footer__col--nav">
+                    <h4 class="footer__heading">Навигация</h4>
+                    <ul class="footer__links">
+                        <li><a href="{{ route('shop.index') }}">Магазин</a></li>
+                        <li><a href="{{ route('about') }}">Команда</a></li>
+                        <li><a href="{{ route('partners') }}">Партнёры</a></li>
+                        <li><a href="{{ route('contact') }}">Контакты</a></li>
+                        <li><a href="{{ route('events.index') }}">Гонки</a></li>
+                        <li><a href="{{ route('rating') }}">Рейтинг</a></li>
+                        <li><a href="{{ route('gallery.index') }}">Фото</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col footer__col--info">
+                    <h4 class="footer__heading">Инфо</h4>
+                    <ul class="footer__links">
+                        <li><a href="{{ route('about') }}">О команде</a></li>
+                        <li><a href="{{ route('rating') }}">Результаты</a></li>
+                    </ul>
+                    <h4 class="footer__heading footer__heading--company">Компания</h4>
+                    <div class="footer__company">
+                        <p>ООО «СПРУТ»</p>
+                        <p>ИНН 9731015256</p>
+                        <p>КПП 773101001</p>
+                        <p>ОГРН 1187746928588</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright">© {{ date('Y') }} ООО «СПРУТ». Все права защищены.</p>
+            </div>
+        </div>
+    </div>
+</footer>

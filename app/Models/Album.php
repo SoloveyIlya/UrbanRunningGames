@@ -69,17 +69,23 @@ class Album extends Model implements HasMedia
 
     /**
      * Список фото для галереи. Приоритет у Spatie Media (коллекция photos), иначе legacy items.
-     * Элемент: ['url', 'thumb', 'is_image'].
+     * Элемент: ['url', 'thumb', 'is_image']. URL через /media/ для раздачи без 404.
      */
     public function getGalleryPhotos(): Collection
     {
         $media = $this->getMedia(self::MEDIA_COLLECTION_PHOTOS);
         if ($media->isNotEmpty()) {
-            return $media->map(fn ($m) => [
-                'url' => $m->getUrl(),
-                'thumb' => $m->getUrl('thumb') ?: $m->getUrl(),
-                'is_image' => true,
-            ]);
+            return $media->map(function ($m) {
+                $path = $m->getPathRelativeToRoot();
+                $thumbPath = $m->getPathRelativeToRoot('thumb');
+                $base = $path ? url('/media/' . ltrim($path, '/')) : $m->getUrl();
+                $thumb = $thumbPath ? url('/media/' . ltrim($thumbPath, '/')) : ($m->getUrl('thumb') ?: $base);
+                return [
+                    'url' => $base,
+                    'thumb' => $thumb,
+                    'is_image' => true,
+                ];
+            });
         }
         return $this->items->map(fn (MediaAsset $item) => [
             'url' => $item->url,
@@ -90,11 +96,20 @@ class Album extends Model implements HasMedia
 
     /**
      * URL обложки: первое фото Spatie (thumb) или legacy cover_media.
+     * Для Spatie отдаём URL через /media/, чтобы раздача шла через StorageController (нет 404 при отсутствии storage:link).
      */
     public function getCoverUrl(): ?string
     {
         $first = $this->getFirstMedia(self::MEDIA_COLLECTION_PHOTOS);
         if ($first) {
+            $thumbPath = $first->getPathRelativeToRoot('thumb');
+            if ($thumbPath) {
+                return url('/media/' . ltrim($thumbPath, '/'));
+            }
+            $path = $first->getPathRelativeToRoot();
+            if ($path) {
+                return url('/media/' . ltrim($path, '/'));
+            }
             return $first->getUrl('thumb') ?: $first->getUrl();
         }
         if ($this->coverMedia && $this->coverMedia->isImage()) {
