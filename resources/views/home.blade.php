@@ -27,26 +27,13 @@
     <div class="container home-stats__container">
         <h2 id="home-stats-heading" class="visually-hidden">Статистика проекта</h2>
         <ul class="home-stats__grid home-stats__grid--columns">
+            @foreach($homeStats ?? [] as $stat)
             <li class="home-stats__item">
-                <span class="home-stats__number">12</span>
-                <span class="home-stats__label">оригинальных тематических забегов</span>
-                <span class="home-stats__desc">Получайте очки для победы в общем зачёте</span>
+                <span class="home-stats__number">{{ $stat['number'] ?? '' }}</span>
+                <span class="home-stats__label">{{ $stat['label'] ?? '' }}</span>
+                <span class="home-stats__desc">{{ $stat['desc'] ?? '' }}</span>
             </li>
-            <li class="home-stats__item">
-                <span class="home-stats__number">34</span>
-                <span class="home-stats__label">увлекательных маршрутов</span>
-                <span class="home-stats__desc">Определяйте лучшую логистику для победы</span>
-            </li>
-            <li class="home-stats__item">
-                <span class="home-stats__number">300+</span>
-                <span class="home-stats__label">ключевых локаций</span>
-                <span class="home-stats__desc">Узнавайте редкие места, погружайтесь в легендарные истории</span>
-            </li>
-            <li class="home-stats__item">
-                <span class="home-stats__number">600+</span>
-                <span class="home-stats__label">интеллектуальных и активных заданий</span>
-                <span class="home-stats__desc">Разгадывайте и узнавайте</span>
-            </li>
+            @endforeach
         </ul>
     </div>
 </section>

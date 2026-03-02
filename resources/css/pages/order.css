@@ -1,0 +1,48 @@
+/* Страница: Подтверждение заявки */
+
+.order-confirmation-section {
+    padding: 2rem 0;
+}
+
+.order-confirmation-card {
+    max-width: 560px;
+    background: rgba(38, 32, 58, 0.5);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(105, 88, 160, 0.35);
+    color: #eee;
+}
+
+.order-confirmation-id {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.order-confirmation-card h2 {
+    margin: 1.5rem 0 0.75rem 0;
+    font-size: 1.15rem;
+    color: #fff;
+}
+
+.order-confirmation-card p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.order-confirmation-items {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.order-confirmation-total {
+    margin: 1rem 0;
+    font-size: 1.15rem;
+    color: #fff;
+}
+
+.order-confirmation-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}

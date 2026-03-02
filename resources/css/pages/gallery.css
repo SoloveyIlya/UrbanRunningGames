@@ -1,0 +1,186 @@
+/* Страница: Фотогалерея — альбомы и просмотр альбома */
+
+.gallery-section {
+    padding: 2rem 0;
+}
+
+.gallery-event-block {
+    margin-bottom: 3rem;
+}
+
+.gallery-event-block:last-child {
+    margin-bottom: 0;
+}
+
+.gallery-event-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.gallery-event-title a {
+    color: #eee;
+    text-decoration: none;
+}
+
+.gallery-event-title a:hover {
+    color: #a78bfa;
+}
+
+.gallery-event-meta {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+}
+
+.albums-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.album-card {
+    border: 1px solid rgba(105, 88, 160, 0.35);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: box-shadow 0.3s;
+    background-color: rgba(38, 32, 58, 0.4);
+}
+
+.album-card:hover {
+    box-shadow: 0 4px 16px rgba(105, 88, 160, 0.25);
+}
+
+.album-cover {
+    position: relative;
+    aspect-ratio: 4/3;
+    background: rgba(38, 32, 58, 0.6);
+    overflow: hidden;
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.album-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+}
+
+.album-count {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.album-info {
+    padding: 1rem;
+}
+
+.album-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+}
+
+.album-info p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+}
+
+.breadcrumb-nav {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.breadcrumb-nav a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-sep {
+    margin: 0 0.35rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.album-section {
+    padding: 2rem 0;
+}
+
+.album-description {
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.album-description a {
+    color: #a78bfa;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.photo-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: rgba(38, 32, 58, 0.5);
+}
+
+.photo-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.photo-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.photo-link:hover img {
+    transform: scale(1.03);
+}
+
+.photo-link-file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.photo-link-file:hover {
+    text-decoration: underline;
+}
+
+.album-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}

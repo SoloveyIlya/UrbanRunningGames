@@ -1,0 +1,66 @@
+/* Страница: Оформление заявки */
+
+.checkout-section {
+    padding: 2rem 0;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.checkout-form-wrap h2,
+.checkout-summary h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.checkout-summary {
+    background: rgba(38, 32, 58, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(105, 88, 160, 0.35);
+    color: #eee;
+}
+
+.checkout-summary-list {
+    list-style: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+}
+
+.checkout-summary-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(105, 88, 160, 0.25);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.checkout-item-name {
+    font-weight: 500;
+    color: #eee;
+}
+
+.checkout-item-variant {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.checkout-item-qty {
+    margin-left: auto;
+}
+
+.checkout-total {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+}

@@ -1,0 +1,139 @@
+/* Страница: Корзина */
+
+.cart-section {
+    padding: 2rem 0;
+}
+
+.cart-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(105, 88, 160, 0.35);
+    text-align: left;
+    color: #eee;
+}
+
+.cart-table th {
+    background: rgba(38, 32, 58, 0.6);
+    font-weight: 600;
+    color: #fff;
+}
+
+.cart-item-product {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.cart-item-product:hover {
+    text-decoration: underline;
+}
+
+.cart-item-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.cart-item-no-photo {
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(38, 32, 58, 0.5);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.cart-qty-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.cart-qty-input {
+    width: 4rem;
+    padding: 0.35rem;
+    border: 1px solid rgba(105, 88, 160, 0.4);
+    border-radius: 4px;
+    background: rgba(17, 17, 17, 0.8);
+    color: #eee;
+}
+
+.cart-promo {
+    margin-bottom: 1rem;
+}
+
+.cart-promo-form,
+.cart-promo-applied {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.cart-promo-applied {
+    margin: 0;
+    color: #eee;
+}
+
+.cart-promo-input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(105, 88, 160, 0.4);
+    border-radius: 4px;
+    min-width: 140px;
+    background: rgba(17, 17, 17, 0.8);
+    color: #eee;
+}
+
+.cart-promo-remove-form {
+    display: inline;
+}
+
+.cart-total {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #eee;
+}
+
+.cart-total p {
+    margin: 0.25rem 0;
+}
+
+.cart-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-cart-link .cart-count {
+    opacity: 0.9;
+    font-size: 0.9em;
+}
+
+.checkout-discount,
+.order-confirmation-discount {
+    color: #86efac;
+}
+
+.checkout-discount {
+    margin: 0.25rem 0;
+}
+
+.order-confirmation-discount {
+    margin: 0.5rem 0 0 0;
+}

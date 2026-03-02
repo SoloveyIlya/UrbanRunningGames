@@ -46,22 +46,22 @@
                         <img src="{{ asset('images/logo/sprut.svg') }}" alt="SPRUT" class="footer__logo-img" width="120" height="39">
                     </a>
                     <div class="footer__social">
-                        <a href="https://t.me/urbanrunninggames" target="_blank" rel="noopener" class="footer__social-link footer__social-link--tg" aria-label="Telegram">
+                        <a href="{{ $siteContact['telegram_url'] ?? 'https://t.me/urbanrunninggames' }}" target="_blank" rel="noopener" class="footer__social-link footer__social-link--tg" aria-label="Telegram">
                             <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-telegram"/></svg>
                         </a>
-                        <a href="https://vk.com/urbanrunninggames" target="_blank" rel="noopener" class="footer__social-link footer__social-link--vk" aria-label="VK">
+                        <a href="{{ $siteContact['vk_url'] ?? 'https://vk.com/urbanrunninggames' }}" target="_blank" rel="noopener" class="footer__social-link footer__social-link--vk" aria-label="VK">
                             <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-vk"/></svg>
                         </a>
-                        <a href="#" class="footer__social-link footer__social-link--r" aria-label="RuTube">
+                        <a href="{{ $siteContact['rutube_url'] ?? '#' }}" target="_blank" rel="noopener" class="footer__social-link footer__social-link--r" aria-label="RuTube">
                             <svg class="footer__social-icon" width="30" height="30" aria-hidden="true"><use href="#icon-footer-rutube"/></svg>
                         </a>
                     </div>
                     <div class="footer__contacts">
-                        <p class="footer__contacts-item--bold"><a href="mailto:main@sprut.run">main@sprut.run</a></p>
-                        <p class="footer__contacts-item--bold footer__contacts-item--spaced"><a href="tel:+79178060995">+7 (917) 806-09-95</a></p>
-                        <p>Понедельник–пятница — 9:00–18:00</p>
-                        <p>В дни мероприятий — 6:00–0:00</p>
-                        <p>Отвечаем в Telegram</p>
+                        <p class="footer__contacts-item--bold"><a href="mailto:{{ e($siteContact['email'] ?? 'main@sprut.run') }}">{{ e($siteContact['email'] ?? 'main@sprut.run') }}</a></p>
+                        <p class="footer__contacts-item--bold footer__contacts-item--spaced"><a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteContact['phone'] ?? '') }}">{{ e($siteContact['phone'] ?? '+7 (917) 806-09-95') }}</a></p>
+                        <p>{{ $siteContact['schedule_weekdays'] ?? 'Понедельник–пятница — 9:00–18:00' }}</p>
+                        <p>{{ $siteContact['schedule_events'] ?? 'В дни мероприятий — 6:00–0:00' }}</p>
+                        <p>{{ $siteContact['schedule_note'] ?? 'Отвечаем в Telegram' }}</p>
                     </div>
                 </div>
                 <div class="footer__col footer__col--nav">
@@ -84,15 +84,15 @@
                     </ul>
                     <h4 class="footer__heading footer__heading--company">Компания</h4>
                     <div class="footer__company">
-                        <p>ООО «СПРУТ»</p>
-                        <p>ИНН 9731015256</p>
-                        <p>КПП 773101001</p>
-                        <p>ОГРН 1187746928588</p>
+                        <p>{{ $siteContact['company_name'] ?? 'ООО «СПРУТ»' }}</p>
+                        <p>ИНН {{ $siteContact['inn'] ?? '9731015256' }}</p>
+                        <p>КПП {{ $siteContact['kpp'] ?? '773101001' }}</p>
+                        <p>ОГРН {{ $siteContact['ogrn'] ?? '1187746928588' }}</p>
                     </div>
                 </div>
             </div>
             <div class="footer__bottom">
-                <p class="footer__copyright">© {{ date('Y') }} ООО «СПРУТ». Все права защищены.</p>
+                <p class="footer__copyright">© {{ date('Y') }} {{ $siteContact['company_name'] ?? 'ООО «СПРУТ»' }}. Все права защищены.</p>
             </div>
         </div>
     </div>

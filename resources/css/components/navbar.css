@@ -177,9 +177,8 @@
 }
 
 .main-after-header {
-    padding-top: 866px;
-    /* Совпадает с padding-top, чтобы hero с видео всегда доставал до верха (margin-top = -padding-top) */
-    --header-height: 906px;
+    /* Высота шапки: top 14px + navbar 88px — контент не под шапкой; для hero с видео --header-height используется в base.css */
+    --header-height: 102px;
 }
 
 .mobile-menu-toggle {

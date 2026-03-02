@@ -1,0 +1,906 @@
+/* Главная страница */
+
+/* Меньший отступ сверху у секции после home-stats — убираем лишний зазор на адаптиве */
+.upcoming-events,
+.upcoming-races {
+    padding-top: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .upcoming-events,
+    .upcoming-races {
+        padding-top: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .upcoming-events,
+    .upcoming-races {
+        padding-top: 1.25rem;
+    }
+}
+
+/* Сетка статистики в 2 колонки (12+300+ | 34+600+) */
+.home-stats__grid--columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .home-stats__grid--columns {
+        gap: 3rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .home-stats__grid--columns {
+        gap: 3rem 4rem;
+    }
+}
+
+/* Секция «Ближайшие гонки» — карточки с фоном */
+.upcoming-races {
+    background-color: #111111;
+    color: #fff;
+    padding-bottom: 3rem;
+}
+
+.upcoming-races__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Houschka Rounded', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .upcoming-races__title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.upcoming-races__empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+}
+
+.upcoming-races__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 0;
+    align-items: start;
+}
+
+.upcoming-races__list > * {
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .upcoming-races__list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .upcoming-races__list {
+        gap: 1rem;
+    }
+}
+
+/* Карточка события — горизонтальный формат: слева фото 50%, справа контент 50% */
+/* На десктопе высота как у карточки с path (618×327), чтобы стояли в одну линию */
+.race-card--horizontal {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 0;
+    aspect-ratio: 628 / 327;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #363636;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.race-card--horizontal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 600px) {
+    .race-card--horizontal {
+        grid-template-columns: 1fr;
+        aspect-ratio: auto;
+        border-radius: 12px;
+    }
+
+    .race-card--horizontal .race-card__image-wrap {
+        min-height: 180px;
+    }
+
+    .race-card--horizontal .race-card__body {
+        grid-column: 1;
+    }
+}
+
+.race-card__image-wrap {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 200px;
+}
+
+.race-card--horizontal .race-card__image-wrap {
+    grid-column: 1;
+    width: 100%;
+    min-height: 100%;
+    align-self: stretch;
+}
+
+.race-card__body {
+    width: 100%;
+    min-width: 0;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.race-card--horizontal .race-card__body {
+    grid-column: 2;
+    width: 100%;
+}
+
+/* На средних экранах (~1030×730) даём больше места контенту: картинка уже, body шире */
+@media (min-width: 901px) and (max-width: 1200px) {
+    .race-card--horizontal {
+        grid-template-columns: 38% 1fr;
+    }
+
+    .race-card--horizontal .race-card__body {
+        padding: 1rem 1.25rem;
+    }
+
+    .race-card--horizontal .race-card__name {
+        font-size: 1.1rem;
+    }
+
+    .race-card__params {
+        margin-bottom: 0.4rem;
+    }
+
+    .race-card__param {
+        font-size: 0.8125rem;
+    }
+
+    .btn--race {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* 1024px: крупный текст в теле карточки */
+@media (min-width: 1024px) {
+    .race-card__body {
+        padding: 1.5rem 1.75rem;
+    }
+
+    .race-card--horizontal .race-card__name {
+        font-size: 1.5rem;
+    }
+
+    .race-card--horizontal .race-card__date {
+        font-size: 1.05rem;
+    }
+
+    .race-card__params {
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .race-card__param {
+        font-size: 1.05rem;
+    }
+
+    .race-card__param dt,
+    .race-card__param dd {
+        font-size: inherit;
+    }
+
+    .btn--race {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    /* Вертикальные карточки (оверлей) */
+    .race-card__content {
+        padding: 1.75rem;
+    }
+
+    .race-card__name {
+        font-size: 1.5rem;
+    }
+
+    .race-card__date {
+        font-size: 1.05rem;
+    }
+
+    .race-card__meta {
+        font-size: 1rem;
+    }
+}
+
+.race-card__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #2d2d2d;
+}
+
+.race-card__image--no-photo {
+    background: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%);
+}
+
+.race-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.race-card--horizontal .race-card__name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    font-style: italic;
+    flex: 1;
+}
+
+.race-card--horizontal .race-card__date {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .race-card--horizontal .race-card__name {
+        font-size: 1.1rem;
+    }
+
+    .race-card--horizontal .race-card__body {
+        padding: 1rem 1.25rem;
+    }
+
+    .race-card__params {
+        margin-bottom: 0.75rem;
+    }
+
+    .btn--race {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+}
+
+.race-card__params {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    margin: 0 0 0.5rem;
+}
+
+.race-card__param {
+    display: flex;
+    gap: 0.35rem;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.race-card__param dt {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 500;
+}
+
+.race-card__param dd {
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+}
+
+/* Карточка «Смотреть остальные гонки» — не больше формы path (618×327), адаптивно */
+.race-card--all {
+    font-family: 'Houschka Rounded', sans-serif;
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 618 / 327;
+    max-height: none;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+
+.race-card--all:hover {
+    transform: translateY(-2px);
+}
+
+.race-card--all__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: fill;
+    object-position: center;
+}
+
+.race-card--all .race-card__all-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .race-card--all .race-card__all-text {
+        font-size: 1rem;
+    }
+
+    .race-card--all .race-card__all-arrow {
+        font-size: 1.25rem;
+    }
+
+    .race-card--all__inner {
+        padding: 0 0.75rem;
+    }
+}
+
+.race-card--all .race-card__all-arrow {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-left: 0.5rem;
+}
+
+.race-card--all__inner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* Старые классы карточки (вертикальный вариант) — оставляем для совместимости, скрываем неиспользуемое */
+.race-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+.race-card__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-color: #2d2d2d;
+    background-image: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+}
+
+.race-card__bg[style*="background-image: url('')"],
+.race-card__bg[style*="background-image: url();"] {
+    background-image: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%) !important;
+}
+
+.race-card__bg--no-image {
+    background-image: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%) !important;
+}
+
+.race-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.race-card__content {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+}
+
+.race-card__name {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: #fff;
+}
+
+.race-card__date {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+.race-card__meta {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+}
+
+
+.home-stats {
+    position: relative;
+    z-index: 2;
+    margin-top: -8rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1340px;
+    max-width: calc(100vw - 6rem);
+    color: #fff;
+    padding: 4.5rem 0 4rem;
+    overflow: hidden;
+    contain: paint;
+    height: 636px;
+    box-sizing: border-box;
+    clip-path: url(#home-stats-section-clip);
+    -webkit-clip-path: url(#home-stats-section-clip);
+}
+
+@media (max-width: 1024px) {
+    .home-stats {
+        width: 1024px;
+        max-width: calc(100vw - 4rem);
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -8rem;
+        padding: 3rem 0 2.5rem;
+        height: 520px;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-stats {
+        margin-top: -6rem;
+        width: 768px;
+        max-width: calc(100vw - 4rem);
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2rem 0 0rem;
+        height: 380px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats {
+        margin-top: -70px;
+        width: 480px;
+        max-width: calc(100vw - 2rem);
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2rem 0 0.5rem;
+        height: 240px;
+    }
+}
+
+.home-stats__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-stats__shape {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+.home-stats__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+    min-height: 0;
+    padding: 1.5rem 1rem 0 1.25rem;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+    .home-stats__container {
+        max-width: 75%;
+        margin-right: auto;
+        margin-left: 0;
+        padding-right: 2%;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-stats__container {
+        max-width: 92%;
+        padding: 1.75rem 1rem 0 1.25rem;
+        gap: 1.25rem;
+    }
+}
+
+/* При ~540×720: блок с текстом по вертикали по центру, чтобы не выходил за верх */
+@media (min-width: 540px) and (max-width: 720px) {
+    .home-stats__container {
+        min-height: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats__container {
+        max-width: 88%;
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 480px) {
+    .home-stats__container {
+        padding: 1.5rem 1rem 0 1.5rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .home-stats__container {
+        max-width: 44%;
+        margin-right: auto;
+        margin-left: 0;
+        padding-right: 3%;
+        overflow: hidden;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .home-stats__container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        align-items: stretch;
+        margin-right: auto;
+        margin-left: 0;
+        padding: 2.5rem 2% 0 3rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .home-stats__container {
+        padding: 3rem 3% 0 4.5rem;
+        gap: 3rem;
+    }
+}
+
+/* Сетка без масштабирования — фиксированные отступы по брейкпоинтам */
+.home-stats__grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    justify-self: start;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 540px) {
+    .home-stats__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem 0.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .home-stats__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .home-stats__grid {
+        gap: 3rem 4rem;
+    }
+}
+
+.home-stats__item {
+    text-align: left;
+    padding: 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.home-stats__number {
+    display: block;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    .home-stats__number {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-stats__number {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats__number {
+        font-size: 1.375rem;
+        margin-bottom: 0.2rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .home-stats__grid {
+        gap: 0.6rem 0.4rem;
+    }
+
+    .home-stats__number {
+        font-size: 1rem;
+        margin-bottom: 0.15rem;
+    }
+
+    .home-stats__label {
+        font-size: 0.6rem;
+    }
+}
+
+.home-stats__label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: 0.25rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    .home-stats__label {
+        font-size: 1.15rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-stats__label {
+        font-size: 0.875rem;
+        margin-bottom: 0.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats__label {
+        font-size: 0.75rem;
+    }
+}
+
+.home-stats__desc {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+@media (max-width: 540px) {
+    .home-stats__desc {
+        display: none;
+    }
+}
+
+@media (min-width: 640px) {
+    .home-stats__desc {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-stats__desc {
+        font-size: 0.75rem;
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats__desc {
+        display: none;
+    }
+}
+
+.home-stats__map {
+    display: block;
+    width: calc(100% + 110px);
+    height: calc(100% + 147px);
+    min-height: 200px;
+    margin-right: -10px;
+    margin-bottom: -200rem;
+}
+
+.home-stats__map-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right bottom;
+    display: block;
+}
+
+
+/* Секция «Информация» и аккордеон */
+.info-section {
+    background-color: #111111;
+    color: #fff;
+    padding: 3.5rem 0 4rem;
+}
+
+.info-section__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .info-section__title {
+        font-size: 1.75rem;
+        margin-bottom: 1.75rem;
+    }
+}
+
+.info-accordion {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-accordion__item {
+    background-color: #111111;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.info-accordion__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s;
+}
+
+.info-accordion__header:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.info-accordion__title-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.info-accordion__icon {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #26203a;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: #fff;
+    transition: transform 0.2s;
+}
+
+.info-accordion__item[data-open] .info-accordion__icon {
+    transform: rotate(45deg);
+}
+
+.info-accordion__body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease-out;
+}
+
+.info-accordion__item[data-open] .info-accordion__body {
+    max-height: 400px;
+}
+
+.info-accordion__content {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+}
+
+.info-accordion__content a {
+    color: #b8a9e0;
+    text-decoration: none;
+}
+
+.info-accordion__content a:hover {
+    text-decoration: underline;
+}
+
+.info-section__action {
+    text-align: center;
+}
