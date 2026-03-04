@@ -28,7 +28,7 @@ class CheckoutController extends Controller
 
         $validated = $request->validated();
         $discountAmount = isset($cart['discount']) ? (float) $cart['discount'] : 0;
-        $promoCodeId = $cart['promo']?->id ?? null;
+        $promoCodeId = ($cart['promo'] ?? null) && $discountAmount > 0 ? $cart['promo']->id : null;
 
         $order = Order::create([
             'name' => $validated['name'],

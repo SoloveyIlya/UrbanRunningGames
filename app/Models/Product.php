@@ -35,7 +35,7 @@ class Product extends Model
     {
         return $this->belongsToMany(MediaAsset::class, 'product_media', 'product_id', 'media_id')
             ->withPivot('sort_order')
-            ->orderBy('product_media.sort_order');
+            ->orderByPivot('sort_order');
     }
 
     public function variants(): HasMany

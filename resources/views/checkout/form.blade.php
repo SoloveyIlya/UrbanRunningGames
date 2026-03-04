@@ -3,7 +3,7 @@
 @section('title', 'Оформление заявки - Магазин - Urban Running Games')
 
 @section('content')
-<div class="page-header">
+<div class="page-header page-header--checkout">
     <div class="container">
         <nav class="breadcrumb-nav">
             <a href="{{ route('shop.index') }}">Магазин</a>

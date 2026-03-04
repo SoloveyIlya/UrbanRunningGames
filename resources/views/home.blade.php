@@ -115,66 +115,58 @@
                 </button>
                 <div id="info-body-1" class="info-accordion__body" role="region" aria-labelledby="info-btn-1" hidden>
                     <div class="info-accordion__content">
-                        <a href="{{ route('home') }}">Главная</a>,
-                        <a href="{{ route('events.index') }}">Гонки</a>,
-                        <a href="{{ route('rating') }}">Рейтинг</a>,
-                        <a href="{{ route('gallery.index') }}">Фото</a>,
-                        <a href="{{ route('shop.index') }}">Магазин</a>,
-                        <a href="{{ route('about') }}">О нас</a>,
-                        <a href="{{ route('partners') }}">Партнёры</a>,
-                        <a href="{{ route('contact') }}">Контакты</a>.
+                        <ul class="info-links info-links--column">
+                            <li><a href="{{ route('events.index') }}">Гонки</a></li>
+                            <li><a href="{{ route('shop.index') }}">Магазин</a></li>
+                            <li><a href="{{ route('about') }}">О нас</a></li>
+                            <li><a href="{{ route('contact') }}">Контакты</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="info-accordion__item" data-accordion-item>
                 <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-2" id="info-btn-2" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Программа Т-Банк Dagestan Wild Trail 2026</span>
+                    <span class="info-accordion__title-text">Основные условия</span>
                     <span class="info-accordion__icon" aria-hidden="true">+</span>
                 </button>
                 <div id="info-body-2" class="info-accordion__body" role="region" aria-labelledby="info-btn-2" hidden>
                     <div class="info-accordion__content">
-                        Информация о программе готовится.
+                        <ul class="info-links info-links--column">
+                            <li><a href="{{ route('legal.privacy') }}">Политика конфиденциальности</a></li>
+                            <li><a href="{{ route('legal.consent') }}">Согласие на обработку ПДн</a></li>
+                            <li><a href="{{ route('legal.terms') }}">Условия продажи мерча</a></li>
+                            <li><a href="{{ route('legal.returns') }}">Правила возвратов</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="info-accordion__item" data-accordion-item>
                 <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-3" id="info-btn-3" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Основные условия</span>
+                    <span class="info-accordion__title-text">Место старта, финиша, выдача номеров и стартовых пакетов</span>
                     <span class="info-accordion__icon" aria-hidden="true">+</span>
                 </button>
                 <div id="info-body-3" class="info-accordion__body" role="region" aria-labelledby="info-btn-3" hidden>
-                    <div class="info-accordion__content">
-                        <a href="{{ route('partners') }}">Страница для партнёров</a> — условия сотрудничества и контакты.
+                    <div class="info-accordion__content info-accordion__content--prose">
+                        <p>Старт и финиш каждой гонки указаны на странице конкретного события. Там же — время и место выдачи стартовых номеров и стартовых пакетов.</p>
+                        <p>Актуальную информацию по каждой гонке смотрите в разделе <a href="{{ route('events.index') }}">Гонки</a>. По вопросам организации обращайтесь в <a href="{{ route('contact') }}">Контакты</a>.</p>
                     </div>
                 </div>
             </div>
             <div class="info-accordion__item" data-accordion-item>
                 <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-4" id="info-btn-4" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Место старта, финиша, выдача номеров и стартовых пакетов</span>
+                    <span class="info-accordion__title-text">Где жить, как добраться до места старта</span>
                     <span class="info-accordion__icon" aria-hidden="true">+</span>
                 </button>
                 <div id="info-body-4" class="info-accordion__body" role="region" aria-labelledby="info-btn-4" hidden>
                     <div class="info-accordion__content">
-                        <a href="{{ route('legal.privacy') }}">Политика конфиденциальности</a>,
-                        <a href="{{ route('legal.consent') }}">Согласие на обработку ПДн</a>.
-                    </div>
-                </div>
-            </div>
-            <div class="info-accordion__item" data-accordion-item>
-                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-5" id="info-btn-5" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Где жить, как добраться до места старта</span>
-                    <span class="info-accordion__icon" aria-hidden="true">+</span>
-                </button>
-                <div id="info-body-5" class="info-accordion__body" role="region" aria-labelledby="info-btn-5" hidden>
-                    <div class="info-accordion__content">
-                        <a href="{{ route('legal.terms') }}">Условия продажи мерча</a>,
-                        <a href="{{ route('legal.returns') }}">Правила возвратов</a>.
+                        <p>Рекомендации по проживанию и проезду до места старта — на отдельной странице.</p>
+                        <a href="{{ route('legal.travel') }}" class="btn btn--info-inline">Где жить и как добраться →</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="info-section__action">
-            <a href="{{ route('legal.terms') }}" class="btn btn--info-position">
+            <a href="{{ route('rules') }}" class="btn btn--info-position">
                 <span class="btn--info-position__text">ПОЛОЖЕНИЕ</span>
                 <span class="btn--info-position__arrow" aria-hidden="true">↗</span>
             </a>

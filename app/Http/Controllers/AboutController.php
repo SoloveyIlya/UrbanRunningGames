@@ -13,6 +13,11 @@ class AboutController extends Controller
         $page = SitePage::getBySlug(SitePage::SLUG_ABOUT);
         $teamJson = SiteSetting::get(SiteSetting::KEY_ABOUT_TEAM_MEMBERS);
         $teamMembers = $teamJson ? (json_decode($teamJson, true) ?: []) : [];
+        foreach ($teamMembers as &$member) {
+            $mediaId = $member['photo_media_id'] ?? null;
+            $member['photo_url'] = $mediaId ? (MediaAsset::find($mediaId)?->url) : null;
+        }
+        unset($member);
         if (empty($teamMembers)) {
             $teamMembers = [
                 ['name' => 'Алексей', 'role' => 'Организатор, основатель', 'description' => 'Идеолог формата забегов-игр.', 'experience' => 'Опыт 8 лет'],

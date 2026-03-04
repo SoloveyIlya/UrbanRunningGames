@@ -18,7 +18,7 @@ class HomeController extends Controller
             ->where('starts_at', '>', now())
             ->orderBy('starts_at', 'asc')
             ->with(['albums.media', 'city', 'coverMedia'])
-            ->limit(6)
+            ->limit(5)
             ->get();
 
         $homeStats = [];

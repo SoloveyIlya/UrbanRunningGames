@@ -214,6 +214,7 @@
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 0;
+    align-items: stretch;
     background: linear-gradient(145deg, #2a2a2a 0%, #181818 40%, #000000 100%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
@@ -224,20 +225,22 @@
 }
 
 .about-team-member-card__photo {
-    aspect-ratio: 4 / 3;
     min-height: 140px;
+    align-self: stretch;
     background: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     color: rgba(255, 255, 255, 0.4);
     font-size: 2.5rem;
+    overflow: hidden;
 }
 
 .about-team-member-card__photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
 }
 
 .about-team-member-card__body {

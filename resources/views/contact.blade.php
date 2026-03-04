@@ -4,13 +4,30 @@
 
 @section('content')
 <div class="contact-page">
+    {{-- Hero в стиле партнёров: тёмный, с блобами и акцентной полосой --}}
+    <header class="contact-hero">
+        <div class="contact-hero__blobs" aria-hidden="true">
+            <span class="contact-hero__blob contact-hero__blob--1"></span>
+            <span class="contact-hero__blob contact-hero__blob--2"></span>
+            <span class="contact-hero__blob contact-hero__blob--3"></span>
+        </div>
+        <div class="contact-hero__accent-line"></div>
+        <div class="container contact-hero__container">
+            <div class="contact-hero__content">
+                <p class="contact-hero__label">Связь</p>
+                <h1 class="contact-hero__title">Контакты</h1>
+                <p class="contact-hero__sub">Вопросы, партнёрство, забеги — напишите нам, мы ответим</p>
+            </div>
+        </div>
+    </header>
+
     <div class="container">
-        {{-- Заголовок без hero — компактный и аккуратный --}}
-        <header class="contact-page__head">
-            <p class="contact-page__label">Связь</p>
-            <h1 class="contact-page__title">Контакты</h1>
-            <p class="contact-page__sub">Вопросы, партнёрство, забеги — напишите нам, мы ответим</p>
-        </header>
+        {{-- Вводный блок — цитата с левой полосой, как на странице партнёров --}}
+        <section class="contact-intro">
+            <blockquote class="contact-intro__quote">
+                Мы на связи в будни и в дни мероприятий. Напишите по почте или в мессенджер — подберём удобный формат общения.
+            </blockquote>
+        </section>
 
         <div class="contact-page__content">
             <aside class="contact-page__info">

@@ -1,15 +1,25 @@
 /* Страница: Рейтинг */
 
-.page-header--rating {
-    padding: 2.5rem 0;
+@media (min-width: 1024px) {
+    .page-rating {
+        padding-top: 6rem;
+    }
 }
 
-.page-header--rating .page-header-sub {
-    margin-top: 0.5rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.05rem;
+.rating-table-btn-info {
+    margin-bottom: 2rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid #a78bfa;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.6;
 }
 
+@media (max-width: 768px) {
+    .rating-table-btn-info {
+        padding-left: 1rem;
+        border-left-width: 2px;
+    }
+}
 .rating-section {
     background-color: #111111;
     color: #eee;
@@ -87,11 +97,9 @@
 }
 
 .rating-podium__card {
-    background: linear-gradient(145deg, rgba(38, 32, 58, 0.95) 0%, rgba(50, 42, 75, 0.9) 100%);
     border-radius: 16px;
     padding: 1.5rem 1.25rem;
     text-align: center;
-    border: 2px solid rgba(105, 88, 160, 0.4);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -102,8 +110,6 @@
 }
 
 .rating-podium__card--1 {
-    border-color: rgba(212, 175, 55, 0.7);
-    background: linear-gradient(145deg, rgba(50, 42, 40, 0.98) 0%, rgba(70, 58, 45, 0.95) 100%);
     padding-bottom: 2rem;
 }
 
@@ -111,18 +117,13 @@
     .rating-podium__card--1 {
         padding-top: 2rem;
         padding-bottom: 2.25rem;
+        transform: translateY(-24px);
+    }
+    .rating-podium__card--1:hover {
+        transform: translateY(-26px);
     }
 }
 
-.rating-podium__card--2 {
-    border-color: rgba(192, 192, 192, 0.6);
-    background: linear-gradient(145deg, rgba(42, 42, 48, 0.98) 0%, rgba(55, 55, 62, 0.95) 100%);
-}
-
-.rating-podium__card--3 {
-    border-color: rgba(205, 127, 50, 0.6);
-    background: linear-gradient(145deg, rgba(48, 40, 35, 0.98) 0%, rgba(65, 52, 42, 0.95) 100%);
-}
 
 .rating-podium__place {
     margin-bottom: 0.75rem;
@@ -169,8 +170,46 @@
     font-weight: 700;
     color: #fff;
     margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    position: relative;
     line-height: 1.3;
     word-break: break-word;
+}
+
+.rating-podium__card--1 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4af37 50%, #f4d03f 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+.rating-podium__card--2 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #a0a0a0 0%, #c0c0c0 50%, #e8e8e8 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.4);
+}
+
+.rating-podium__card--3 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #a0522d 0%, #cd7f32 50%, #e8a84a 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.45);
 }
 
 .rating-podium__card--1 .rating-podium__team {
@@ -233,17 +272,18 @@
     width: 100%;
     min-width: 320px;
     border-collapse: collapse;
-    color: #eee;
+    color: #e5e5e5;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    background-color: #3a3a3a;
 }
 
 .rating-table th,
 .rating-table td {
     padding: 1rem 1.25rem;
     text-align: left;
-    border-bottom: 1px solid rgba(105, 88, 160, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 600px) {
@@ -255,33 +295,33 @@
 }
 
 .rating-table thead {
-    background: linear-gradient(135deg, #26203a 0%, #3d3470 100%);
+    background: linear-gradient(180deg, #4a4a4a 0%, #404040 100%);
 }
 
 .rating-table th {
     font-weight: 600;
-    color: #fff;
+    color: #f5f5f5;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
 }
 
 .rating-table tbody tr {
-    background-color: rgba(38, 32, 58, 0.4);
+    background-color: #3a3a3a;
     transition: background-color 0.2s;
 }
 
 .rating-table tbody tr:hover {
-    background-color: rgba(38, 32, 58, 0.65);
+    background-color: #454545;
 }
 
 .rating-table__row--top-3 {
-    background-color: rgba(105, 88, 160, 0.15);
+    background-color: #424242;
 }
 
 .rating-table__row--top-3 td:first-child {
     font-weight: 700;
-    color: #c4b5fd;
+    color: #d4b84a;
 }
 
 .rating-table .empty-state {

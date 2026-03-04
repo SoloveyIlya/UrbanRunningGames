@@ -3,17 +3,18 @@
 @section('title', 'Сводный рейтинг - Urban Running Games')
 
 @section('content')
-<div class="page-header page-header--rating">
+<div class="page-rating">
+<section class="page-hero">
+    <div class="hero__overlay"></div>
     <div class="container">
         <h1>Сводный рейтинг</h1>
-        <p class="page-header-sub">Рейтинг команд по результатам всех проведённых забегов-игр</p>
+        <p class="page-hero__sub">Рейтинг команд по результатам всех проведённых забегов-игр</p>
     </div>
-</div>
+</section>
 
 <section class="rating-section">
     <div class="container">
-        <div class="rating-info">
-            <p>Таблица загружается вручную администратором. Доступен файл Excel для скачивания.</p>
+        <div class="rating-info"> 
         </div>
 
         @if($entries->isNotEmpty())
@@ -64,9 +65,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($rest as $index => $entry)
+                            @foreach($rest as $entry)
                                 <tr>
-                                    <td>{{ $topThree->count() + $index + 1 }}</td>
+                                    <td>{{ 3 + $loop->iteration }}</td>
                                     <td>{{ $entry->team_name }}</td>
                                     <td>{{ $entry->points }}</td>
                                     <td>{{ $entry->events_count }}</td>
@@ -98,7 +99,7 @@
                     </table>
                 @endif
             </div>
-
+            <p class="rating-table-btn-info">Таблица загружается вручную администратором. Доступен файл Excel для скачивания.</p>
             <div class="rating-actions">
                 <a href="{{ route('rating.export') }}" class="btn btn--primary" download>Скачать Excel файл</a>
             </div>
@@ -123,4 +124,5 @@
         @endif
     </div>
 </section>
+</div>
 @endsection

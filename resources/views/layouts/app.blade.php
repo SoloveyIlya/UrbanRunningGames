@@ -6,6 +6,7 @@
     <meta name="google" content="notranslate">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Urban Running Games')</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Nunito:wght@700&display=swap" rel="stylesheet">
@@ -85,26 +86,40 @@
     </ul>
 
     <main class="main-after-header">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        @if(!request()->routeIs('home'))
+            <div class="page-bg-logo" aria-hidden="true">
+                <img src="{{ asset('images/logo/sprut-icon.svg') }}" alt="" width="400" height="130">
             </div>
         @endif
-        @if(session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
+        @php
+            $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
+        @endphp
+        <div class="alerts-strip @if($hasAlertContent) alerts-strip--visible @endif" id="alertsStrip">
+            <div class="container alerts-strip__inner">
+            @if(session('success'))
+                <div class="alert alert-success" role="alert">
+                    <span class="alert-message">{{ session('success') }}</span>
+                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-error" role="alert">
+                    <span class="alert-message">{{ session('error') }}</span>
+                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+                </div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-error" role="alert">
+                    <ul class="alert-message">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+                </div>
+            @endif
             </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-error">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        </div>
 
         @yield('content')
     </main>
@@ -115,6 +130,15 @@
         // Мобильное меню
         document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
             document.getElementById('navMenu')?.classList.toggle('active');
+        });
+        // Закрытие алертов
+        document.querySelectorAll('[data-dismiss="alert"]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var alert = this.closest('.alert');
+                if (alert) alert.remove();
+                var strip = document.getElementById('alertsStrip');
+                if (strip && strip.querySelectorAll('.alert').length === 0) strip.remove();
+            });
         });
         // Аккордеон секции «Информация»
         document.querySelectorAll('[data-accordion-trigger]').forEach(function(btn) {

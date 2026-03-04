@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 
 class MediaRelationManager extends RelationManager
@@ -49,9 +50,11 @@ class MediaRelationManager extends RelationManager
                     ->placeholder('—'),
                 Tables\Columns\TextColumn::make('pivot.sort_order')
                     ->label('Порядок')
-                    ->sortable(),
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy('product_media.sort_order', $direction);
+                    }),
             ])
-            ->defaultSort('pivot.sort_order')
+            ->defaultSort('product_media.sort_order')
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->label('Прикрепить существующее')

@@ -17,6 +17,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SiteContentPage extends Page implements HasForms
@@ -326,7 +327,7 @@ class SiteContentPage extends Page implements HasForms
                 ->columns(1)
                 ->collapsible()
                 ->collapsed(),
-            Forms\Components\Section::make('Hero страницы «О команде» (/')
+            Forms\Components\Section::make('Hero страницы «О команде»')
                 ->description('Оверлей и фоновое изображение для hero-блока на странице /about. Заголовок и подзаголовок — в блоке «Страница «О команде»».')
                 ->schema([
                     Forms\Components\TextInput::make('hero_about.overlay_opacity')
@@ -411,7 +412,7 @@ class SiteContentPage extends Page implements HasForms
                     ->collapsed(),
             ],
             'О команде' => [
-                Forms\Components\Section::make('Страница «О команде» (/about)')
+                Forms\Components\Section::make('Страница «О команде»')
                     ->description('Hero, вводный текст, блок «Наша команда» (аккордеон по должностям), миссия.')
                     ->schema([
                         Forms\Components\TextInput::make('pages.about.title')
@@ -448,6 +449,29 @@ class SiteContentPage extends Page implements HasForms
                                     ->label('Должность (отображается в заголовке аккордеона)')
                                     ->required()
                                     ->maxLength(255),
+                                Forms\Components\FileUpload::make('photo_upload')
+                                    ->label('Фото сотрудника')
+                                    ->image()
+                                    ->maxSize(50 * 1024)
+                                    ->disk('local')
+                                    ->directory('livewire-tmp')
+                                    ->visibility('private')
+                                    ->nullable()
+                                    ->storeFiles(false)
+                                    ->helperText('Загрузите портрет для карточки участника.'),
+                                Forms\Components\Placeholder::make('photo_preview')
+                                    ->label('Текущее фото')
+                                    ->content(function (\Filament\Forms\Get $get): \Illuminate\Support\HtmlString|string {
+                                        $id = $get('photo_media_id');
+                                        if (!$id) {
+                                            return '—';
+                                        }
+                                        $asset = MediaAsset::find($id);
+                                        return $asset
+                                            ? new \Illuminate\Support\HtmlString('<img src="' . e($asset->thumbnail_url ?? $asset->url) . '" alt="" style="max-width:120px;height:auto;border-radius:8px;">')
+                                            : '—';
+                                    })
+                                    ->visible(fn (\Filament\Forms\Get $get): bool => !empty($get('photo_media_id'))),
                                 Forms\Components\Textarea::make('description')
                                     ->label('Описание (в раскрытом блоке)')
                                     ->rows(3)
@@ -498,6 +522,11 @@ class SiteContentPage extends Page implements HasForms
                     ->schema([
                         Forms\Components\TextInput::make('pages.returns.title')->label('Заголовок')->maxLength(255),
                         Forms\Components\RichEditor::make('pages.returns.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
+                    ])->collapsible()->collapsed(),
+                Forms\Components\Section::make('Где жить, как добраться до места старта')
+                    ->schema([
+                        Forms\Components\TextInput::make('pages.travel.title')->label('Заголовок')->maxLength(255),
+                        Forms\Components\RichEditor::make('pages.travel.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
                     ])->collapsible()->collapsed(),
             ],
         ];
@@ -584,7 +613,12 @@ class SiteContentPage extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        try {
+            $data = $this->form->getState();
+        } catch (UnableToRetrieveMetadata $e) {
+            // Временный файл загрузки уже удалён или недоступен — используем сырые данные формы
+            $data = $this->data;
+        }
 
         $heroMainData = $data['hero_main'] ?? null;
         if (is_array($heroMainData)) {
@@ -816,16 +850,54 @@ class SiteContentPage extends Page implements HasForms
             SiteSetting::set(SiteSetting::KEY_ABOUT_MISSION_CONTENT, $about['mission_content'] ?? '');
             $team = $about['team_members'] ?? [];
             $teamNormalized = [];
+            $imageService = app(ImageOptimizationService::class);
+            $adminId = auth()->id();
             foreach ($team as $item) {
                 if (!is_array($item)) {
                     continue;
+                }
+                $photoMediaId = $item['photo_media_id'] ?? null;
+                $upload = $item['photo_upload'] ?? null;
+                if (is_array($upload)) {
+                    $first = array_values($upload)[0] ?? null;
+                    if (is_array($first)) {
+                        $pathOrFile = $first[0] ?? $first['path'] ?? null;
+                        if (is_string($pathOrFile)) {
+                            $upload = str_starts_with($pathOrFile, 'livewire-file:')
+                                ? 'livewire-tmp/' . substr($pathOrFile, strlen('livewire-file:'))
+                                : $pathOrFile;
+                        } else {
+                            $upload = null;
+                        }
+                    } else {
+                        $upload = $first;
+                    }
+                }
+                if ($upload instanceof TemporaryUploadedFile && $upload->exists()) {
+                    try {
+                        $fullPath = $upload->getRealPath();
+                        $asset = $imageService->processUploadFromPath($fullPath, $upload->getClientOriginalName(), $adminId);
+                        $photoMediaId = (string) $asset->id;
+                    } finally {
+                        $upload->delete();
+                    }
+                } elseif (is_string($upload) && $upload !== '') {
+                    $fullPath = Storage::disk('local')->path($upload);
+                    if (is_file($fullPath)) {
+                        try {
+                            $asset = $imageService->processUploadFromPath($fullPath, basename($fullPath), $adminId);
+                            $photoMediaId = (string) $asset->id;
+                        } finally {
+                            @unlink($fullPath);
+                        }
+                    }
                 }
                 $teamNormalized[] = [
                     'name' => $item['name'] ?? '',
                     'role' => $item['role'] ?? '',
                     'description' => $item['description'] ?? '',
                     'experience' => $item['experience'] ?? '',
-                    'photo_media_id' => $item['photo_media_id'] ?? null,
+                    'photo_media_id' => $photoMediaId,
                 ];
             }
             SiteSetting::set(SiteSetting::KEY_ABOUT_TEAM_MEMBERS, json_encode($teamNormalized, JSON_UNESCAPED_UNICODE));
@@ -877,6 +949,7 @@ class SiteContentPage extends Page implements HasForms
             SitePage::SLUG_TERMS => 'Условия продажи мерча',
             SitePage::SLUG_CONSENT => 'Согласие на обработку данных',
             SitePage::SLUG_RETURNS => 'Возврат и обмен',
+            SitePage::SLUG_TRAVEL => 'Где жить, как добраться до места старта',
             default => '',
         };
     }

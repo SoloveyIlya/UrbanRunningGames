@@ -215,6 +215,24 @@ class EventResource extends Resource
                     ]),
             ])
             ->actions([
+                Tables\Actions\ReplicateAction::make()
+                    ->label('Копировать')
+                    ->modalHeading('Копировать событие')
+                    ->modalSubmitActionLabel('Копировать')
+                    ->excludeAttributes(['id', 'slug'])
+                    ->mutateRecordDataUsing(function (array $data, Event $record): array {
+                        $data['title'] = $record->title . ' (копия)';
+                        $data['slug'] = Event::uniqueSlug(\Illuminate\Support\Str::slug($data['title']), null);
+                        $data['status'] = 'draft';
+                        return $data;
+                    })
+                    ->beforeReplicaSaved(function (Event $replica): void {
+                        $replica->slug = Event::uniqueSlug(
+                            \Illuminate\Support\Str::slug($replica->title),
+                            null
+                        );
+                    })
+                    ->successRedirectUrl(fn (Event $replica) => EventResource::getUrl('edit', ['record' => $replica])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

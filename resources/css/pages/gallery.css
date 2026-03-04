@@ -1,13 +1,91 @@
 /* Страница: Фотогалерея — альбомы и просмотр альбома */
 
-.page-header--gallery {
-    padding: 2.5rem 0;
+@media (min-width: 1024px) {
+    .page-gallery {
+        padding-top: 6rem;
+    }
 }
 
-.page-header--gallery .page-header-sub {
-    margin-top: 0.5rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.05rem;
+/* Фильтры */
+.gallery-filters-section {
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    background: linear-gradient(180deg, rgba(38, 32, 58, 0.35) 0%, rgba(17, 17, 17, 0) 100%);
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-filters {
+    max-width: 100%;
+}
+
+.gallery-filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.gallery-filters__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.gallery-filters__label-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.gallery-filters__select {
+    min-width: 160px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: 1px solid rgba(105, 88, 160, 0.5);
+    background-color: rgba(38, 32, 58, 0.8);
+    color: #eee;
+    cursor: pointer;
+}
+
+.gallery-filters__select:focus {
+    outline: none;
+    border-color: #6958a0;
+    box-shadow: 0 0 0 2px rgba(105, 88, 160, 0.3);
+}
+
+.gallery-filters__submit {
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .gallery-filters__row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .gallery-filters__select {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+/* Контент галереи */
+.gallery-content-section {
+    position: relative;
+}
+
+.gallery-content-section::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(105, 88, 160, 0.06) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .gallery-section {
@@ -24,10 +102,30 @@
 
 .gallery-event-block {
     margin-bottom: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(105, 88, 160, 0.15);
 }
 
 .gallery-event-block:last-child {
     margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.page-gallery .gallery-event-title {
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.page-gallery .gallery-event-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #a78bfa, transparent);
+    border-radius: 2px;
 }
 
 .gallery-event-title {
@@ -88,16 +186,16 @@
     text-decoration: none;
     color: inherit;
     display: block;
-    background: linear-gradient(145deg, rgba(38, 32, 58, 0.6) 0%, rgba(50, 42, 75, 0.5) 100%);
-    border: 1px solid rgba(105, 88, 160, 0.35);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    background: linear-gradient(145deg, rgba(38, 32, 58, 0.65) 0%, rgba(50, 42, 75, 0.5) 100%);
+    border: 1px solid rgba(105, 88, 160, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .album-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(105, 88, 160, 0.3);
-    border-color: rgba(105, 88, 160, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(105, 88, 160, 0.25);
+    border-color: rgba(105, 88, 160, 0.55);
 }
 
 .album-cover {
@@ -133,12 +231,13 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     color: #fff;
-    padding: 0.35rem 0.6rem;
+    padding: 0.4rem 0.65rem;
     border-radius: 8px;
     font-size: 0.8rem;
     font-weight: 600;
+    backdrop-filter: blur(4px);
 }
 
 .album-info {
@@ -168,13 +267,19 @@
 
 .gallery-empty {
     text-align: center;
-    padding: 3rem 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
+    padding: 3.5rem 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(38, 32, 58, 0.2);
+    border-radius: 16px;
+    border: 1px dashed rgba(105, 88, 160, 0.3);
 }
 
 .gallery-empty p {
     margin: 0;
     font-size: 1.05rem;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Хлебные крошки и страница альбома */

@@ -136,24 +136,12 @@
     min-width: 0;
     padding: 0.65rem 1rem;
     background: linear-gradient(135deg, rgba(28, 26, 38, 0.92) 0%, rgba(18, 16, 24, 0.95) 100%);
-    border: 1px solid rgba(105, 88, 160, 0.22);
     border-radius: 20px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     position: relative;
     overflow: hidden;
 }
 
-.shop-toolbar::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, #a78bfa 0%, #6958a0 50%, transparent 100%);
-    opacity: 0.85;
-    border-radius: 4px 0 0 4px;
-}
 
 /* Порядок: слева Фильтры и Корзина, справа Вкладки */
 .shop-filters {
@@ -1188,16 +1176,76 @@
     }
 }
 
-/* Детальная страница товара */
+/* Детальная страница товара — оформление в стиле рейтинга/корзины */
+.page-header--product {
+    padding: 2rem 0 2.5rem;
+}
+
+.page-header--product .breadcrumb-nav {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+@media (min-width: 769px) {
+    .page-header--product .breadcrumb-nav {
+        margin-bottom: 0.25rem;
+        margin-top: 4rem;
+    }
+}
+
+.page-header--product .breadcrumb-nav a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.page-header--product .breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+.page-header--product .breadcrumb-sep {
+    margin: 0 0.35rem;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.page-header--product h1 {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .page-header--product {
+        padding: 1.5rem 0 1.75rem;
+    }
+    .page-header--product h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header--product {
+        padding: 1.25rem 0 1.5rem;
+    }
+    .page-header--product h1 {
+        font-size: 1.35rem;
+    }
+}
+
 .product-detail-section {
-    padding: 2rem 0;
+    padding: 0 0 3rem;
     overflow-x: hidden;
 }
 
 .product-detail-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
+    gap: 2rem;
     align-items: start;
 }
 
@@ -1213,7 +1261,7 @@
 
 @media (max-width: 480px) {
     .product-detail-section {
-        padding: 1rem 0;
+        padding: 0 0 2rem;
     }
     .product-detail-grid {
         gap: 1.25rem;
@@ -1226,9 +1274,10 @@
     }
 }
 
+/* Галерея — карточка в стиле рейтинга */
 .product-detail-gallery {
     position: sticky;
-    top: 1rem;
+    top: calc(var(--header-height, 102px) + 1rem);
 }
 
 @media (max-width: 768px) {
@@ -1239,10 +1288,12 @@
 
 .product-carousel {
     position: relative;
-    background: rgba(38, 32, 58, 0.6);
-    border-radius: 8px;
+    background-color: #3a3a3a;
+    border-radius: 16px;
     overflow: hidden;
     aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .product-carousel-inner {
@@ -1255,7 +1306,7 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.35s ease;
 }
 
 .product-carousel-slide.active {
@@ -1276,48 +1327,51 @@
     justify-content: center;
     color: rgba(255, 255, 255, 0.5);
     font-size: 1.1rem;
-    background: rgba(38, 32, 58, 0.6);
-    border-radius: 8px;
+    background-color: #3a3a3a;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .product-carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border: none;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    line-height: 1;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 12px;
     z-index: 2;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .product-carousel-btn:hover {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.85);
+    transform: translateY(-50%) scale(1.05);
 }
 
 .product-carousel-prev {
-    left: 8px;
+    left: 12px;
 }
 
 .product-carousel-next {
-    right: 8px;
+    right: 12px;
 }
 
 .product-carousel-dots {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.75rem;
+    padding: 1rem;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
     z-index: 2;
 }
 
@@ -1328,57 +1382,196 @@
     border: none;
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.product-carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .product-carousel-dot.active {
-    background: #fff;
+    background: #a78bfa;
+    transform: scale(1.2);
+}
+
+/* Блок информации о товаре — карточка */
+.product-detail-info-card {
+    background-color: #3a3a3a;
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    color: #e5e5e5;
+}
+
+@media (max-width: 480px) {
+    .product-detail-info-card {
+        padding: 1.25rem 1.25rem;
+        border-radius: 14px;
+    }
 }
 
 .product-detail-info .content-block {
     margin-bottom: 1.5rem;
 }
 
-.product-detail-info .content-block h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
+.product-detail-info-title,
+.product-detail-attributes-title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: #f5f5f5;
+    margin-bottom: 0.75rem;
+}
+
+.product-detail-description-text {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.65;
 }
 
 .product-detail-price {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #a78bfa;
-    margin: 0 0 1rem;
+    margin: 0 0 1.5rem;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: italic;
 }
 
 .product-detail-attributes h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.75rem;
+}
+
+.product-attribute-group {
+    margin-bottom: 1.25rem;
+}
+
+.product-attribute-group:last-of-type {
+    margin-bottom: 1rem;
 }
 
 .product-variants-list {
     list-style: none;
-    margin: 0 0 1rem;
+    margin: 0 0 1.25rem;
     padding: 0;
 }
 
+.product-variants-list--inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0;
+}
+
+.product-attribute-group .product-variants-list--inline {
+    margin-bottom: 0;
+}
+
+.product-variants-list--inline li {
+    padding: 0;
+    border-bottom: none;
+}
+
+.product-variants-list--inline .variant-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    min-height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.product-variants-list--inline .variant-option input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.product-variants-list--inline .variant-option:hover {
+    border-color: rgba(167, 139, 250, 0.5);
+    background: rgba(167, 139, 250, 0.1);
+}
+
+.product-variants-list--inline .variant-option:has(input:checked) {
+    border-color: #a78bfa;
+    background: rgba(167, 139, 250, 0.2);
+}
+
+.product-variants-list--inline .variant-option:has(input:checked) .variant-label {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.product-variants-list--inline .variant-option .variant-label {
+    margin-left: 0;
+}
+
+/* Заблокированный вариант цвета (нет для выбранного размера) */
+.product-variants-list--inline .variant-option--disabled,
+.product-variants-list--inline li.product-color-option--disabled .variant-option {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.product-variants-list--inline li.product-color-option--disabled .variant-option {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.product-variants-list--inline li.product-color-option--disabled .variant-option:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.3);
+}
+
 .product-variants-list li {
-    padding: 0.35rem 0;
-    border-bottom: 1px solid rgba(105, 88, 160, 0.3);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
 }
 
+.product-variants-list li:last-child {
+    border-bottom: none;
+}
+
+.variant-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    flex: 1;
+    min-width: 0;
+}
+
+.product-variants-choose input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: #a78bfa;
+}
+
 .variant-label {
-    color: #eee;
+    color: #e5e5e5;
+    font-size: 1rem;
 }
 
 .variant-price {
     color: #a78bfa;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .product-detail-actions {
@@ -1392,31 +1585,44 @@
     margin-top: 0.5rem;
 }
 
-.product-variants-choose .variant-option {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    margin-right: 1rem;
-}
-
-.product-variants-choose input[type="radio"] {
-    margin: 0;
-}
-
 .product-add-qty {
-    margin: 1rem 0;
+    margin: 1rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .product-add-qty label {
-    margin-right: 0.5rem;
+    margin: 0;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .product-add-qty input {
-    width: 4rem;
-    padding: 0.35rem;
-    border: 1px solid rgba(105, 88, 160, 0.4);
-    border-radius: 4px;
-    background: rgba(17, 17, 17, 0.8);
+    width: 4.5rem;
+    padding: 0.6rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    background: rgba(17, 17, 17, 0.6);
     color: #eee;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.product-add-qty input:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.25);
+}
+
+.product-detail-actions .btn {
+    min-width: 160px;
+}
+
+@media (max-width: 480px) {
+    .product-detail-actions .btn {
+        width: 100%;
+        min-width: 0;
+    }
 }

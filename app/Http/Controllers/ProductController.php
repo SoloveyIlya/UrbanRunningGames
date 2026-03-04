@@ -41,7 +41,7 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(9)->withQueryString();
 
         $shopHeroOverlayOpacity = SiteSetting::get(SiteSetting::KEY_SHOP_HERO_OVERLAY_OPACITY, '0.5');
         $shopHeroSlide1 = $this->shopHeroSlideUrl(SiteSetting::KEY_SHOP_HERO_SLIDE_1_MEDIA_ID, SiteSetting::KEY_SHOP_HERO_SLIDE_1);

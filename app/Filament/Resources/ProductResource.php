@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -112,6 +113,40 @@ class ProductResource extends Resource
                     ->falseLabel('Нет'),
             ])
             ->actions([
+                Tables\Actions\ReplicateAction::make()
+                    ->label('Копировать')
+                    ->modalHeading('Копировать товар')
+                    ->modalSubmitActionLabel('Копировать')
+                    ->excludeAttributes(['id', 'variants_count'])
+                    ->mutateRecordDataUsing(function (array $data, Product $record): array {
+                        $data['name'] = $record->name . ' (копия)';
+                        $data['cover_media_id'] = null;
+                        return $data;
+                    })
+                    ->after(function (Product $replica, Product $record): void {
+                        $sync = [];
+                        foreach ($record->media()->orderByPivot('sort_order')->get() as $m) {
+                            $sync[$m->id] = ['sort_order' => $m->pivot->sort_order];
+                        }
+                        if (! empty($sync)) {
+                            $replica->media()->attach($sync);
+                        }
+                        $index = 0;
+                        foreach ($record->adminVariants as $v) {
+                            $base = $v->sku ?? '';
+                            $newSku = $base !== ''
+                                ? Str::limit($base, 48, '') . '-c' . $replica->id . '-' . (++$index)
+                                : null;
+                            $replica->adminVariants()->create([
+                                'size' => $v->size,
+                                'color' => $v->color,
+                                'sku' => $newSku,
+                                'price_override' => $v->price_override,
+                                'is_active' => $v->is_active,
+                            ]);
+                        }
+                    })
+                    ->successRedirectUrl(fn (Product $replica) => ProductResource::getUrl('edit', ['record' => $replica])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
