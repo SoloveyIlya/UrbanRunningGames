@@ -1,0 +1,582 @@
+/* Страница: Команда (О нас) — в стиле rocketdev.pro/company, с нашим стилем */
+
+/* Hero секция */
+.about-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 45vh;
+    min-height: 45dvh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 50%, rgba(38, 32, 58, 0.9) 100%);
+}
+
+.main-after-header .about-hero {
+    margin-top: calc(-1 * var(--header-height, 102px));
+    padding-top: var(--header-height, 102px);
+}
+
+@media (max-width: 900px) {
+    .main-after-header .about-hero {
+        margin-top: calc(-1 * var(--header-height, 130px));
+        padding-top: var(--header-height, 130px);
+    }
+}
+
+@media (max-width: 480px) {
+    .main-after-header .about-hero {
+        margin-top: calc(-1 * var(--header-height, 90px));
+        padding-top: var(--header-height, 90px);
+    }
+}
+
+.about-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.2));
+    pointer-events: none;
+}
+
+.about-hero__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+}
+
+.about-hero__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: #fff;
+    margin: 8rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.about-hero__sub {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        min-height: 35vh;
+        min-height: 35dvh;
+    }
+    .about-hero__title {
+        font-size: 1.75rem;
+    }
+    .about-hero__sub {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero {
+        min-height: 30vh;
+        min-height: 30dvh;
+    }
+    .about-hero__title {
+        font-size: 1.4rem;
+        margin: 0 0 0.35rem;
+    }
+    .about-hero__sub {
+        font-size: 0.9rem;
+        padding: 0 0.5rem;
+    }
+}
+
+/* Вводный текст */
+.about-intro {
+    padding: 2.5rem 0 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-intro__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.75rem;
+    color: #fff;
+    margin: 0 0 1.25rem;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.about-intro__text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.about-intro__text p {
+    margin: 0 0 1rem;
+}
+
+.about-intro__text p:last-child {
+    margin-bottom: 0;
+}
+
+.about-intro__text a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.about-intro__text a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .about-intro {
+        padding: 1.5rem 0 1.5rem;
+    }
+    .about-intro__title {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    .about-intro__text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-intro {
+        padding: 1rem 0 1.25rem;
+    }
+    .about-intro__title {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+    .about-intro__text {
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+}
+
+/* Заголовок секции «Команда» */
+.about-section-title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.75rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 768px) {
+    .about-section-title {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-section-title {
+        font-size: 1.2rem;
+        margin-bottom: 1.25rem;
+        padding: 0 0.25rem;
+    }
+}
+
+/* Секция «Наша команда» — аккордеон (как «Информация» на главной): должность в заголовке, данные по клику */
+.about-team.info-section {
+    padding: 0 0 2.5rem;
+    margin-bottom: 0;
+}
+
+.about-team-accordion {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-team-accordion .info-accordion__item[data-open] .info-accordion__body {
+    max-height: 800px;
+}
+
+/* Карточка участника внутри раскрытого аккордеона — как раньше отдельная карточка */
+.about-team-accordion .info-accordion__content {
+    padding: 0;
+}
+
+.about-team-member-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    background: linear-gradient(145deg, #2a2a2a 0%, #181818 40%, #000000 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 1.25rem 1.25rem;
+    min-height: 0;
+}
+
+.about-team-member-card__photo {
+    aspect-ratio: 4 / 3;
+    min-height: 140px;
+    background: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 2.5rem;
+}
+
+.about-team-member-card__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-team-member-card__body {
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.about-team-member-card__name {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #fff;
+    margin: 0 0 0.25rem;
+}
+
+.about-team-member-card__role {
+    font-size: 0.9rem;
+    color: #a78bfa;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.about-team-member-card__desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 0.5rem;
+}
+
+.about-team-member-card__exp {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .about-team-member-card {
+        grid-template-columns: 1fr;
+        margin: 0 0.75rem 1rem;
+    }
+    .about-team-member-card__photo {
+        min-height: 120px;
+        font-size: 2rem;
+    }
+    .about-team-member-card__body {
+        padding: 1rem 1.15rem;
+    }
+    .about-team-member-card__name {
+        font-size: 1.1rem;
+    }
+    .about-team-member-card__role {
+        font-size: 0.85rem;
+    }
+    .about-team-member-card__desc {
+        font-size: 0.85rem;
+    }
+}
+
+/* Удалённые стили карточек команды (теперь аккордеон) — оставлены ниже для совместимости при необходимости */
+.about-team__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 600px) {
+    .about-team__grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-team {
+        padding: 0 0 2rem;
+    }
+    .about-team__grid {
+        gap: 1rem;
+        min-width: 0;
+    }
+    .about-team-card {
+        min-width: 0;
+    }
+}
+
+/* Карточка участника — тёмный фон, срез углов как у фильтров магазина */
+.about-team-card {
+    background: linear-gradient(145deg, #2a2a2a 0%, #181818 40%, #000000 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-team-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(105, 88, 160, 0.2);
+}
+
+.about-team-card__photo {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .about-team-card__photo {
+        font-size: 2.25rem;
+    }
+}
+
+.about-team-card__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-team-card__body {
+    padding: 1.25rem 1.35rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-team-card__name {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #fff;
+    margin: 0 0 0.25rem;
+}
+
+.about-team-card__role {
+    font-size: 0.9rem;
+    color: #a78bfa;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.about-team-card__desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 0.75rem;
+    flex: 1;
+}
+
+.about-team-card__exp {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .about-team-card__body {
+        padding: 1rem 1.15rem;
+    }
+    .about-team-card__name {
+        font-size: 1.1rem;
+    }
+    .about-team-card__role {
+        font-size: 0.85rem;
+    }
+    .about-team-card__desc {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-team-card__body {
+        padding: 0.85rem 1rem;
+    }
+    .about-team-card__name {
+        font-size: 1rem;
+    }
+    .about-team-card__role {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+    .about-team-card__desc {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+    .about-team-card__exp {
+        font-size: 0.75rem;
+    }
+}
+
+/* Блок «Миссия» — положение, цвет и форма как .home-stats, компактный размер; идёт перед .about-intro */
+.about-mission {
+    position: relative;
+    z-index: 2;
+    margin: 1.5rem auto;
+    margin-top: -3.5rem;
+    width: 1000px;
+    max-width: calc(100vw - 4rem);
+    color: #fff;
+    padding: 0;
+    overflow: hidden;
+    contain: paint;
+    height: 320px;
+    box-sizing: border-box;
+    clip-path: url(#home-stats-section-clip);
+    -webkit-clip-path: url(#home-stats-section-clip);
+}
+
+.about-mission__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(to right, #000000 0%, #424141 100%);
+}
+
+.about-mission__wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    margin-top: -10px;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.about-mission__inner {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+}
+
+.about-mission__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: #fff;
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.about-mission__text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.about-mission__text p {
+    margin: 0 0 0.5rem;
+}
+
+.about-mission__text p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+    .about-mission {
+        margin-top: -3rem;
+        width: 100%;
+        max-width: calc(100vw - 3rem);
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        height: 280px;
+    }
+    .about-mission__wrap {
+        padding: 1.75rem 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-mission {
+        margin-top: -2.5rem;
+        max-width: calc(100vw - 2rem);
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        height: 240px;
+    }
+    .about-mission__wrap {
+        padding: 1.5rem 1rem;
+    }
+    .about-mission__title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-mission {
+        max-width: calc(100vw - 1.5rem);
+        margin: 1rem auto;
+        margin-top: -2rem;
+        padding: 0;
+        height: 200px;
+    }
+    .about-mission__wrap {
+        padding: 1.25rem 0.75rem;
+    }
+    .about-mission__title {
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+    }
+    .about-mission__text {
+        font-size: 0.9rem;
+    }
+}
+
+/* Контент из админки (если только текст без карточек) */
+.about-content-section {
+    padding: 1rem 0 2rem;
+}
+
+.about-content-section .content {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.about-content-section .content p {
+    margin: 0 0 1rem;
+}
+
+.about-content-section .content a {
+    color: #a78bfa;
+}

@@ -50,6 +50,26 @@ class SiteContentPage extends Page implements HasForms
             ];
         }
 
+        $aboutTeamJson = SiteSetting::get(SiteSetting::KEY_ABOUT_TEAM_MEMBERS);
+        $data['about'] = [
+            'hero_title' => SiteSetting::get(SiteSetting::KEY_ABOUT_HERO_TITLE, 'Команда'),
+            'hero_subtitle' => SiteSetting::get(SiteSetting::KEY_ABOUT_HERO_SUBTITLE, 'Люди, которые делают Urban Running Games — забеги-игры в вашем городе'),
+            'mission_title' => SiteSetting::get(SiteSetting::KEY_ABOUT_MISSION_TITLE, 'Наша миссия'),
+            'mission_content' => SiteSetting::get(SiteSetting::KEY_ABOUT_MISSION_CONTENT, ''),
+            'team_members' => $aboutTeamJson ? (json_decode($aboutTeamJson, true) ?: []) : [],
+        ];
+        if (empty($data['about']['mission_content'])) {
+            $data['about']['mission_content'] = "<p>Делаем городские забеги-игры доступными и по-настоящему весёлыми. Объединяем людей через движение, азарт и командный дух.</p><p>Если хотите стать партнёром или присоединиться к организации событий — пишите нам в <a href=\"/contact\">Контакты</a>.</p>";
+        }
+        if (empty($data['about']['team_members'])) {
+            $data['about']['team_members'] = [
+                ['name' => 'Алексей', 'role' => 'Организатор, основатель', 'description' => 'Идеолог формата забегов-игр. Отвечает за концепцию событий и общее направление проекта.', 'experience' => 'Опыт в организации событий 8 лет', 'photo_media_id' => null],
+                ['name' => 'Мария', 'role' => 'Координатор мероприятий', 'description' => 'Следит за тем, чтобы каждая гонка прошла без сбоев: маршруты, волонтёры, логистика.', 'experience' => 'Опыт 5 лет', 'photo_media_id' => null],
+                ['name' => 'Дмитрий', 'role' => 'Маршруты и карты', 'description' => 'Прокладывает трассы по городу, готовит чекпоинты и задания.', 'experience' => 'Опыт 4 года', 'photo_media_id' => null],
+                ['name' => 'Анна', 'role' => 'Коммуникации и мерч', 'description' => 'Ведёт соцсети, отвечает на вопросы участников и курирует ассортимент мерча.', 'experience' => 'Опыт 3 года', 'photo_media_id' => null],
+            ];
+        }
+
         $data['contact'] = [
             'vk_url' => SiteSetting::get(SiteSetting::KEY_VK_URL, 'https://vk.com/urbanrunninggames'),
             'telegram_url' => SiteSetting::get(SiteSetting::KEY_TELEGRAM_URL, 'https://t.me/urbanrunninggames'),
@@ -101,6 +121,12 @@ class SiteContentPage extends Page implements HasForms
             'slide_3_upload' => null,
         ];
 
+        $aboutHeroBg = $this->getAboutHeroBackgroundMedia();
+        $data['hero_about'] = [
+            'overlay_opacity' => SiteSetting::get(SiteSetting::KEY_ABOUT_HERO_OVERLAY_OPACITY, '0.35'),
+            'background_upload' => null,
+        ];
+
         $this->form->fill($data);
     }
 
@@ -132,6 +158,7 @@ class SiteContentPage extends Page implements HasForms
         $slide1Media = $this->getShopSlideMedia(1);
         $slide2Media = $this->getShopSlideMedia(2);
         $slide3Media = $this->getShopSlideMedia(3);
+        $aboutHeroBg = $this->getAboutHeroBackgroundMedia();
 
         return [
             Forms\Components\Section::make('Hero главной страницы')
@@ -187,7 +214,9 @@ class SiteContentPage extends Page implements HasForms
                         ->placeholder('/events')
                         ->helperText('Относительный путь (например /events) или полный URL'),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
             Forms\Components\Section::make('Hero страницы «События»')
                 ->description('Видео и постер для hero-блока на странице событий.')
                 ->schema([
@@ -236,7 +265,9 @@ class SiteContentPage extends Page implements HasForms
                         ->maxLength(512)
                         ->nullable(),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
             Forms\Components\Section::make('Hero страницы магазина (слайдер и оверлей)')
                 ->description('Слайдер сверху и затемняющий оверлей на странице магазина. Загрузка изображений как в альбомах.')
                 ->schema([
@@ -292,8 +323,46 @@ class SiteContentPage extends Page implements HasForms
                             ? new \Illuminate\Support\HtmlString('<img src="' . e($slide3Media->thumbnail_url ?? $slide3Media->url) . '" alt="" style="max-width:200px;height:auto;border-radius:8px;">')
                             : '—'),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
+            Forms\Components\Section::make('Hero страницы «О команде» (/')
+                ->description('Оверлей и фоновое изображение для hero-блока на странице /about. Заголовок и подзаголовок — в блоке «Страница «О команде»».')
+                ->schema([
+                    Forms\Components\TextInput::make('hero_about.overlay_opacity')
+                        ->label('Непрозрачность оверлея (0–1)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->maxValue(1)
+                        ->step(0.05)
+                        ->default(0.35)
+                        ->helperText('Затемнение поверх фона. Например 0.35.'),
+                    Forms\Components\FileUpload::make('hero_about.background_upload')
+                        ->label('Фоновое изображение')
+                        ->image()
+                        ->maxSize(50 * 1024)
+                        ->disk('local')
+                        ->directory('livewire-tmp')
+                        ->visibility('private')
+                        ->nullable()
+                        ->storeFiles(false)
+                        ->helperText('Оставьте пустым — будет градиент по умолчанию.'),
+                    Forms\Components\Placeholder::make('hero_about.current_background')
+                        ->label('Текущий фон')
+                        ->content($aboutHeroBg
+                            ? new \Illuminate\Support\HtmlString('<img src="' . e($aboutHeroBg->thumbnail_url ?? $aboutHeroBg->url) . '" alt="" style="max-width:200px;height:auto;border-radius:8px;">')
+                            : '—'),
+                ])
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
         ];
+    }
+
+    protected function getAboutHeroBackgroundMedia(): ?MediaAsset
+    {
+        $id = SiteSetting::get(SiteSetting::KEY_ABOUT_HERO_BACKGROUND_MEDIA_ID);
+        return $id ? MediaAsset::find($id) : null;
     }
 
     protected function getShopSlideMedia(int $index): ?MediaAsset
@@ -338,21 +407,61 @@ class SiteContentPage extends Page implements HasForms
                             ->maxItems(4)
                             ->columnSpanFull(),
                     ])
-                    ->collapsible(),
+                    ->collapsible()
+                    ->collapsed(),
             ],
             'О команде' => [
-                Forms\Components\Section::make(SitePage::SLUG_ABOUT)
-                    ->description('Страница «О команде организатора»')
+                Forms\Components\Section::make('Страница «О команде» (/about)')
+                    ->description('Hero, вводный текст, блок «Наша команда» (аккордеон по должностям), миссия.')
                     ->schema([
                         Forms\Components\TextInput::make('pages.about.title')
-                            ->label('Заголовок')
+                            ->label('Заголовок страницы (для тега title)')
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('about.hero_title')
+                            ->label('Заголовок в Hero-блоке')
+                            ->maxLength(255)
+                            ->default('Команда'),
+                        Forms\Components\TextInput::make('about.hero_subtitle')
+                            ->label('Подзаголовок в Hero')
+                            ->maxLength(512)
+                            ->columnSpanFull(),
                         Forms\Components\RichEditor::make('pages.about.content')
-                            ->label('Текст (HTML)')
+                            ->label('Вводный текст (под Hero)')
                             ->toolbarButtons(['bold', 'italic', 'underline', 'strike', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])
                             ->columnSpanFull(),
+                        Forms\Components\TextInput::make('about.mission_title')
+                            ->label('Заголовок блока «Миссия»')
+                            ->maxLength(255)
+                            ->default('Наша миссия'),
+                        Forms\Components\RichEditor::make('about.mission_content')
+                            ->label('Текст блока «Миссия»')
+                            ->toolbarButtons(['bold', 'italic', 'link', 'bulletList', 'orderedList', 'redo', 'undo'])
+                            ->columnSpanFull(),
+                        Forms\Components\Repeater::make('about.team_members')
+                            ->label('Участники команды (в аккордеоне: должность в заголовке, остальное — по клику)')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Имя')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('role')
+                                    ->label('Должность (отображается в заголовке аккордеона)')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('description')
+                                    ->label('Описание (в раскрытом блоке)')
+                                    ->rows(3)
+                                    ->maxLength(2000),
+                                Forms\Components\TextInput::make('experience')
+                                    ->label('Опыт (например: «Опыт 5 лет»)')
+                                    ->maxLength(255),
+                            ])
+                            ->defaultItems(0)
+                            ->reorderable()
+                            ->columnSpanFull(),
                     ])
-                    ->collapsible(),
+                    ->collapsible()
+                    ->collapsed(),
             ],
             'Правила' => [
                 Forms\Components\Section::make(SitePage::SLUG_RULES)
@@ -366,29 +475,30 @@ class SiteContentPage extends Page implements HasForms
                             ->toolbarButtons(['bold', 'italic', 'underline', 'strike', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])
                             ->columnSpanFull(),
                     ])
-                    ->collapsible(),
+                    ->collapsible()
+                    ->collapsed(),
             ],
             'Юридические страницы' => [
                 Forms\Components\Section::make('Политика конфиденциальности')
                     ->schema([
                         Forms\Components\TextInput::make('pages.privacy.title')->label('Заголовок')->maxLength(255),
                         Forms\Components\RichEditor::make('pages.privacy.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
-                    ])->collapsible(),
+                    ])->collapsible()->collapsed(),
                 Forms\Components\Section::make('Условия продажи мерча')
                     ->schema([
                         Forms\Components\TextInput::make('pages.terms.title')->label('Заголовок')->maxLength(255),
                         Forms\Components\RichEditor::make('pages.terms.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
-                    ])->collapsible(),
+                    ])->collapsible()->collapsed(),
                 Forms\Components\Section::make('Согласие на обработку данных')
                     ->schema([
                         Forms\Components\TextInput::make('pages.consent.title')->label('Заголовок')->maxLength(255),
                         Forms\Components\RichEditor::make('pages.consent.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
-                    ])->collapsible(),
+                    ])->collapsible()->collapsed(),
                 Forms\Components\Section::make('Возврат и обмен')
                     ->schema([
                         Forms\Components\TextInput::make('pages.returns.title')->label('Заголовок')->maxLength(255),
                         Forms\Components\RichEditor::make('pages.returns.content')->label('Текст')->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])->columnSpanFull(),
-                    ])->collapsible(),
+                    ])->collapsible()->collapsed(),
             ],
         ];
 
@@ -419,7 +529,9 @@ class SiteContentPage extends Page implements HasForms
                         ->url()
                         ->maxLength(512),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
             Forms\Components\Section::make('Контактные данные')
                 ->schema([
                     Forms\Components\TextInput::make('contact.email')
@@ -431,7 +543,9 @@ class SiteContentPage extends Page implements HasForms
                         ->tel()
                         ->maxLength(64),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
             Forms\Components\Section::make('Режим работы (текст в футере)')
                 ->schema([
                     Forms\Components\TextInput::make('contact.schedule_weekdays')
@@ -444,7 +558,9 @@ class SiteContentPage extends Page implements HasForms
                         ->label('Доп. строка (например: Отвечаем в Telegram)')
                         ->maxLength(255),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
             Forms\Components\Section::make('Реквизиты компании (футер)')
                 ->schema([
                     Forms\Components\TextInput::make('contact.company_name')
@@ -460,7 +576,9 @@ class SiteContentPage extends Page implements HasForms
                         ->label('ОГРН')
                         ->maxLength(32),
                 ])
-                ->columns(1),
+                ->columns(1)
+                ->collapsible()
+                ->collapsed(),
         ];
     }
 
@@ -640,6 +758,42 @@ class SiteContentPage extends Page implements HasForms
             }
         }
 
+        $heroAboutData = $data['hero_about'] ?? null;
+        if (is_array($heroAboutData)) {
+            SiteSetting::set(SiteSetting::KEY_ABOUT_HERO_OVERLAY_OPACITY, (string) ($heroAboutData['overlay_opacity'] ?? '0.35'));
+            $upload = $heroAboutData['background_upload'] ?? null;
+            if (is_array($upload)) {
+                $upload = array_values($upload)[0] ?? null;
+            }
+            $mediaId = null;
+            if ($upload instanceof TemporaryUploadedFile && $upload->exists()) {
+                $imageService = app(ImageOptimizationService::class);
+                $adminId = auth()->id();
+                try {
+                    $fullPath = $upload->getRealPath();
+                    $asset = $imageService->processUploadFromPath($fullPath, $upload->getClientOriginalName(), $adminId);
+                    $mediaId = (string) $asset->id;
+                } finally {
+                    $upload->delete();
+                }
+            } elseif (is_string($upload) && $upload !== '') {
+                $fullPath = Storage::disk('local')->path($upload);
+                if (is_file($fullPath)) {
+                    $imageService = app(ImageOptimizationService::class);
+                    $adminId = auth()->id();
+                    try {
+                        $asset = $imageService->processUploadFromPath($fullPath, basename($fullPath), $adminId);
+                        $mediaId = (string) $asset->id;
+                    } finally {
+                        @unlink($fullPath);
+                    }
+                }
+            }
+            if ($mediaId !== null) {
+                SiteSetting::set(SiteSetting::KEY_ABOUT_HERO_BACKGROUND_MEDIA_ID, $mediaId);
+            }
+        }
+
         foreach (SitePage::slugs() as $slug) {
             $row = $data['pages'][$slug] ?? null;
             if ($row === null) {
@@ -652,6 +806,29 @@ class SiteContentPage extends Page implements HasForms
                     'content' => $row['content'] ?? '',
                 ]
             );
+        }
+
+        if (isset($data['about']) && is_array($data['about'])) {
+            $about = $data['about'];
+            SiteSetting::set(SiteSetting::KEY_ABOUT_HERO_TITLE, $about['hero_title'] ?? '');
+            SiteSetting::set(SiteSetting::KEY_ABOUT_HERO_SUBTITLE, $about['hero_subtitle'] ?? '');
+            SiteSetting::set(SiteSetting::KEY_ABOUT_MISSION_TITLE, $about['mission_title'] ?? '');
+            SiteSetting::set(SiteSetting::KEY_ABOUT_MISSION_CONTENT, $about['mission_content'] ?? '');
+            $team = $about['team_members'] ?? [];
+            $teamNormalized = [];
+            foreach ($team as $item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+                $teamNormalized[] = [
+                    'name' => $item['name'] ?? '',
+                    'role' => $item['role'] ?? '',
+                    'description' => $item['description'] ?? '',
+                    'experience' => $item['experience'] ?? '',
+                    'photo_media_id' => $item['photo_media_id'] ?? null,
+                ];
+            }
+            SiteSetting::set(SiteSetting::KEY_ABOUT_TEAM_MEMBERS, json_encode($teamNormalized, JSON_UNESCAPED_UNICODE));
         }
 
         if (isset($data['home_stats']) && is_array($data['home_stats'])) {

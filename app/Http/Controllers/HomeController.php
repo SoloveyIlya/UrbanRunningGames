@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\HeroVideo;
-use App\Models\Partner;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -20,10 +19,6 @@ class HomeController extends Controller
             ->orderBy('starts_at', 'asc')
             ->with(['albums.media', 'city', 'coverMedia'])
             ->limit(6)
-            ->get();
-
-        $partners = Partner::where('is_active', true)
-            ->orderBy('sort_order', 'asc')
             ->get();
 
         $homeStats = [];
@@ -45,7 +40,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('home', compact('heroVideo', 'upcomingEvents', 'partners', 'homeStats'));
+        return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats'));
     }
 
     private function defaultStatNumber(int $i): string

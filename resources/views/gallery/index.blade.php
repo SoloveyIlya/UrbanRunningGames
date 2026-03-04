@@ -3,7 +3,7 @@
 @section('title', 'Фотогалерея - Urban Running Games')
 
 @section('content')
-<div class="page-header">
+<div class="page-header page-header--gallery">
     <div class="container">
         <h1>Фотогалерея</h1>
         <p class="page-header-sub">Альбомы по событиям</p>
@@ -51,7 +51,7 @@
                 </div>
             @endforeach
         @else
-            <div class="empty-state">
+            <div class="gallery-empty">
                 <p>Пока нет опубликованных фотоальбомов. Следите за обновлениями после событий!</p>
             </div>
         @endif

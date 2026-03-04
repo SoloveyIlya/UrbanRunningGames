@@ -14,6 +14,7 @@ class EventController extends Controller
 
         $events = Event::where('status', 'published')
             ->orderBy('starts_at', 'asc')
+            ->with(['albums' => fn ($q) => $q->orderBy('sort_order')->with('media'), 'city', 'coverMedia'])
             ->get();
 
         return view('events.index', compact('heroVideo', 'events'));

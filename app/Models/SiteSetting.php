@@ -52,6 +52,16 @@ class SiteSetting extends Model
     public const KEY_SHOP_HERO_SLIDE_2 = 'shop_hero_slide_2';
     public const KEY_SHOP_HERO_SLIDE_3 = 'shop_hero_slide_3';
 
+    /** Страница «О команде» (/about): hero, миссия, участники (JSON) */
+    public const KEY_ABOUT_HERO_TITLE = 'about_hero_title';
+    public const KEY_ABOUT_HERO_SUBTITLE = 'about_hero_subtitle';
+    public const KEY_ABOUT_MISSION_TITLE = 'about_mission_title';
+    public const KEY_ABOUT_MISSION_CONTENT = 'about_mission_content';
+    public const KEY_ABOUT_TEAM_MEMBERS = 'about_team_members';
+    /** Hero страницы «О команде»: оверлей и фоновое изображение */
+    public const KEY_ABOUT_HERO_OVERLAY_OPACITY = 'about_hero_overlay_opacity';
+    public const KEY_ABOUT_HERO_BACKGROUND_MEDIA_ID = 'about_hero_background_media_id';
+
     /** Блок статистики на главной (4 карточки) */
     public static function homeStatKeys(): array
     {

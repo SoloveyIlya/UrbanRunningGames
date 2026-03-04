@@ -1,5 +1,54 @@
 /* Страница: События / Гонки — список и детальная */
 
+/* Секция списка гонок использует .upcoming-races и .race-card из home.css */
+.events-section.upcoming-races {
+    padding-bottom: 3rem;
+}
+
+.race-card__status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.race-card__status--upcoming {
+    background-color: rgba(40, 167, 69, 0.95);
+    color: #fff;
+}
+
+.race-card__status--past {
+    background-color: rgba(40, 40, 48, 0.9);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+@media (max-width: 600px) {
+    .race-card__status {
+        top: 8px;
+        left: 8px;
+        padding: 0.3rem 0.55rem;
+        font-size: 0.65rem;
+    }
+}
+
+.events-list-anchor {
+    scroll-margin-top: 6rem;
+}
+
+@media (max-width: 768px) {
+    .events-list-anchor {
+        scroll-margin-top: 5rem;
+    }
+}
+
+/* Старые карточки (для совместимости, если понадобятся в других шаблонах) */
 .events-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

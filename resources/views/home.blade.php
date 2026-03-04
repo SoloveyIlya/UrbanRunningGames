@@ -181,28 +181,4 @@
         </div>
     </div>
 </section>
-
-@if($partners->count() > 0)
-<section class="partners">
-    <div class="container">
-        <h2>Наши партнёры</h2>
-        <div class="partners-grid">
-            @foreach($partners as $partner)
-                <div class="partner-item">
-                    @if($partner->logo_media_id)
-                        <img src="#" alt="{{ $partner->name }}" class="partner-logo">
-                    @endif
-                    <h4>{{ $partner->name }}</h4>
-                    @if($partner->description)
-                        <p>{{ $partner->description }}</p>
-                    @endif
-                </div>
-            @endforeach
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('partners') }}" class="btn">Все партнёры</a>
-        </div>
-    </div>
-</section>
-@endif
 @endsection

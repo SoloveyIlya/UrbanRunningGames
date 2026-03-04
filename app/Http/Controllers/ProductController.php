@@ -35,6 +35,8 @@ class ProductController extends Controller
             $query->orderBy('name', 'asc');
         } elseif ($sort === 'name_desc') {
             $query->orderBy('name', 'desc');
+        } elseif ($sort === 'newest') {
+            $query->orderBy('created_at', 'desc');
         } else {
             $query->orderBy('created_at', 'desc');
         }

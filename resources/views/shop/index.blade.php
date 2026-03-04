@@ -32,41 +32,64 @@
 
 <section class="shop-section">
     <div class="container">
-        {{-- Фильтры: кнопка-иконка, по нажатию панель расширяется вправо --}}
-        <form method="get" action="{{ route('shop.index') }}" class="shop-filters">
-            <div class="shop-filters__panel" id="shopFiltersPanel">
-                <button type="button" class="shop-filters__toggle" id="shopFiltersToggle" aria-expanded="false" aria-controls="shopFiltersRow" aria-label="Открыть фильтры">
-                    <svg class="shop-filters__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
-                </button>
-                <div class="shop-filters__row" id="shopFiltersRow">
-                <label class="shop-filters__label">
-                    <span class="shop-filters__text">Название</span>
-                    <input type="text" name="name" value="{{ request('name') }}" placeholder="Поиск по названию" class="shop-filters__input">
-                </label>
-                <label class="shop-filters__label">
-                    <span class="shop-filters__text">Цена от, ₽</span>
-                    <input type="number" name="price_min" value="{{ request('price_min') }}" min="0" step="1" placeholder="0" class="shop-filters__input">
-                </label>
-                <label class="shop-filters__label">
-                    <span class="shop-filters__text">Цена до, ₽</span>
-                    <input type="number" name="price_max" value="{{ request('price_max') }}" min="0" step="1" placeholder="—" class="shop-filters__input">
-                </label>
-                <label class="shop-filters__label">
-                    <span class="shop-filters__text">Сортировка</span>
-                    <select name="sort" class="shop-filters__select">
-                        <option value="">По умолчанию</option>
-                        <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Цена: по возрастанию</option>
-                        <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Цена: по убыванию</option>
-                        <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>Название: А–Я</option>
-                        <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Название: Я–А</option>
-                    </select>
-                </label>
-                <button type="submit" class="btn shop-filters__btn">Показать</button>
+        {{-- Пункт «Новинки» и панель фильтров --}}
+        <div class="shop-toolbar">
+            <nav class="shop-tabs" aria-label="Разделы каталога">
+                <a href="{{ route('shop.index') }}" class="shop-tab {{ !request('sort') || request('sort') !== 'newest' ? 'shop-tab--active' : '' }}">Все товары</a>
+                <a href="{{ route('shop.index', ['sort' => 'newest']) }}" class="shop-tab {{ request('sort') === 'newest' ? 'shop-tab--active' : '' }}">Новинки</a>
+            </nav>
+            <form method="get" action="{{ route('shop.index') }}" class="shop-filters">
+                <div class="shop-filters__panel" id="shopFiltersPanel" aria-hidden="true">
+                    <div class="shop-filters__row" id="shopFiltersRow">
+                        <button type="button" class="shop-filters__toggle" id="shopFiltersToggle" aria-expanded="false" aria-controls="shopFiltersPanel" aria-label="Открыть фильтры">
+                            <span class="shop-filters__toggle-icon">
+                                <svg class="shop-filters__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                </svg>
+                            </span>
+                            <span class="shop-filters__toggle-text">Фильтры</span>
+                            <span class="shop-filters__toggle-arrow" aria-hidden="true"></span>
+                        </button>
+                        <label class="shop-filters__label">
+                            <span class="shop-filters__text">Название</span>
+                            <input type="text" name="name" value="{{ request('name') }}" placeholder="Поиск" class="shop-filters__input">
+                        </label>
+                        <label class="shop-filters__label">
+                            <span class="shop-filters__text">Цена от, ₽</span>
+                            <input type="number" name="price_min" value="{{ request('price_min') }}" min="0" step="1" placeholder="0" class="shop-filters__input">
+                        </label>
+                        <label class="shop-filters__label">
+                            <span class="shop-filters__text">Цена до, ₽</span>
+                            <input type="number" name="price_max" value="{{ request('price_max') }}" min="0" step="1" placeholder="—" class="shop-filters__input">
+                        </label>
+                        <label class="shop-filters__label">
+                            <span class="shop-filters__text">Сортировка</span>
+                            <select name="sort" class="shop-filters__select">
+                                <option value="">По умолчанию</option>
+                                <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Новинки</option>
+                                <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Цена ↑</option>
+                                <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Цена ↓</option>
+                                <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>А–Я</option>
+                                <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Я–А</option>
+                            </select>
+                        </label>
+                        <button type="submit" class="btn shop-filters__btn">Показать</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+            <a href="{{ route('cart.index') }}" class="shop-cart-btn" aria-label="Перейти в корзину" title="Корзина">
+                <span class="shop-cart-btn__icon-wrap">
+                    <svg class="shop-cart-btn__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </span>
+                @if(\App\Http\Controllers\CartController::getCount() > 0)
+                    <span class="shop-cart-btn__count">{{ \App\Http\Controllers\CartController::getCount() }}</span>
+                @endif
+            </a>
+        </div>
 
         @if($products->count() > 0)
             <div class="products-grid">
@@ -108,6 +131,28 @@
 @push('scripts')
 <script>
 (function() {
+    function initShopFilters() {
+        var toggle = document.getElementById('shopFiltersToggle');
+        var panel = document.getElementById('shopFiltersPanel');
+        if (!toggle || !panel) return;
+
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isOpen = panel.classList.toggle('is-open');
+            panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            toggle.setAttribute('aria-label', isOpen ? 'Закрыть фильтры' : 'Открыть фильтры');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initShopFilters);
+    } else {
+        initShopFilters();
+    }
+
+    // Слайдер hero
     var slides = document.querySelectorAll('.shop-hero__slide');
     if (slides.length > 1) {
         var current = 0;
@@ -117,18 +162,6 @@
         }
         slides.forEach(function(s, i) { s.classList.toggle('active', i === 0); });
         setInterval(function() { show(current + 1); }, 5000);
-    }
-    var toggle = document.getElementById('shopFiltersToggle');
-    var row = document.getElementById('shopFiltersRow');
-    if (toggle && row) {
-        var panel = document.getElementById('shopFiltersPanel');
-        toggle.addEventListener('click', function() {
-            var open = panel ? !panel.classList.contains('is-open') : !row.classList.contains('is-open');
-            if (panel) panel.classList.toggle('is-open', open);
-            row.classList.toggle('is-open', open);
-            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            toggle.setAttribute('aria-label', open ? 'Закрыть фильтры' : 'Открыть фильтры');
-        });
     }
 })();
 </script>
