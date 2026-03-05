@@ -22,10 +22,19 @@ class PaymentService
     public static function fromConfig(): self
     {
         $config = config('payment.tbank');
+        $useDemo = $config['use_demo_terminal'] ?? false;
+        $terminalKey = $config['terminal_key'] ?? '';
+        $password = $config['password'] ?? '';
+
+        if ($useDemo) {
+            $terminalKey = $config['demo_terminal_key'] ?? $terminalKey;
+            $password = $config['demo_password'] ?? $password;
+        }
+
         return new self(
             testMode: config('payment.test_mode', true),
-            terminalKey: $config['terminal_key'] ?? '',
-            password: $config['password'] ?? '',
+            terminalKey: $terminalKey,
+            password: $password,
             apiUrl: $config['api_url'] ?? 'https://securepay.tinkoff.ru/v2/Init',
             notificationUrl: $config['notification_url'] ?? null,
             successUrl: $config['success_url'] ?? null,
@@ -49,7 +58,7 @@ class PaymentService
         );
         $totalKopecks = max(1000, $totalKopecks); // минимум 10 руб для СБП
 
-        if ($this->testMode || $this->terminalKey === '' || $this->password === '') {
+        if ($this->testMode || ($this->terminalKey === '' || $this->password === '')) {
             return $this->createTestPayment($order, $totalKopecks);
         }
 
@@ -97,7 +106,10 @@ class PaymentService
         }
         $params['Token'] = $this->buildToken($params);
 
-        $response = Http::asJson()->post($this->apiUrl, $params);
+        $verifySsl = config('payment.tbank.verify_ssl', true);
+        $response = Http::asJson()
+            ->withOptions(['verify' => $verifySsl])
+            ->post($this->apiUrl, $params);
         $body = $response->json();
 
         if (! $response->successful() || empty($body['PaymentId']) || empty($body['Status'])) {

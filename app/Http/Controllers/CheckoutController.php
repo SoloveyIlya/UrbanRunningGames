@@ -64,7 +64,10 @@ class CheckoutController extends Controller
         CartController::clearCart();
 
         $paymentService = PaymentService::fromConfig();
-        if ($paymentService->isTestMode() || config('payment.tbank.terminal_key')) {
+        $usePayment = $paymentService->isTestMode()
+            || config('payment.tbank.terminal_key')
+            || config('payment.tbank.use_demo_terminal');
+        if ($usePayment) {
             $order->load('items');
             $payment = $paymentService->createPaymentForOrder($order);
             if ($payment->pay_url) {
