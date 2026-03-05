@@ -6,8 +6,26 @@
 :root {
     --navbar-bg: rgba(38, 32, 58, 0.8);
 }
-.navbar {
+
+/* Обёртка: навбар + алерты двигаются вместе при скролле */
+.header-sticky {
     position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 14px 24px 0;
+}
+
+.header-sticky .navbar {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: auto;
+}
+
+.navbar {
     position: fixed;
     left: 24px;
     right: 24px;
@@ -181,6 +199,14 @@
     --header-height: 102px;
 }
 
+body.has-alerts .main-after-header {
+    --header-height: 172px;
+}
+
+body.has-alerts .nav-menu--mobile {
+    top: 172px;
+}
+
 .mobile-menu-toggle {
     display: none;
     background: none;
@@ -263,6 +289,9 @@
 }
 
 @media (max-width: 900px) {
+    .header-sticky {
+        padding: 14px 16px 0;
+    }
     .navbar {
         left: 16px;
         right: 16px;
@@ -325,9 +354,19 @@
         padding-top: 100px;
         --header-height: 100px;
     }
+    body.has-alerts .main-after-header {
+        padding-top: 170px;
+        --header-height: 170px;
+    }
+    body.has-alerts .nav-menu--mobile {
+        top: 170px;
+    }
 }
 
 @media (max-width: 480px) {
+    .header-sticky {
+        padding: 14px 12px 0;
+    }
     .navbar {
         left: 12px;
         right: 12px;
@@ -356,5 +395,12 @@
     .main-after-header {
         padding-top: 90px;
         --header-height: 90px;
+    }
+    body.has-alerts .main-after-header {
+        padding-top: 160px;
+        --header-height: 160px;
+    }
+    body.has-alerts .nav-menu--mobile {
+        top: 160px;
     }
 }

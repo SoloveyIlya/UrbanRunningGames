@@ -50,6 +50,19 @@
 
 Получить ключи: [Cloudflare Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
 
+## Платежи (T-Bank)
+
+Для тестирования оплаты без реального терминала используется тестовый режим.
+
+| Переменная | Описание |
+|------------|----------|
+| `PAYMENT_TEST_MODE` | `true` — имитация оплаты (редирект на страницу «успешной оплаты»); `false` — вызов API T-Bank |
+| `TBANK_TERMINAL_KEY` | Идентификатор терминала из Т-Бизнес (для боевой оплаты) |
+| `TBANK_PASSWORD` | Пароль терминала |
+| `TBANK_NOTIFICATION_URL` | Полный URL вебхука, напр. `https://site.ru/payment/webhook` |
+| `TBANK_SUCCESS_URL` | (Опционально) URL возврата после успешной оплаты |
+| `TBANK_FAIL_URL` | (Опционально) URL возврата при ошибке оплаты |
+
 ## Прочее
 
 | Переменная | Production |

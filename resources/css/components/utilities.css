@@ -1,17 +1,17 @@
 /* Утилиты: алерты, пустое состояние, текст по центру, отступы */
 
-/* Полоса алертов — сразу под хедером, липкая при скролле, поверх контента */
+/* Полоса алертов — под хедером внутри .header-sticky, липкость не нужна */
 .alerts-strip {
-    position: sticky;
-    top: var(--header-height, 102px);
+    position: relative;
+    top: auto;
     z-index: 999;
     padding: 0;
     background-color: transparent;
     display: none;
 }
 
-/* Переопределяем base: main > * { z-index: 1 }, чтобы алерт был поверх page-cart и другого контента */
-.main-after-header > .alerts-strip.alerts-strip {
+/* В фиксированном хедере алерт поверх контента */
+.header-sticky .alerts-strip {
     z-index: 999;
 }
 

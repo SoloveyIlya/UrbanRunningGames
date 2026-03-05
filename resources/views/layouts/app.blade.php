@@ -17,15 +17,36 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
         @php
-            $cssPath = resource_path('css/app.css');
-            if (file_exists($cssPath)) {
-                echo '<style>' . file_get_contents($cssPath) . '</style>';
+            $cssDir = resource_path('css');
+            $appCssPath = $cssDir . DIRECTORY_SEPARATOR . 'app.css';
+            if (!file_exists($appCssPath)) {
+                $fullCss = '/* app.css not found */';
+            } else {
+                $fullCss = file_get_contents($appCssPath);
+                $fullCss = preg_replace_callback(
+                    '/@import\s+[\'"]([^\'"]+)[\'"]\s*;/',
+                    function ($m) use ($cssDir) {
+                        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, trim($m[1]));
+                        $path = ltrim($path, '.' . DIRECTORY_SEPARATOR);
+                        $full = $cssDir . DIRECTORY_SEPARATOR . $path;
+                        if (file_exists($full)) {
+                            return file_get_contents($full);
+                        }
+                        return '/* missing: ' . $path . ' */';
+                    },
+                    $fullCss
+                );
+                $fullCss = str_replace('</style>', '\3C/style>', $fullCss);
             }
+            echo '<style>' . $fullCss . '</style>';
         @endphp
     @endif
     @stack('styles')
 </head>
-<body>
+@php
+    $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
+@endphp
+<body class="@if($hasAlertContent) has-alerts @endif">
     <svg width="0" height="0" aria-hidden="true">
         <defs>
             <clipPath id="navbar-clip" clipPathUnits="objectBoundingBox">
@@ -41,7 +62,8 @@
             </clipPath>
         </defs>
     </svg>
-    <nav class="navbar">
+    <div class="header-sticky">
+        <nav class="navbar">
         <div class="container">
             <div class="navbar__inner">
                 <ul class="navbar__left">
@@ -74,6 +96,33 @@
             </div>
         </div>
     </nav>
+    <div class="alerts-strip @if($hasAlertContent) alerts-strip--visible @endif" id="alertsStrip">
+        <div class="container alerts-strip__inner">
+        @if(session('success'))
+            <div class="alert alert-success" role="alert">
+                <span class="alert-message">{{ session('success') }}</span>
+                <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-error" role="alert">
+                <span class="alert-message">{{ session('error') }}</span>
+                <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+            </div>
+        @endif
+        @if($errors->any())
+            <div class="alert alert-error" role="alert">
+                <ul class="alert-message">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
+            </div>
+        @endif
+        </div>
+    </div>
+    </div>
     <ul class="nav-menu nav-menu--mobile" id="navMenu" aria-hidden="true">
         <li><a href="{{ route('shop.index') }}">Магазин</a></li>
         <li><a href="{{ route('about') }}">Команда</a></li>
@@ -91,35 +140,6 @@
                 <img src="{{ asset('images/logo/sprut-icon.svg') }}" alt="" width="400" height="130">
             </div>
         @endif
-        @php
-            $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
-        @endphp
-        <div class="alerts-strip @if($hasAlertContent) alerts-strip--visible @endif" id="alertsStrip">
-            <div class="container alerts-strip__inner">
-            @if(session('success'))
-                <div class="alert alert-success" role="alert">
-                    <span class="alert-message">{{ session('success') }}</span>
-                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-error" role="alert">
-                    <span class="alert-message">{{ session('error') }}</span>
-                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
-                </div>
-            @endif
-            @if($errors->any())
-                <div class="alert alert-error" role="alert">
-                    <ul class="alert-message">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
-                </div>
-            @endif
-            </div>
-        </div>
 
         @yield('content')
     </main>
@@ -137,7 +157,10 @@
                 var alert = this.closest('.alert');
                 if (alert) alert.remove();
                 var strip = document.getElementById('alertsStrip');
-                if (strip && strip.querySelectorAll('.alert').length === 0) strip.remove();
+                if (strip && strip.querySelectorAll('.alert').length === 0) {
+                    strip.remove();
+                    document.body.classList.remove('has-alerts');
+                }
             });
         });
         // Аккордеон секции «Информация»

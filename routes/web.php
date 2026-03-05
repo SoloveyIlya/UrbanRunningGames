@@ -52,6 +52,10 @@ Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.sho
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
+// Платежи: вебхук T-Bank (без CSRF), тестовая оплата
+Route::post('/payment/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('payment.webhook');
+Route::get('/payment/test-pay/{order}', [\App\Http\Controllers\PaymentController::class, 'testPay'])->name('payment.test-pay');
+
 // Партнёры и спонсоры
 Route::get('/partners', [PartnerController::class, 'index'])->name('partners');
 

@@ -49,7 +49,10 @@
                         <div class="product-carousel-inner">
                             @foreach($galleryImages as $index => $img)
                                 <div class="product-carousel-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
-                                    <img src="{{ $img['url'] }}" alt="{{ $product->name }} — фото {{ $index + 1 }}" width="600" height="600">
+                                    <button type="button" class="product-gallery-zoom-trigger" data-index="{{ $index }}" data-src="{{ $img['url'] }}" aria-label="Увеличить изображение">
+                                        <img src="{{ $img['url'] }}" alt="{{ $product->name }} — фото {{ $index + 1 }}" width="600" height="600">
+                                        <span class="product-gallery-zoom-hint">Увеличить</span>
+                                    </button>
                                 </div>
                             @endforeach
                         </div>
@@ -62,6 +65,22 @@
                                 @endforeach
                             </div>
                         @endif
+                    </div>
+                    <div class="product-lightbox" id="productLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+                        <div class="product-lightbox-backdrop" id="productLightboxBackdrop"></div>
+                        <div class="product-lightbox-toolbar">
+                            <button type="button" class="product-lightbox-btn product-lightbox-zoom-out" id="productLightboxZoomOut" aria-label="Уменьшить">−</button>
+                            <span class="product-lightbox-zoom-value" id="productLightboxZoomValue">100%</span>
+                            <button type="button" class="product-lightbox-btn product-lightbox-zoom-in" id="productLightboxZoomIn" aria-label="Увеличить">+</button>
+                            @if(count($galleryImages) > 1)
+                                <button type="button" class="product-lightbox-btn product-lightbox-prev" id="productLightboxPrev" aria-label="Предыдущее">‹</button>
+                                <button type="button" class="product-lightbox-btn product-lightbox-next" id="productLightboxNext" aria-label="Следующее">›</button>
+                            @endif
+                            <button type="button" class="product-lightbox-btn product-lightbox-close" id="productLightboxClose" aria-label="Закрыть">×</button>
+                        </div>
+                        <div class="product-lightbox-stage" id="productLightboxStage">
+                            <img class="product-lightbox-img" id="productLightboxImg" src="" alt="">
+                        </div>
                     </div>
                 @else
                     <div class="product-carousel-placeholder">
@@ -145,7 +164,7 @@
                                     <input type="number" id="qty" name="quantity" value="1" min="1" max="99">
                                 </div>
                                 <div class="product-detail-actions">
-                                    <button type="submit" class="btn btn-primary">В корзину</button>
+                                    <button type="submit" class="btn btn-primary product-btn-add-to-cart">Добавить в корзину</button>
                                     <a href="{{ route('shop.index') }}" class="btn btn-secondary">← В каталог</a>
                                 </div>
                             </form>
@@ -159,7 +178,7 @@
                                 <input type="number" id="qty" name="quantity" value="1" min="1" max="99">
                             </div>
                             <div class="product-detail-actions">
-                                <button type="submit" class="btn btn-primary">В корзину</button>
+                                <button type="submit" class="btn btn-primary product-btn-add-to-cart">Добавить в корзину</button>
                                 <a href="{{ route('shop.index') }}" class="btn btn-secondary">← В каталог</a>
                             </div>
                         </form>
@@ -287,6 +306,113 @@
     dots.forEach(function(dot) {
         dot.addEventListener('click', function() { goTo(parseInt(this.getAttribute('data-index'), 10)); });
     });
+})();
+</script>
+@endpush
+@endif
+
+@if(count($galleryImages) > 0)
+@push('scripts')
+<script>
+(function() {
+    var lightbox = document.getElementById('productLightbox');
+    var backdrop = document.getElementById('productLightboxBackdrop');
+    var stage = document.getElementById('productLightboxStage');
+    var imgEl = document.getElementById('productLightboxImg');
+    var zoomValueEl = document.getElementById('productLightboxZoomValue');
+    var zoomInBtn = document.getElementById('productLightboxZoomIn');
+    var zoomOutBtn = document.getElementById('productLightboxZoomOut');
+    var closeBtn = document.getElementById('productLightboxClose');
+    var prevBtn = document.getElementById('productLightboxPrev');
+    var nextBtn = document.getElementById('productLightboxNext');
+    var triggers = document.querySelectorAll('.product-gallery-zoom-trigger');
+    if (!lightbox || !imgEl || !triggers.length) return;
+
+    var galleryUrls = [];
+    triggers.forEach(function(t) { galleryUrls.push(t.getAttribute('data-src')); });
+    var currentIndex = 0;
+    var scale = 1;
+    var minScale = 0.5;
+    var maxScale = 4;
+    var step = 0.25;
+    var posX = 0, posY = 0;
+    var isDragging = false;
+    var startX, startY, startPosX, startPosY;
+
+    function setScale(s) {
+        scale = Math.max(minScale, Math.min(maxScale, s));
+        if (zoomValueEl) zoomValueEl.textContent = Math.round(scale * 100) + '%';
+        imgEl.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(' + scale + ')';
+    }
+    function setImage(index) {
+        currentIndex = (index + galleryUrls.length) % galleryUrls.length;
+        var src = galleryUrls[currentIndex];
+        imgEl.src = src;
+        imgEl.alt = document.querySelector('.product-gallery-zoom-trigger[data-index="' + currentIndex + '"] img')?.alt || 'Фото ' + (currentIndex + 1);
+        scale = 1;
+        posX = 0;
+        posY = 0;
+        setScale(1);
+    }
+    function openLightbox(index) {
+        currentIndex = index >= 0 ? index : 0;
+        setImage(currentIndex);
+        lightbox.setAttribute('aria-hidden', 'false');
+        lightbox.classList.add('product-lightbox--open');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+    function closeLightbox() {
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightbox.classList.remove('product-lightbox--open');
+        document.body.style.overflow = '';
+    }
+
+    triggers.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var idx = parseInt(this.getAttribute('data-index'), 10);
+            openLightbox(isNaN(idx) ? 0 : idx);
+        });
+    });
+    if (backdrop) backdrop.addEventListener('click', closeLightbox);
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (zoomInBtn) zoomInBtn.addEventListener('click', function() { setScale(scale + step); });
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', function() { setScale(scale - step); });
+    if (prevBtn) prevBtn.addEventListener('click', function() { setImage(currentIndex - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { setImage(currentIndex + 1); });
+
+    document.addEventListener('keydown', function(e) {
+        if (!lightbox.classList.contains('product-lightbox--open')) return;
+        if (e.key === 'Escape') { closeLightbox(); return; }
+        if (e.key === 'ArrowLeft') { setImage(currentIndex - 1); return; }
+        if (e.key === 'ArrowRight') { setImage(currentIndex + 1); return; }
+    });
+
+    stage.addEventListener('mousedown', function(e) {
+        if (e.target !== imgEl) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startPosX = posX;
+        startPosY = posY;
+    });
+    stage.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        posX = startPosX + (e.clientX - startX);
+        posY = startPosY + (e.clientY - startY);
+        imgEl.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(' + scale + ')';
+    });
+    stage.addEventListener('mouseup', function() { isDragging = false; });
+    stage.addEventListener('mouseleave', function() { isDragging = false; });
+
+    stage.addEventListener('wheel', function(e) {
+        if (!lightbox.classList.contains('product-lightbox--open')) return;
+        e.preventDefault();
+        if (e.deltaY < 0) setScale(scale + step);
+        else setScale(scale - step);
+    }, { passive: false });
 })();
 </script>
 @endpush
