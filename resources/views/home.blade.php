@@ -48,7 +48,7 @@
                         $priorityAlbum = $event->albums->sortBy('sort_order')->first();
                         $coverUrl = $event->cover_url ?? $priorityAlbum?->getCoverUrl();
                     @endphp
-                    <article class="race-card race-card--horizontal">
+                    <article class="race-card race-card--horizontal" @if($coverUrl) style="--race-card-cover: url('{{ e($coverUrl) }}');" @endif>
                         <div class="race-card__image-wrap">
                             <div class="race-card__image {{ $coverUrl ? '' : 'race-card__image--no-photo' }}" @if($coverUrl) style="background-image: url('{{ e($coverUrl) }}');" @endif></div>
                         </div>
