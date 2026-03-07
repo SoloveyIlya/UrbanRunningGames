@@ -1,19 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Согласие на обработку персональных данных - Urban Running Games')
+@section('title', ($title ?? 'Согласие на обработку данных') . ' - Urban Running Games')
 
 @section('content')
 <div class="page-header">
     <div class="container">
-        <h1>Согласие на обработку персональных данных</h1>
+        <h1>{{ $title ?? 'Согласие на обработку данных' }}</h1>
     </div>
 </div>
 
 <section class="content-section">
     <div class="container">
         <div class="legal-content">
-            <p>Здесь будет размещено согласие на обработку персональных данных.</p>
-            <p>Текст будет подготовлен заказчиком или юристами.</p>
+            @if(!empty($content))
+                {!! $content !!}
+            @else
+                <p>Здесь будет размещено согласие на обработку персональных данных.</p>
+                <p>Текст можно отредактировать в <a href="{{ url('/admin') }}">админ-панели</a> → Контент сайта.</p>
+            @endif
         </div>
     </div>
 </section>

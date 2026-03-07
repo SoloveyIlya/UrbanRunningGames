@@ -23,7 +23,7 @@ class MediaAsset extends Model
     ];
 
     /**
-     * URL для отображения (относительный путь — всегда тот же хост, что и страница).
+     * URL для отображения. Идёт через маршрут /media/ (Laravel), при отсутствии файла отдаётся плейсхолдер (без 404).
      */
     public function getUrlAttribute(): ?string
     {
@@ -31,7 +31,11 @@ class MediaAsset extends Model
             return null;
         }
 
-        return '/storage/' . ltrim($this->path, '/');
+        $disk = $this->disk ?: 'public';
+        if (! Storage::disk($disk)->exists($this->path)) {
+            return self::placeholderDataUri();
+        }
+        return url('/media/' . ltrim($this->path, '/'));
     }
 
     public function getThumbnailUrlAttribute(): ?string
@@ -44,8 +48,16 @@ class MediaAsset extends Model
         if (! Storage::disk($disk)->exists($this->thumbnail_path)) {
             return $this->url;
         }
+        return url('/media/' . ltrim($this->thumbnail_path, '/'));
+    }
 
-        return '/storage/' . ltrim($this->thumbnail_path, '/');
+    public static function placeholderDataUri(): string
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">'
+            . '<rect fill="#eee" width="400" height="400"/>'
+            . '<text x="50%" y="50%" fill="#999" font-family="sans-serif" font-size="14" text-anchor="middle" dy=".3em">Фото недоступно</text></svg>';
+
+        return 'data:image/svg+xml,' . rawurlencode($svg);
     }
 
     public function isImage(): bool

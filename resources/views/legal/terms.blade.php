@@ -1,19 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Условия продажи мерча - Urban Running Games')
+@section('title', ($title ?? 'Условия продажи мерча') . ' - Urban Running Games')
 
 @section('content')
 <div class="page-header">
     <div class="container">
-        <h1>Условия продажи мерча</h1>
+        <h1>{{ $title ?? 'Условия продажи мерча' }}</h1>
     </div>
 </div>
 
 <section class="content-section">
     <div class="container">
         <div class="legal-content">
-            <p>Здесь будут размещены условия продажи мерча.</p>
-            <p>Текст будет подготовлен заказчиком или юристами.</p>
+            @if(!empty($content))
+                {!! $content !!}
+            @else
+                <p>Здесь будут размещены условия продажи мерча.</p>
+                <p>Текст можно отредактировать в <a href="{{ url('/admin') }}">админ-панели</a> → Контент сайта.</p>
+            @endif
         </div>
     </div>
 </section>

@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\SitePage;
 
 class AboutController extends Controller
 {
     public function index()
     {
-        return view('about');
+        $page = SitePage::getBySlug(SitePage::SLUG_ABOUT);
+
+        return view('about', [
+            'title' => $page?->title ?? 'О команде организатора',
+            'content' => $page?->content,
+        ]);
     }
 }

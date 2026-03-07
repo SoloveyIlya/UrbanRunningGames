@@ -16,7 +16,6 @@
             <p>Таблица загружается вручную администратором. Доступен файл Excel для скачивания.</p>
         </div>
 
-        <!-- TODO: Реализовать загрузку рейтинга из файла или БД -->
         <div class="rating-table-wrapper">
             <table class="rating-table">
                 <thead>
@@ -28,16 +27,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="4" class="empty-state">Рейтинг будет загружен позже</td>
-                    </tr>
+                    @if($entries->isNotEmpty())
+                        @foreach($entries as $index => $entry)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $entry->team_name }}</td>
+                                <td>{{ $entry->points }}</td>
+                                <td>{{ $entry->events_count }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="4" class="empty-state">Рейтинг будет загружен позже. Редактирование в <a href="{{ url('/admin') }}">админ-панели</a> → Рейтинг.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
 
-        <div class="rating-actions">
-            <a href="#" class="btn" download>Скачать Excel файл</a>
-        </div>
+        @if($entries->isNotEmpty())
+            <div class="rating-actions">
+                <a href="{{ route('rating.export') }}" class="btn" download>Скачать Excel файл</a>
+            </div>
+        @endif
     </div>
 </section>
 @endsection

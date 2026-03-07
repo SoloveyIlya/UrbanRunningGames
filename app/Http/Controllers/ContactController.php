@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Mail\ContactReceived;
 use App\Models\ContactMessage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -27,7 +27,10 @@ class ContactController extends Controller
             'status' => 'new',
         ]);
 
-        // TODO: Отправить уведомление администратору
+        $adminEmail = config('mail.admin');
+        if ($adminEmail) {
+            Mail::to($adminEmail)->send(new ContactReceived($message));
+        }
 
         return redirect()->route('contact')
             ->with('success', 'Ваше сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.');

@@ -1,0 +1,207 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\ProductVariant;
+use App\Models\PromoCode;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+class CartController extends Controller
+{
+    private const SESSION_KEY = 'cart';
+    private const SESSION_PROMO = 'cart_promo_code_id';
+
+    private static function cartKey(?int $productId, ?int $variantId): string
+    {
+        return 'p' . ($productId ?? 0) . '_v' . ($variantId ?? 0);
+    }
+
+    public static function getItems(): array
+    {
+        return Session::get(self::SESSION_KEY, []);
+    }
+
+    public static function getCount(): int
+    {
+        $items = self::getItems();
+        return array_sum(array_column($items, 'quantity'));
+    }
+
+    public static function clearCart(): void
+    {
+        Session::put(self::SESSION_KEY, []);
+        Session::forget(self::SESSION_PROMO);
+    }
+
+    public static function getAppliedPromoId(): ?int
+    {
+        $id = Session::get(self::SESSION_PROMO);
+        return $id ? (int) $id : null;
+    }
+
+    public static function clearPromo(): void
+    {
+        Session::forget(self::SESSION_PROMO);
+    }
+
+    /** @return array{items: array, total: float, promo: ?PromoCode, discount: float, total_final: float} */
+    public static function getCartForDisplay(): array
+    {
+        $raw = self::getItems();
+        if (empty($raw)) {
+            return ['items' => [], 'total' => 0, 'promo' => null, 'discount' => 0.0, 'total_final' => 0];
+        }
+        $productIds = array_unique(array_column($raw, 'product_id'));
+        $variantIds = array_filter(array_unique(array_column($raw, 'variant_id')));
+        $products = Product::with(['coverMedia', 'media', 'variants'])
+            ->whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
+        $variants = $variantIds
+            ? ProductVariant::with('product')->whereIn('id', $variantIds)->get()->keyBy('id')
+            : collect();
+
+        $items = [];
+        $total = 0.0;
+        foreach ($raw as $key => $row) {
+            $product = $products->get($row['product_id'] ?? 0);
+            if (! $product) {
+                continue;
+            }
+            $variant = isset($row['variant_id']) && $row['variant_id']
+                ? $variants->get($row['variant_id'])
+                : null;
+            $quantity = (int) ($row['quantity'] ?? 1);
+            $price = $variant
+                ? (float) ($variant->price_override ?? $product->price_amount)
+                : (float) $product->price_amount;
+            $subtotal = $price * $quantity;
+            $total += $subtotal;
+            $items[] = [
+                'key' => $key,
+                'product' => $product,
+                'variant' => $variant,
+                'quantity' => $quantity,
+                'price' => $price,
+                'subtotal' => $subtotal,
+            ];
+        }
+        $cart = ['items' => $items, 'total' => $total];
+        $promo = null;
+        $discount = 0.0;
+        $promoId = self::getAppliedPromoId();
+        if ($promoId) {
+            $promo = PromoCode::where('id', $promoId)->first();
+            if ($promo) {
+                $validation = $promo->validateForCart($cart);
+                if ($validation['valid']) {
+                    $discount = $promo->calculateDiscount($cart);
+                } else {
+                    self::clearPromo();
+                    $promo = null;
+                }
+            } else {
+                self::clearPromo();
+            }
+        }
+        $cart['promo'] = $promo;
+        $cart['discount'] = $discount;
+        $cart['total_final'] = max(0, $total - $discount);
+        return $cart;
+    }
+
+    public function index()
+    {
+        $cart = self::getCartForDisplay();
+        return view('cart.index', $cart);
+    }
+
+    public function add(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'variant_id' => 'nullable|exists:product_variants,id',
+            'quantity' => 'nullable|integer|min:1|max:99',
+        ]);
+        $productId = (int) $request->product_id;
+        $variantId = $request->variant_id ? (int) $request->variant_id : null;
+        $quantity = (int) ($request->quantity ?: 1);
+
+        $product = Product::active()->findOrFail($productId);
+        if ($variantId) {
+            $variant = $product->adminVariants()->findOrFail($variantId);
+            if (! $variant->is_active) {
+                return back()->with('error', 'Выбранный вариант недоступен.');
+            }
+        } else {
+            if ($product->variants()->exists()) {
+                return back()->with('error', 'Выберите вариант (размер/цвет).');
+            }
+        }
+
+        $key = self::cartKey($productId, $variantId);
+        $cart = self::getItems();
+        $cart[$key] = [
+            'product_id' => $productId,
+            'variant_id' => $variantId,
+            'quantity' => ($cart[$key]['quantity'] ?? 0) + $quantity,
+        ];
+        Session::put(self::SESSION_KEY, $cart);
+
+        return redirect()->route('cart.index')->with('success', 'Товар добавлен в корзину.');
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'key' => 'required|string',
+            'quantity' => 'required|integer|min:0|max:99',
+        ]);
+        $key = $request->key;
+        $quantity = (int) $request->quantity;
+        $cart = self::getItems();
+        if (! isset($cart[$key])) {
+            return back()->with('error', 'Позиция не найдена в корзине.');
+        }
+        if ($quantity === 0) {
+            unset($cart[$key]);
+        } else {
+            $cart[$key]['quantity'] = $quantity;
+        }
+        Session::put(self::SESSION_KEY, $cart);
+        return redirect()->route('cart.index')->with('success', 'Корзина обновлена.');
+    }
+
+    public function remove(Request $request, string $key)
+    {
+        $cart = self::getItems();
+        unset($cart[$key]);
+        Session::put(self::SESSION_KEY, $cart);
+        return redirect()->route('cart.index')->with('success', 'Позиция удалена из корзины.');
+    }
+
+    public function applyPromo(Request $request)
+    {
+        $request->validate(['code' => 'required|string|max:64']);
+        $code = trim($request->code);
+        $promo = PromoCode::where('code', $code)->first();
+        if (! $promo) {
+            return redirect()->route('cart.index')->with('error', 'Промокод не найден.');
+        }
+        $cart = self::getCartForDisplay();
+        $validation = $promo->validateForCart($cart);
+        if (! $validation['valid']) {
+            return redirect()->route('cart.index')->with('error', $validation['message'] ?? 'Промокод не применим.');
+        }
+        Session::put(self::SESSION_PROMO, $promo->id);
+        return redirect()->route('cart.index')->with('success', 'Промокод применён.');
+    }
+
+    public function removePromo()
+    {
+        self::clearPromo();
+        return redirect()->route('cart.index')->with('success', 'Промокод отменён.');
+    }
+}

@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\HeroVideo;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     public function index()
     {
+        $heroVideo = HeroVideo::where('page', HeroVideo::PAGE_EVENTS)->first();
+
         $events = Event::where('status', 'published')
             ->orderBy('starts_at', 'asc')
             ->get();
 
-        return view('events.index', compact('events'));
+        return view('events.index', compact('heroVideo', 'events'));
     }
 
     public function show(string $slug)

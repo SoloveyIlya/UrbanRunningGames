@@ -3,11 +3,10 @@
 @section('title', 'События - Urban Running Games')
 
 @section('content')
-<div class="page-header">
-    <div class="container">
-        <h1>События</h1>
-    </div>
-</div>
+<x-hero :hero-video="$heroVideo" title="События" :hide-subtitle="true">
+    <a href="{{ route('events.index') }}#events-list" class="btn btn-primary">К списку событий</a>
+</x-hero>
+<div id="events-list" class="events-list-anchor"></div>
 
 <section class="events-section">
     <div class="container">

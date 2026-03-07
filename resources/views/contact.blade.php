@@ -86,7 +86,7 @@
                         @enderror
                     </div>
 
-                    <!-- TODO: Добавить Cloudflare Turnstile антиспам -->
+                    <x-turnstile-widget />
                     <div class="form-group">
                         <label>
                             <input type="checkbox" name="consent" value="1" required {{ old('consent') ? 'checked' : '' }}>
@@ -104,3 +104,9 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+    @if(config('turnstile.site_key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
+@endpush
