@@ -48,6 +48,7 @@ class SiteContentPage extends Page implements HasForms
     public function form(Form $form): Form
     {
         $sections = [
+            SitePage::SLUG_HOME_INFO => 'Информация (главная страница)',
             SitePage::SLUG_ABOUT => 'О команде организатора',
             SitePage::SLUG_RULES => 'Правила забега',
             SitePage::SLUG_PRIVACY => 'Политика конфиденциальности',
@@ -105,6 +106,7 @@ class SiteContentPage extends Page implements HasForms
     protected function defaultTitle(string $slug): string
     {
         return match ($slug) {
+            SitePage::SLUG_HOME_INFO => 'Информация',
             SitePage::SLUG_ABOUT => 'О команде организатора',
             SitePage::SLUG_RULES => 'Правила забега',
             SitePage::SLUG_PRIVACY => 'Политика конфиденциальности',

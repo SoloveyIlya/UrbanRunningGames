@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\HeroVideo;
 use App\Models\Partner;
+use App\Models\SitePage;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,8 @@ class HomeController extends Controller
             ->orderBy('sort_order', 'asc')
             ->get();
 
-        return view('home', compact('heroVideo', 'upcomingEvents', 'partners'));
+        $homeInfo = SitePage::getBySlug(SitePage::SLUG_HOME_INFO);
+
+        return view('home', compact('heroVideo', 'upcomingEvents', 'partners', 'homeInfo'));
     }
 }

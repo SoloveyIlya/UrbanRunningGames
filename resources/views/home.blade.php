@@ -46,6 +46,19 @@
     </div>
 </section>
 
+@if($homeInfo && $homeInfo->content)
+<section class="home-info">
+    <div class="container">
+        @if($homeInfo->title)
+            <h2>{{ $homeInfo->title }}</h2>
+        @endif
+        <div class="home-info__content content">
+            {!! $homeInfo->content !!}
+        </div>
+    </div>
+</section>
+@endif
+
 @if($partners->count() > 0)
 <section class="partners">
     <div class="container">
