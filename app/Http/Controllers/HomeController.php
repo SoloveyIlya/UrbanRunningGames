@@ -40,7 +40,22 @@ class HomeController extends Controller
             }
         }
 
-        return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats'));
+        $infoSectionTitle = Schema::hasTable('site_settings')
+            ? (SiteSetting::get(SiteSetting::KEY_HOME_INFO_SECTION_TITLE) ?? 'ИНФОРМАЦИЯ')
+            : 'ИНФОРМАЦИЯ';
+
+        $infoAccordionJson = Schema::hasTable('site_settings')
+            ? SiteSetting::get(SiteSetting::KEY_HOME_INFO_ACCORDION_ITEMS)
+            : null;
+
+        if ($infoAccordionJson !== null && $infoAccordionJson !== '') {
+            $infoAccordionItems = json_decode($infoAccordionJson, true);
+            $infoAccordionItems = is_array($infoAccordionItems) ? $infoAccordionItems : $this->defaultInfoAccordionItems();
+        } else {
+            $infoAccordionItems = $this->defaultInfoAccordionItems();
+        }
+
+        return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats', 'infoSectionTitle', 'infoAccordionItems'));
     }
 
     private function defaultStatNumber(int $i): string
@@ -68,5 +83,42 @@ class HomeController extends Controller
             4 => 'Разгадывайте и узнавайте',
             default => '',
         };
+    }
+
+    /** @return array<int, array{title: string, content_type: string, links?: array, content?: string}> */
+    private function defaultInfoAccordionItems(): array
+    {
+        return [
+            [
+                'title' => 'Коротко о главном',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Гонки', 'url' => '/events'],
+                    ['text' => 'Магазин', 'url' => '/shop'],
+                    ['text' => 'О нас', 'url' => '/about'],
+                    ['text' => 'Контакты', 'url' => '/contact'],
+                ],
+            ],
+            [
+                'title' => 'Основные условия',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Политика конфиденциальности', 'url' => '/privacy'],
+                    ['text' => 'Согласие на обработку ПДн', 'url' => '/consent'],
+                    ['text' => 'Условия продажи мерча', 'url' => '/terms'],
+                    ['text' => 'Правила возвратов', 'url' => '/returns'],
+                ],
+            ],
+            [
+                'title' => 'Место старта, финиша, выдача номеров и стартовых пакетов',
+                'content_type' => 'prose',
+                'content' => '<p>Старт и финиш каждой гонки указаны на странице конкретного события. Там же — время и место выдачи стартовых номеров и стартовых пакетов.</p><p>Актуальную информацию по каждой гонке смотрите в разделе <a href="/events">Гонки</a>. По вопросам организации обращайтесь в <a href="/contact">Контакты</a>.</p>',
+            ],
+            [
+                'title' => 'Где жить, как добраться до места старта',
+                'content_type' => 'prose',
+                'content' => '<p>Рекомендации по проживанию и проезду до места старта — на отдельной странице.</p><a href="/travel" class="btn btn--info-inline">Где жить и как добраться →</a>',
+            ],
+        ];
     }
 }

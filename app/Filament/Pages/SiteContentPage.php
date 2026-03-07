@@ -95,6 +95,10 @@ class SiteContentPage extends Page implements HasForms
             ];
         }
 
+        $infoAccordionJson = SiteSetting::get(SiteSetting::KEY_HOME_INFO_ACCORDION_ITEMS);
+        $data['info_section_title'] = SiteSetting::get(SiteSetting::KEY_HOME_INFO_SECTION_TITLE, 'ИНФОРМАЦИЯ');
+        $data['info_accordion_items'] = $infoAccordionJson ? (json_decode($infoAccordionJson, true) ?: $this->defaultInfoAccordionItems()) : $this->defaultInfoAccordionItems();
+
         $heroMain = HeroVideo::where('page', HeroVideo::PAGE_MAIN)->first();
         $data['hero_main'] = [
             'is_enabled' => $heroMain?->is_enabled ?? true,
@@ -406,6 +410,62 @@ class SiteContentPage extends Page implements HasForms
                             ->defaultItems(4)
                             ->minItems(4)
                             ->maxItems(4)
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+                Forms\Components\Section::make('Блок «Информация» на главной (аккордеон)')
+                    ->description('Заголовок секции и пункты аккордеона. Можно добавлять новые блоки, менять порядок. Ссылки в контенте оформляются в стиле секции автоматически.')
+                    ->schema([
+                        Forms\Components\TextInput::make('info_section_title')
+                            ->label('Заголовок секции')
+                            ->maxLength(255)
+                            ->default('ИНФОРМАЦИЯ')
+                            ->required(),
+                        Forms\Components\Repeater::make('info_accordion_items')
+                            ->label('Пункты аккордеона')
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Заголовок пункта')
+                                    ->required()
+                                    ->maxLength(512),
+                                Forms\Components\Select::make('content_type')
+                                    ->label('Тип контента')
+                                    ->options([
+                                        'links' => 'Список ссылок',
+                                        'prose' => 'Текст (HTML)',
+                                    ])
+                                    ->default('links')
+                                    ->required()
+                                    ->live(),
+                                Forms\Components\Repeater::make('links')
+                                    ->label('Ссылки')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('text')
+                                            ->label('Текст ссылки')
+                                            ->required()
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('url')
+                                            ->label('URL')
+                                            ->required()
+                                            ->maxLength(1024)
+                                            ->placeholder('/events или https://...')
+                                            ->helperText('Путь вида /events или полный URL'),
+                                    ])
+                                    ->defaultItems(0)
+                                    ->addActionLabel('Добавить ссылку')
+                                    ->columnSpanFull()
+                                    ->visible(fn (\Filament\Forms\Get $get): bool => ($get('content_type') ?? '') === 'links'),
+                                Forms\Components\RichEditor::make('content')
+                                    ->label('Текст (HTML)')
+                                    ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])
+                                    ->columnSpanFull()
+                                    ->helperText('Ссылки можно оформлять кнопкой: выберите текст и вставьте ссылку. Для кнопки-ссылки добавьте класс: btn btn--info-inline')
+                                    ->visible(fn (\Filament\Forms\Get $get): bool => ($get('content_type') ?? '') === 'prose'),
+                            ])
+                            ->defaultItems(0)
+                            ->addActionLabel('Добавить блок')
+                            ->reorderable()
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
@@ -914,6 +974,32 @@ class SiteContentPage extends Page implements HasForms
             }
         }
 
+        if (isset($data['info_section_title'])) {
+            SiteSetting::set(SiteSetting::KEY_HOME_INFO_SECTION_TITLE, (string) $data['info_section_title']);
+        }
+        if (isset($data['info_accordion_items']) && is_array($data['info_accordion_items'])) {
+            $normalized = [];
+            foreach ($data['info_accordion_items'] as $item) {
+                if (!is_array($item) || empty($item['title'])) {
+                    continue;
+                }
+                $type = $item['content_type'] ?? 'links';
+                $row = ['title' => $item['title'], 'content_type' => $type];
+                if ($type === 'links' && !empty($item['links'])) {
+                    $row['links'] = [];
+                    foreach ($item['links'] as $link) {
+                        if (is_array($link) && !empty($link['text']) && isset($link['url'])) {
+                            $row['links'][] = ['text' => $link['text'], 'url' => $link['url']];
+                        }
+                    }
+                } elseif ($type === 'prose' && isset($item['content'])) {
+                    $row['content'] = $item['content'];
+                }
+                $normalized[] = $row;
+            }
+            SiteSetting::set(SiteSetting::KEY_HOME_INFO_ACCORDION_ITEMS, json_encode($normalized, JSON_UNESCAPED_UNICODE));
+        }
+
         if (isset($data['contact']) && is_array($data['contact'])) {
             $map = [
                 'vk_url' => SiteSetting::KEY_VK_URL,
@@ -985,6 +1071,43 @@ class SiteContentPage extends Page implements HasForms
             4 => 'Разгадывайте и узнавайте',
             default => '',
         };
+    }
+
+    /** @return array<int, array{title: string, content_type: string, links?: array, content?: string}> */
+    protected function defaultInfoAccordionItems(): array
+    {
+        return [
+            [
+                'title' => 'Коротко о главном',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Гонки', 'url' => '/events'],
+                    ['text' => 'Магазин', 'url' => '/shop'],
+                    ['text' => 'О нас', 'url' => '/about'],
+                    ['text' => 'Контакты', 'url' => '/contact'],
+                ],
+            ],
+            [
+                'title' => 'Основные условия',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Политика конфиденциальности', 'url' => '/privacy'],
+                    ['text' => 'Согласие на обработку ПДн', 'url' => '/consent'],
+                    ['text' => 'Условия продажи мерча', 'url' => '/terms'],
+                    ['text' => 'Правила возвратов', 'url' => '/returns'],
+                ],
+            ],
+            [
+                'title' => 'Место старта, финиша, выдача номеров и стартовых пакетов',
+                'content_type' => 'prose',
+                'content' => '<p>Старт и финиш каждой гонки указаны на странице конкретного события. Там же — время и место выдачи стартовых номеров и стартовых пакетов.</p><p>Актуальную информацию по каждой гонке смотрите в разделе <a href="/events">Гонки</a>. По вопросам организации обращайтесь в <a href="/contact">Контакты</a>.</p>',
+            ],
+            [
+                'title' => 'Где жить, как добраться до места старта',
+                'content_type' => 'prose',
+                'content' => '<p>Рекомендации по проживанию и проезду до места старта — на отдельной странице.</p><a href="/travel" class="btn btn--info-inline">Где жить и как добраться →</a>',
+            ],
+        ];
     }
 
     protected function getFormActions(): array

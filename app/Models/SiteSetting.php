@@ -62,6 +62,10 @@ class SiteSetting extends Model
     public const KEY_ABOUT_HERO_OVERLAY_OPACITY = 'about_hero_overlay_opacity';
     public const KEY_ABOUT_HERO_BACKGROUND_MEDIA_ID = 'about_hero_background_media_id';
 
+    /** Блок «Информация» на главной: заголовок секции и пункты аккордеона (JSON). */
+    public const KEY_HOME_INFO_SECTION_TITLE = 'home_info_section_title';
+    public const KEY_HOME_INFO_ACCORDION_ITEMS = 'home_info_accordion_items';
+
     /** Блок статистики на главной (4 карточки) */
     public static function homeStatKeys(): array
     {
