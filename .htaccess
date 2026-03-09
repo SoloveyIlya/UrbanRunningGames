@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Существующие файлы/папки в public/ — отдаём как есть. Filament (js/css) отдаём через Laravel.
+    RewriteCond %{REQUEST_URI} !^/js/filament/
+    RewriteCond %{REQUEST_URI} !^/css/filament/
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Остальное — в Laravel
+    RewriteRule ^(.*)$ public/index.php [L,QSA]
+</IfModule>

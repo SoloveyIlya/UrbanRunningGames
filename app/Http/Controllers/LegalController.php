@@ -26,6 +26,11 @@ class LegalController extends Controller
         return $this->legalView('legal.returns', SitePage::SLUG_RETURNS, 'Возврат и обмен');
     }
 
+    public function travel()
+    {
+        return $this->legalView('legal.travel', SitePage::SLUG_TRAVEL, 'Где жить, как добраться до места старта');
+    }
+
     private function legalView(string $view, string $slug, string $defaultTitle)
     {
         $page = SitePage::getBySlug($slug);

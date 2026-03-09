@@ -4,14 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\MediaAsset;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -57,18 +56,20 @@ class ProductResource extends Resource
                             ->options(['RUB' => 'RUB'])
                             ->default('RUB')
                             ->required(),
-                        Forms\Components\Select::make('cover_media_id')
+                        Forms\Components\FileUpload::make('cover_image_upload')
                             ->label('Обложка (главное фото)')
-                            ->relationship(
-                                'coverMedia',
-                                'path',
-                                fn (Builder $query) => $query->where('type', 'image')->orderBy('created_at', 'desc')
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (MediaAsset $record) => $record->original_name ?: $record->path)
-                            ->searchable(['path', 'original_name'])
-                            ->preload()
-                            ->nullable()
-                            ->helperText('Опционально. Иначе будет использовано первое фото из галереи.'),
+                            ->image()
+                            ->maxSize(50 * 1024)
+                            ->disk('local')
+                            ->directory('livewire-tmp')
+                            ->visibility('private')
+                            ->helperText('Загрузите одну картинку — как в альбомах. Отображается на карточке товара и в каталоге.'),
+                        Forms\Components\Placeholder::make('cover_preview')
+                            ->label('Текущая обложка')
+                            ->content(fn (?Product $record) => $record && $record->coverMedia
+                                ? new \Illuminate\Support\HtmlString('<img src="' . e($record->coverMedia->thumbnail_url ?? $record->coverMedia->url) . '" alt="" style="max-width:200px;height:auto;border-radius:8px;">')
+                                : 'Не задана')
+                            ->visibleOn('edit'),
                         Forms\Components\Toggle::make('is_active')
                             ->label('Показывать в каталоге')
                             ->default(true),
@@ -112,6 +113,40 @@ class ProductResource extends Resource
                     ->falseLabel('Нет'),
             ])
             ->actions([
+                Tables\Actions\ReplicateAction::make()
+                    ->label('Копировать')
+                    ->modalHeading('Копировать товар')
+                    ->modalSubmitActionLabel('Копировать')
+                    ->excludeAttributes(['id', 'variants_count'])
+                    ->mutateRecordDataUsing(function (array $data, Product $record): array {
+                        $data['name'] = $record->name . ' (копия)';
+                        $data['cover_media_id'] = null;
+                        return $data;
+                    })
+                    ->after(function (Product $replica, Product $record): void {
+                        $sync = [];
+                        foreach ($record->media()->orderByPivot('sort_order')->get() as $m) {
+                            $sync[$m->id] = ['sort_order' => $m->pivot->sort_order];
+                        }
+                        if (! empty($sync)) {
+                            $replica->media()->attach($sync);
+                        }
+                        $index = 0;
+                        foreach ($record->adminVariants as $v) {
+                            $base = $v->sku ?? '';
+                            $newSku = $base !== ''
+                                ? Str::limit($base, 48, '') . '-c' . $replica->id . '-' . (++$index)
+                                : null;
+                            $replica->adminVariants()->create([
+                                'size' => $v->size,
+                                'color' => $v->color,
+                                'sku' => $newSku,
+                                'price_override' => $v->price_override,
+                                'is_active' => $v->is_active,
+                            ]);
+                        }
+                    })
+                    ->successRedirectUrl(fn (Product $replica) => ProductResource::getUrl('edit', ['record' => $replica])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

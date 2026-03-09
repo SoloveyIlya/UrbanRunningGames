@@ -1,0 +1,351 @@
+/* Страница: Рейтинг */
+
+@media (min-width: 1024px) {
+    .page-rating {
+        padding-top: 6rem;
+    }
+}
+
+.rating-table-btn-info {
+    margin-bottom: 2rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid #a78bfa;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .rating-table-btn-info {
+        padding-left: 1rem;
+        border-left-width: 2px;
+    }
+}
+.rating-section {
+    background-color: #111111;
+    color: #eee;
+    padding: 2rem 0 3rem;
+}
+
+@media (max-width: 768px) {
+    .rating-section {
+        padding: 1.5rem 0 2.5rem;
+    }
+}
+
+.rating-info {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.rating-info p {
+    margin: 0 0 0.35rem;
+}
+
+/* Топ-3: подиум */
+.rating-podium {
+    margin-bottom: 2.5rem;
+}
+
+.rating-podium__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .rating-podium__title {
+        font-size: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+}
+
+.rating-podium__list {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 1rem;
+    align-items: end;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .rating-podium__list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Порядок: 2 — 1 — 3 (подиум: серебро слева, золото центр, бронза справа) */
+.rating-podium__list > *:nth-child(1) { order: 1; }
+.rating-podium__list > *:nth-child(2) { order: 2; }
+.rating-podium__list > *:nth-child(3) { order: 3; }
+
+@media (max-width: 768px) {
+    .rating-podium__list > *:nth-child(1) { order: 2; }
+    .rating-podium__list > *:nth-child(2) { order: 1; }
+    .rating-podium__list > *:nth-child(3) { order: 3; }
+}
+
+.rating-podium__card {
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rating-podium__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.rating-podium__card--1 {
+    padding-bottom: 2rem;
+}
+
+@media (min-width: 769px) {
+    .rating-podium__card--1 {
+        padding-top: 2rem;
+        padding-bottom: 2.25rem;
+        transform: translateY(-24px);
+    }
+    .rating-podium__card--1:hover {
+        transform: translateY(-26px);
+    }
+}
+
+
+.rating-podium__place {
+    margin-bottom: 0.75rem;
+}
+
+.rating-podium__medal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #111;
+}
+
+@media (min-width: 769px) {
+    .rating-podium__card--1 .rating-podium__medal {
+        width: 3.25rem;
+        height: 3.25rem;
+        font-size: 1.6rem;
+    }
+}
+
+.rating-podium__medal--gold {
+    background: linear-gradient(145deg, #f4d03f 0%, #d4af37 50%, #b8960c 100%);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+.rating-podium__medal--silver {
+    background: linear-gradient(145deg, #e8e8e8 0%, #c0c0c0 50%, #a0a0a0 100%);
+    box-shadow: 0 4px 12px rgba(192, 192, 192, 0.3);
+}
+
+.rating-podium__medal--bronze {
+    background: linear-gradient(145deg, #e8a84a 0%, #cd7f32 50%, #a0522d 100%);
+    box-shadow: 0 4px 12px rgba(205, 127, 50, 0.35);
+}
+
+.rating-podium__team {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.rating-podium__card--1 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4af37 50%, #f4d03f 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+.rating-podium__card--2 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #a0a0a0 0%, #c0c0c0 50%, #e8e8e8 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.4);
+}
+
+.rating-podium__card--3 .rating-podium__team::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #a0522d 0%, #cd7f32 50%, #e8a84a 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.45);
+}
+
+.rating-podium__card--1 .rating-podium__team {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .rating-podium__team {
+        font-size: 1rem;
+    }
+    .rating-podium__card--1 .rating-podium__team {
+        font-size: 1.1rem;
+    }
+}
+
+.rating-podium__stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    margin: 0;
+}
+
+.rating-podium__stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.rating-podium__stats dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.rating-podium__stats dd {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+/* Таблица */
+.rating-table-title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.rating-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.rating-table {
+    width: 100%;
+    min-width: 320px;
+    border-collapse: collapse;
+    color: #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    background-color: #3a3a3a;
+}
+
+.rating-table th,
+.rating-table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 600px) {
+    .rating-table th,
+    .rating-table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+.rating-table thead {
+    background: linear-gradient(180deg, #4a4a4a 0%, #404040 100%);
+}
+
+.rating-table th {
+    font-weight: 600;
+    color: #f5f5f5;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.rating-table tbody tr {
+    background-color: #3a3a3a;
+    transition: background-color 0.2s;
+}
+
+.rating-table tbody tr:hover {
+    background-color: #454545;
+}
+
+.rating-table__row--top-3 {
+    background-color: #424242;
+}
+
+.rating-table__row--top-3 td:first-child {
+    font-weight: 700;
+    color: #d4b84a;
+}
+
+.rating-table .empty-state {
+    color: rgba(255, 255, 255, 0.75);
+    padding: 2rem;
+    text-align: center;
+}
+
+.rating-table .empty-state a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.rating-table .empty-state a:hover {
+    text-decoration: underline;
+}
+
+.rating-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.rating-actions .btn {
+    min-width: 200px;
+}

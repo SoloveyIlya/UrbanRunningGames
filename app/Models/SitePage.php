@@ -19,7 +19,7 @@ class SitePage extends Model
     public const SLUG_TERMS = 'terms';
     public const SLUG_CONSENT = 'consent';
     public const SLUG_RETURNS = 'returns';
-    public const SLUG_HOME_INFO = 'home_info';
+    public const SLUG_TRAVEL = 'travel';
 
     public static function slugs(): array
     {
@@ -31,6 +31,7 @@ class SitePage extends Model
             self::SLUG_TERMS,
             self::SLUG_CONSENT,
             self::SLUG_RETURNS,
+            self::SLUG_TRAVEL,
         ];
     }
 

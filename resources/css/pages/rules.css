@@ -1,0 +1,149 @@
+/* Страница: Правила забега — в стиле корзины/оформления (тёмный фон, фиолетовые акценты, Houschka) */
+
+/* ----- Заголовок страницы ----- */
+.page-header--rules {
+    padding: 2rem 0 2.5rem;
+}
+
+.page-header--rules h1 {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 0;
+}
+
+@media (min-width: 769px) {
+    .page-header--rules h1 {
+        margin-top: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .page-header--rules h1 {
+        margin-top: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header--rules {
+        padding: 1.5rem 0 1.75rem;
+    }
+    .page-header--rules h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header--rules {
+        padding: 1.25rem 0 1.5rem;
+    }
+    .page-header--rules h1 {
+        font-size: 1.35rem;
+    }
+}
+
+/* ----- Секция ----- */
+.rules-section {
+    padding: 0 0 3rem;
+    color: #eee;
+}
+
+@media (max-width: 768px) {
+    .rules-section {
+        padding: 0 0 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .rules-section {
+        padding: 0 0 1.5rem;
+    }
+}
+
+/* ----- Карточка с контентом ----- */
+.rules-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background-color: #3a3a3a;
+    border-radius: 12px;
+    padding: 2rem 2rem 2.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 768px) {
+    .rules-card {
+        padding: 1.5rem 1.5rem 1.75rem;
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rules-card {
+        padding: 1.25rem 1.25rem 1.5rem;
+        border-radius: 14px;
+    }
+}
+
+.rules-card__content {
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.65;
+    font-size: 1rem;
+}
+
+.rules-card__content p {
+    margin: 0 0 1rem;
+}
+
+.rules-card__content p:last-child {
+    margin-bottom: 0;
+}
+
+.rules-card__content h2 {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 1.5rem 0 0.5rem;
+}
+
+.rules-card__content h2:first-child {
+    margin-top: 0;
+}
+
+.rules-card__content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f5f5f5;
+    margin: 1.25rem 0 0.4rem;
+}
+
+.rules-card__content ul,
+.rules-card__content ol {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+}
+
+.rules-card__content li {
+    margin-bottom: 0.35rem;
+}
+
+.rules-card__content a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.rules-card__content a:hover {
+    text-decoration: underline;
+}
+
+.rules-card__content strong {
+    color: #fff;
+}

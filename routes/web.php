@@ -64,6 +64,7 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('legal.privacy
 Route::get('/consent', [LegalController::class, 'consent'])->name('legal.consent');
 Route::get('/terms', [LegalController::class, 'terms'])->name('legal.terms');
 Route::get('/returns', [LegalController::class, 'returns'])->name('legal.returns');
+Route::get('/travel', [LegalController::class, 'travel'])->name('legal.travel');
 
 // Админка: экспорт заявок в CSV (только для авторизованных)
 Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function () {

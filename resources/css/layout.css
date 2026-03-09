@@ -1,0 +1,306 @@
+/* Общий layout страниц: заголовок, секции, заголовки секций */
+
+/* Hero с overlay для страниц рейтинга и галереи (как на событиях) */
+.page-hero {
+    position: relative;
+    min-height: 38vh;
+    min-height: 38dvh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #1a1525 0%, #0c0c10 50%, #1a1525 100%);
+    color: #fff;
+    text-align: center;
+}
+
+.main-after-header .page-hero {
+    margin-top: calc(-1 * var(--header-height, 102px));
+    padding-top: var(--header-height, 102px);
+}
+
+@media (max-width: 900px) {
+    .main-after-header .page-hero {
+        margin-top: calc(-1 * var(--header-height, 130px));
+        padding-top: var(--header-height, 130px);
+    }
+}
+
+@media (max-width: 480px) {
+    .main-after-header .page-hero {
+        margin-top: calc(-1 * var(--header-height, 90px));
+        padding-top: var(--header-height, 90px);
+    }
+}
+
+.page-hero .hero__overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+}
+
+.page-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.page-hero h1 {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 0 0 0.5rem;
+}
+
+.page-hero__sub {
+    margin: 0;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        min-height: 32vh;
+        min-height: 32dvh;
+    }
+    .page-hero h1 {
+        font-size: 1.75rem;
+    }
+    .page-hero__sub {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-hero {
+        min-height: 28vh;
+        min-height: 28dvh;
+    }
+    .page-hero h1 {
+        font-size: 1.5rem;
+    }
+}
+
+.page-header {
+    background-color: #111111;
+    padding: 2.5rem 0;
+    margin-bottom: 0;
+    color: #eee;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+.page-header-sub {
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1rem;
+}
+
+.page-header-sub a {
+    color: #a78bfa;
+    text-decoration: none;
+}
+
+.page-header-sub a:hover {
+    text-decoration: underline;
+}
+
+.page-header--compact {
+    padding: 1rem 0 1.25rem;
+}
+
+.page-header--compact h1 {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .page-header--compact h1 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Минимальный заголовок для страницы магазина — убираем пустое место сверху */
+.page-header--shop {
+    padding: 0.75rem 0 1rem;
+}
+
+.page-header--shop .container {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.page-header--shop h1 {
+    font-size: 2.25rem;
+}
+
+.page-header--shop .page-header-sub {
+    font-size: 1.2rem;
+    margin-top: 0.35rem;
+}
+
+@media (max-width: 768px) {
+    .page-header--shop h1 {
+        font-size: 1.75rem;
+    }
+    .page-header--shop .page-header-sub {
+        font-size: 1.05rem;
+    }
+}
+
+/* Секции */
+section {
+    padding: 3rem 0;
+    color: #eee;
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 1.5rem 0;
+    }
+}
+
+/* Заголовки секций на внутренних страницах */
+.content-section h2,
+.partners-section h2,
+.partners-section h3,
+.contact-section h2,
+.contact-section h3,
+.rating-section h2,
+.shop-section h2,
+.gallery-section h2,
+.events-section h2,
+.event-detail h2,
+.archive-section h2,
+.checkout-form-wrap h2,
+.checkout-summary h2 {
+    color: #fff;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.content-section .content,
+.content-section .legal-content,
+.legal-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.content-section a,
+.legal-content a {
+    color: #a78bfa;
+}
+
+.contact-info h2,
+.contact-info h3,
+.contact-info p,
+.contact-details p {
+    color: #eee;
+}
+
+.contact-details strong {
+    color: #fff;
+}
+
+.social-links h3 {
+    color: #eee;
+}
+
+/* Глобальные заголовки */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.75rem;
+        margin-bottom: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Адаптивность — общие переключения сеток и мобильное меню */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-menu:not(.nav-menu--mobile) {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #2c3e50;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-main-info {
+        grid-template-columns: 1fr;
+    }
+
+    .product-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-detail-gallery {
+        position: static;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}

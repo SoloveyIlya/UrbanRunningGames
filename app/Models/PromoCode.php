@@ -52,7 +52,7 @@ class PromoCode extends Model
         if ($this->valid_from && $now->lt($this->valid_from)) {
             return ['valid' => false, 'message' => 'Промокод ещё не действует.'];
         }
-        if ($this->valid_until && $now->gt($this->valid_until)) {
+        if ($this->valid_until && $now->gt(Carbon::parse($this->valid_until->format('Y-m-d'))->endOfDay())) {
             return ['valid' => false, 'message' => 'Срок действия промокода истёк.'];
         }
 
@@ -61,13 +61,18 @@ class PromoCode extends Model
         }
 
         $applicableTotal = $this->getApplicableTotal($cart);
-        if ($this->min_order_amount !== null && (float) $this->min_order_amount > $applicableTotal) {
-            $min = number_format((float) $this->min_order_amount, 0, ',', ' ');
+        $minOrder = $this->min_order_amount !== null ? (float) $this->min_order_amount : 0;
+        if ($minOrder > 0 && $applicableTotal < $minOrder - 0.01) {
+            $min = number_format($minOrder, 0, ',', ' ');
             return ['valid' => false, 'message' => "Минимальная сумма заказа для промокода: {$min} ₽."];
         }
 
         if ($applicableTotal <= 0) {
-            return ['valid' => false, 'message' => 'Промокод не применим к выбранным товарам.'];
+            $productIds = $this->products()->pluck('id')->toArray();
+            if (! empty($productIds)) {
+                return ['valid' => false, 'message' => 'Промокод действует только на определённые товары. В вашей корзине их нет.'];
+            }
+            return ['valid' => false, 'message' => 'Добавьте товары в корзину для применения промокода.'];
         }
 
         return ['valid' => true];

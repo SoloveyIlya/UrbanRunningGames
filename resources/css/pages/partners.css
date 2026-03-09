@@ -1,0 +1,588 @@
+/* Страница: Партнёры — намеренно другой стиль: тёмный hero, нумерация секций, тайлы без clip-path */
+
+/* ========== Hero: тёмный, асимметричный, без полноэкранного градиента ========== */
+.partners-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 38vh;
+    min-height: 38dvh;
+    display: flex;
+    align-items: center;
+    background: #0c0c10;
+}
+
+.main-after-header .partners-hero {
+    margin-top: calc(-1 * var(--header-height, 102px));
+    padding-top: var(--header-height, 102px);
+}
+
+@media (max-width: 900px) {
+    .main-after-header .partners-hero {
+        margin-top: calc(-1 * var(--header-height, 130px));
+        padding-top: var(--header-height, 130px);
+    }
+}
+
+@media (max-width: 480px) {
+    .main-after-header .partners-hero {
+        margin-top: calc(-1 * var(--header-height, 90px));
+        padding-top: var(--header-height, 90px);
+    }
+}
+
+/* Декоративные blob'ы — только на странице партнёров */
+.partners-hero__blobs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.partners-hero__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+}
+
+.partners-hero__blob--1 {
+    width: 320px;
+    height: 320px;
+    background: rgba(124, 58, 237, 0.35);
+    top: -80px;
+    right: 5%;
+}
+
+.partners-hero__blob--2 {
+    width: 200px;
+    height: 200px;
+    background: rgba(167, 139, 250, 0.25);
+    bottom: -40px;
+    right: 25%;
+}
+
+.partners-hero__blob--3 {
+    width: 140px;
+    height: 140px;
+    background: rgba(102, 126, 234, 0.2);
+    top: 40%;
+    right: 12%;
+}
+
+@media (max-width: 768px) {
+    .partners-hero__blob--1 {
+        width: 220px;
+        height: 220px;
+        right: -40px;
+    }
+    .partners-hero__blob--2 {
+        width: 140px;
+        height: 140px;
+        right: 15%;
+    }
+    .partners-hero__blob--3 {
+        display: none;
+    }
+}
+
+/* Акцентная вертикальная полоса слева — уникальный элемент */
+.partners-hero__accent-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, transparent 0%, #7c3aed 30%, #a78bfa 70%, transparent 100%);
+    opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+    .partners-hero__accent-line {
+        width: 3px;
+    }
+}
+
+.partners-hero__container {
+    position: relative;
+    z-index: 1;
+}
+
+.partners-hero__content {
+    margin-top: 8rem;
+    max-width: 520px;
+    text-align: left;
+}
+
+.partners-hero__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(167, 139, 250, 0.9);
+    margin: 0 0 0.6rem;
+}
+
+.partners-hero__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 2.75rem;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.partners-hero__sub {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .partners-hero {
+        min-height: 32vh;
+        min-height: 32dvh;
+    }
+    .partners-hero__content {
+        max-width: 100%;
+    }
+    .partners-hero__label {
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+    }
+    .partners-hero__title {
+        font-size: 2rem;
+    }
+    .partners-hero__sub {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-hero {
+        min-height: 28vh;
+        min-height: 28dvh;
+    }
+    .partners-hero__title {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+    }
+    .partners-hero__sub {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========== Intro: цитата с левой полосой ========== */
+.partners-intro {
+    padding: 2rem 0 2.5rem;
+}
+
+.partners-intro__quote {
+    margin: 0;
+    padding-left: 1.25rem;
+    border-left: 3px solid #a78bfa;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+    font-style: normal;
+}
+
+@media (max-width: 768px) {
+    .partners-intro {
+        padding: 1.5rem 0 1.75rem;
+    }
+    .partners-intro__quote {
+        font-size: 1rem;
+        padding-left: 1rem;
+        border-left-width: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-intro {
+        padding: 1.25rem 0 1.5rem;
+    }
+    .partners-intro__quote {
+        font-size: 0.95rem;
+    }
+}
+
+/* ========== Секции: нумерация 01, 02 — не как badge+line на других страницах ========== */
+.partners-block {
+    padding: 0 0 2.5rem;
+}
+
+.partners-block__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.partners-block__num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: rgba(167, 139, 250, 0.35);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.partners-block__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .partners-block {
+        padding-bottom: 2rem;
+    }
+    .partners-block__num {
+        font-size: 1.5rem;
+    }
+    .partners-block__title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-block__head {
+        margin-bottom: 1.25rem;
+        gap: 0.75rem;
+    }
+    .partners-block__num {
+        font-size: 1.25rem;
+    }
+    .partners-block__title {
+        font-size: 1.05rem;
+    }
+}
+
+/* ========== Список партнёров: горизонтальные тайлы, скруглённые, без clip-path ========== */
+.partners-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+@media (max-width: 660px) {
+    .partners-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.partners-list__item {
+    margin: 0;
+}
+
+/* Тайл: скруглённый прямоугольник, лого слева в круге/квадрате, текст справа */
+.partner-tile {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.35rem;
+    background-color: #363636;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.partner-tile:hover {
+    background-color: #3d3d3d;
+    border-color: rgba(167, 139, 250, 0.25);
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.partner-tile--static {
+    cursor: default;
+}
+
+.partner-tile--static:hover {
+    transform: none;
+}
+
+.partner-tile__logo {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.partner-tile__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+}
+
+.partner-tile__initials {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: rgba(167, 139, 250, 0.6);
+    letter-spacing: 0.02em;
+}
+
+.partner-tile__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.partner-tile__name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+}
+
+.partner-tile__desc {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.partner-tile__link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #a78bfa;
+    margin-top: 0.35rem;
+}
+
+.partner-tile__link::after {
+    content: ' →';
+}
+
+@media (max-width: 480px) {
+    .partner-tile {
+        padding: 1rem 1.15rem;
+        gap: 1rem;
+        border-radius: 12px;
+    }
+    .partner-tile__logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+    }
+    .partner-tile__logo img {
+        padding: 4px;
+    }
+    .partner-tile__initials {
+        font-size: 1rem;
+    }
+    .partner-tile__name {
+        font-size: 0.98rem;
+    }
+    .partner-tile__desc {
+        font-size: 0.8rem;
+    }
+}
+
+/* ========== CTA «Хотите стать партнёром?» — форма как .home-stats ========== */
+.partners-cta {
+    padding: 0;
+    margin: 2rem -20px 3rem;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .partners-cta {
+        margin: 1.5rem -16px 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-cta {
+        margin: 1.25rem -12px 1.5rem;
+    }
+}
+
+.partners-cta__strip {
+    background: linear-gradient(135deg, #26203A 0%, #2d2644 50%, #26203A 100%);
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1.5rem;
+    width: 1040px;
+    max-width: calc(100vw - 6rem);
+    min-height: auto;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .partners-cta__strip {
+        width: 1024px;
+        max-width: calc(100vw - 4rem);
+        padding: 1.1rem 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .partners-cta__strip {
+        width: 768px;
+        max-width: calc(100vw - 4rem);
+        padding: 1rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-cta__strip {
+        width: 100%;
+        max-width: calc(100vw - 2rem);
+        padding: 0.9rem 0.75rem;
+    }
+}
+
+.partners-cta__strip::after {
+    content: '';
+    position: absolute;
+    right: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.partners-cta__inner {
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.partners-cta__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+}
+
+.partners-cta__text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 1.5rem;
+}
+
+.partners-cta__btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.partners-cta__btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+    .partners-cta__title {
+        font-size: 1.25rem;
+    }
+    .partners-cta__text {
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+    .partners-cta__btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ========== Пустое состояние: другая форма декора ========== */
+.partners-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.partners-empty__shape {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.25rem;
+    background: rgba(167, 139, 250, 0.15);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.partners-empty__title {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.partners-empty__text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 1rem;
+}
+
+.partners-empty .partners-cta__btn {
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 480px) {
+    .partners-empty {
+        padding: 2rem 0.5rem;
+    }
+    .partners-empty__shape {
+        width: 52px;
+        height: 52px;
+    }
+    .partners-empty__title {
+        font-size: 1.05rem;
+    }
+    .partners-empty__text {
+        font-size: 0.9rem;
+    }
+}

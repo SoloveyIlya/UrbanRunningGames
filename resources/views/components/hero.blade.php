@@ -23,22 +23,16 @@
             <source src="{{ $videoUrl }}" type="{{ $heroVideo->videoMedia->mime_type ?? 'video/mp4' }}">
         </video>
         <div class="hero__overlay"></div>
+        <div class="hero__logo" aria-hidden="true">
+            <img src="{{ asset('images/logo/sprut.svg') }}" alt="" width="442" height="144">
+        </div>
     @elseif($posterUrl)
         <div class="hero__poster" style="background-image: url('{{ $posterUrl }}');"></div>
         <div class="hero__overlay"></div>
+        <div class="hero__logo" aria-hidden="true">
+            <img src="{{ asset('images/logo/sprut.svg') }}" alt="" width="442" height="144">
+        </div>
     @endif
 
-    <div class="hero__content container">
-        <h1>{{ $heroTitle ?? 'Urban Running Games' }}</h1>
-        @if(!$hideSubtitle)
-            <p class="hero-subtitle">{{ $subtitle ?? 'Командные забеги-игры в городской среде' }}</p>
-        @endif
-        <div class="hero-actions">
-            @if(trim($slot ?? '') !== '')
-                {{ $slot }}
-            @elseif($buttonText && $buttonUrl)
-                <a href="{{ $buttonUrl }}" class="btn btn-primary">{{ $buttonText }}</a>
-            @endif
-        </div>
-    </div>
+
 </div>

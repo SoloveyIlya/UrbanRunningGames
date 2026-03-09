@@ -3,7 +3,7 @@
 @section('title', 'Заявка принята - Urban Running Games')
 
 @section('content')
-<div class="page-header">
+<div class="page-header page-header--order-confirmation">
     <div class="container">
         <h1>Заявка принята</h1>
         <p class="page-header-sub">Спасибо! Мы свяжемся с вами в ближайшее время.</p>

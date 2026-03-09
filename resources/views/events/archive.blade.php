@@ -12,36 +12,34 @@
 <section class="archive-section">
     <div class="container">
         @if($events->count() > 0)
-            @foreach($events as $year => $yearEvents)
-                <div class="archive-year">
-                    <h2>{{ $year }} год</h2>
-                    <div class="events-grid">
-                        @foreach($yearEvents as $event)
-                            <div class="event-card">
-                                <div class="event-date">
-                                    <span class="day">{{ $event->starts_at->format('d') }}</span>
-                                    <span class="month">{{ $event->starts_at->translatedFormat('M') }}</span>
-                                </div>
-                                <div class="event-info">
-                                    <h3>{{ $event->title }}</h3>
-                                    <p class="event-location">
-                                        @if($event->city)
-                                            {{ $event->city->name }}
-                                        @endif
-                                        @if($event->location_text)
-                                            , {{ $event->location_text }}
-                                        @endif
-                                    </p>
-                                    @if($event->description)
-                                        <p class="event-description">{{ \Illuminate\Support\Str::limit($event->description, 100) }}</p>
-                                    @endif
-                                    <a href="{{ route('events.show', $event->slug) }}" class="btn btn-sm">Подробнее</a>
-                                </div>
-                            </div>
-                        @endforeach
+            <div class="events-grid archive-events-grid">
+                @foreach($events as $event)
+                    <div class="event-card">
+                        <div class="event-date">
+                            <span class="day">{{ $event->starts_at->format('d') }}</span>
+                            <span class="month">{{ $event->starts_at->translatedFormat('M') }}</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>{{ $event->title }}</h3>
+                            <p class="event-location">
+                                @if($event->city)
+                                    {{ $event->city->name }}
+                                @endif
+                                @if($event->location_text)
+                                    , {{ $event->location_text }}
+                                @endif
+                            </p>
+                            @if($event->description)
+                                <p class="event-description">{{ \Illuminate\Support\Str::limit($event->description, 100) }}</p>
+                            @endif
+                            <a href="{{ route('events.show', $event->slug) }}" class="btn btn-sm">Подробнее</a>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+            <div class="archive-section__pagination">
+                {{ $events->links() }}
+            </div>
         @else
             <div class="empty-state">
                 <p>Архив событий пока пуст.</p>

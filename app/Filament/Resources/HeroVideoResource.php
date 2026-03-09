@@ -28,6 +28,9 @@ class HeroVideoResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    /** Скрыт из меню: настройки перенесены во вкладку «Hero-контент» на странице Контент сайта. */
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form

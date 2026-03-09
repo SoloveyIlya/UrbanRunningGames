@@ -98,6 +98,10 @@ class CartController extends Controller
                 $validation = $promo->validateForCart($cart);
                 if ($validation['valid']) {
                     $discount = $promo->calculateDiscount($cart);
+                    if ($discount <= 0) {
+                        self::clearPromo();
+                        $promo = null;
+                    }
                 } else {
                     self::clearPromo();
                     $promo = null;
@@ -186,16 +190,18 @@ class CartController extends Controller
     {
         $request->validate(['code' => 'required|string|max:64']);
         $code = trim($request->code);
-        $promo = PromoCode::where('code', $code)->first();
+        $promo = PromoCode::whereRaw('LOWER(code) = ?', [strtolower($code)])->first();
         if (! $promo) {
-            return redirect()->route('cart.index')->with('error', 'Промокод не найден.');
+            return redirect()->route('cart.index')->with('promo_error', 'Промокод не найден.');
         }
         $cart = self::getCartForDisplay();
         $validation = $promo->validateForCart($cart);
         if (! $validation['valid']) {
-            return redirect()->route('cart.index')->with('error', $validation['message'] ?? 'Промокод не применим.');
+            return redirect()->route('cart.index')->with('promo_error', $validation['message'] ?? 'Промокод не применим.');
         }
         Session::put(self::SESSION_PROMO, $promo->id);
+        Session::save();
+
         return redirect()->route('cart.index')->with('success', 'Промокод применён.');
     }
 

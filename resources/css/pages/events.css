@@ -1,0 +1,584 @@
+/* Страница: События / Гонки — список и детальная */
+
+/* Обёртка страницы гонок — лёгкий градиент фона */
+.events-list-anchor {
+    scroll-margin-top: 6rem;
+}
+
+.page-events .events-section.upcoming-races,
+.page-events .events-section.archive-races {
+    position: relative;
+}
+
+.page-events .events-section.upcoming-races::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(105, 88, 160, 0.08) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.page-events .archive-races::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(105, 88, 160, 0.06) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Фильтры */
+.events-filters-section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    background: linear-gradient(180deg, rgba(38, 32, 58, 0.4) 0%, rgba(17, 17, 17, 0) 100%);
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 0.5rem;
+}
+
+.events-section__rules-link {
+    margin: 0 0 1rem;
+}
+
+.events-section__rules-link .btn--rules {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, rgba(38, 32, 58, 0.9) 0%, rgba(105, 88, 160, 0.4) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.5);
+    color: #e9e0ff;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.events-section__rules-link .btn--rules:hover {
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.25);
+    background: linear-gradient(135deg, rgba(50, 42, 75, 0.95) 0%, rgba(105, 88, 160, 0.5) 100%);
+    color: #fff;
+}
+
+.events-filters {
+    max-width: 100%;
+}
+
+.events-filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.events-filters__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.events-filters__label-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.events-filters__select {
+    min-width: 160px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: 1px solid rgba(105, 88, 160, 0.5);
+    background-color: rgba(38, 32, 58, 0.8);
+    color: #eee;
+    cursor: pointer;
+}
+
+.events-filters__select:focus {
+    outline: none;
+    border-color: #6958a0;
+    box-shadow: 0 0 0 2px rgba(105, 88, 160, 0.3);
+}
+
+.events-filters__submit {
+    flex-shrink: 0;
+}
+
+/* Блок расширенных фильтров — скрыт по умолчанию, раскрывается по клику */
+.events-filters__params-details {
+    margin-top: 1rem;
+}
+
+.events-filters__params-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #a78bfa;
+    background: transparent;
+    border: 1px solid rgba(105, 88, 160, 0.5);
+    border-radius: 8px;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.events-filters__params-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.events-filters__params-toggle:hover {
+    color: #fff;
+    background: rgba(105, 88, 160, 0.25);
+    border-color: rgba(105, 88, 160, 0.7);
+    box-shadow: 0 2px 8px rgba(105, 88, 160, 0.2);
+}
+
+.events-filters__params-toggle::before {
+    content: '▶';
+    font-size: 0.6rem;
+    line-height: 1;
+    opacity: 0.9;
+    transition: transform 0.2s;
+}
+
+.events-filters__params-details[open] .events-filters__params-toggle::before {
+    content: '▼';
+    transform: none;
+}
+
+.events-filters__params-toggle:focus {
+    outline: none;
+    border-color: #6958a0;
+    box-shadow: 0 0 0 2px rgba(105, 88, 160, 0.35);
+}
+
+.events-filters__row--params {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(105, 88, 160, 0.25);
+}
+
+/* Пара «от — до» для локаций и команд */
+.events-filters__label--range .events-filters__range {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.events-filters__range-sep {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+.events-filters__input--short {
+    min-width: 70px;
+    width: 70px;
+}
+
+.events-filters__input {
+    min-width: 120px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: 1px solid rgba(105, 88, 160, 0.5);
+    background-color: rgba(38, 32, 58, 0.8);
+    color: #eee;
+}
+
+.events-filters__input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.events-filters__input:focus {
+    outline: none;
+    border-color: #6958a0;
+    box-shadow: 0 0 0 2px rgba(105, 88, 160, 0.3);
+}
+
+@media (max-width: 600px) {
+    .events-filters__row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .events-filters__row--params {
+        margin-top: 1rem;
+        padding-top: 1rem;
+    }
+
+    .events-filters__input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .events-filters__input--short {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .events-filters__select {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+/* Секция архива гонок */
+.archive-races {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+    border-top: 1px solid rgba(105, 88, 160, 0.2);
+    background: linear-gradient(0deg, rgba(26, 22, 40, 0.3) 0%, transparent 30%);
+}
+
+.archive-races__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Houschka Rounded', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.archive-races__empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .archive-races__title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* На мобильной версии страницы гонок скрываем картинки в карточках */
+@media (max-width: 768px) {
+    .events-section .race-card--horizontal .race-card__image-wrap {
+        display: none;
+    }
+
+    .events-section .race-card--horizontal {
+        grid-template-columns: 1fr;
+        aspect-ratio: auto;
+        min-height: 0;
+    }
+
+    .events-section .race-card--horizontal .race-card__body {
+        grid-column: 1;
+    }
+}
+
+/* Секция списка гонок использует .upcoming-races и .race-card из home.css */
+.events-section.upcoming-races {
+    padding-bottom: 3rem;
+    padding-top: 2.5rem;
+}
+
+.page-events .upcoming-races__title,
+.page-events .archive-races__title {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.page-events .upcoming-races__title::after,
+.page-events .archive-races__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(105, 88, 160, 0.8), transparent);
+    border-radius: 2px;
+}
+
+.page-events .race-card--horizontal {
+    border: 1px solid rgba(105, 88, 160, 0.15);
+}
+
+.page-events .race-card--horizontal:hover {
+    border-color: rgba(105, 88, 160, 0.35);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.race-card__status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.race-card__status--upcoming {
+    background-color: rgba(40, 167, 69, 0.95);
+    color: #fff;
+}
+
+.race-card__status--past {
+    background-color: rgba(40, 40, 48, 0.9);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+@media (max-width: 600px) {
+    .race-card__status {
+        top: 8px;
+        left: 8px;
+        padding: 0.3rem 0.55rem;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .events-list-anchor {
+        scroll-margin-top: 5rem;
+    }
+}
+
+/* Старые карточки (для совместимости, если понадобятся в других шаблонах) */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .events-grid {
+        gap: 1.25rem;
+        margin-top: 1.25rem;
+    }
+}
+
+.event-card {
+    border: 1px solid rgba(105, 88, 160, 0.35);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: box-shadow 0.3s;
+    background-color: rgba(38, 32, 58, 0.5);
+    color: #eee;
+}
+
+@media (min-width: 640px) {
+    .event-card {
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-card {
+        padding: 1.25rem;
+        gap: 0.75rem;
+    }
+}
+
+.event-card:hover {
+    box-shadow: 0 4px 16px rgba(105, 88, 160, 0.25);
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #26203a 0%, #6958a0 100%);
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+@media (max-width: 480px) {
+    .event-date {
+        min-width: 64px;
+        padding: 0.75rem;
+    }
+}
+
+.event-date .day {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    .event-date .day {
+        font-size: 1.5rem;
+    }
+}
+
+.event-date .month {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.event-date .year {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.event-info {
+    flex: 1;
+}
+
+.event-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.event-status.upcoming {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.event-status.past {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.event-location {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0.5rem 0;
+}
+
+.event-description {
+    color: rgba(255, 255, 255, 0.75);
+    margin: 1rem 0;
+}
+
+.event-detail {
+    padding: 2rem 0;
+}
+
+.event-main-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.info-block h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #a78bfa;
+}
+
+.content-block {
+    margin-bottom: 3rem;
+}
+
+.content-block h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.content {
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.content a {
+    color: #a78bfa;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+/* Архив событий */
+.archive-year {
+    margin-bottom: 3rem;
+}
+
+.archive-year h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #a78bfa;
+}
+
+.archive-events-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.archive-section__pagination {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.archive-section__pagination nav,
+.archive-section__pagination .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.archive-section__pagination a,
+.archive-section__pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e5e5e5;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.archive-section__pagination a:hover {
+    background: rgba(167, 139, 250, 0.25);
+    color: #fff;
+}
+
+.archive-section__pagination .active span,
+.archive-section__pagination .current span {
+    background: rgba(167, 139, 250, 0.35);
+    color: #fff;
+    font-weight: 600;
+}
