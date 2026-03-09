@@ -29,8 +29,10 @@
         @if($heroOrnamentDesktopUrl ?? null)
             <div class="hero__ornament hero__ornament--desktop" style="background-image: url('{{ e($heroOrnamentDesktopUrl) }}'); opacity: {{ is_numeric($heroOrnamentOpacity) ? $heroOrnamentOpacity : 0.85 }};"></div>
         @endif
-        <div class="hero__logo" aria-hidden="true">
-            <img src="{{ asset('images/logo/sprut.svg') }}" alt="" width="320" height="104">
+        <div class="hero__logo-wrap hero__logo-wrap--sticky" id="heroLogoWrap">
+            <div class="hero__logo" aria-hidden="true">
+                <img src="{{ asset('images/logo/sprut.svg') }}" alt="" width="320" height="104">
+            </div>
         </div>
     @elseif($posterUrl)
         <div class="hero__poster" style="background-image: url('{{ $posterUrl }}');"></div>

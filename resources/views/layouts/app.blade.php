@@ -39,7 +39,7 @@
         @endphp
     @endif
     @stack('styles')
-    <style>:root { --map-bg-url: url('{{ asset('images/map-background.png') }}'); --race-card-all-ornament-url: url('{{ asset('images/ornaments/image.png') }}'); }</style>
+    <style>:root { --map-bg-url: url('{{ asset('images/map-background.png') }}'); --race-card-all-ornament-url: url('{{ asset('images/ornaments/image.png') }}'); --footer-ornament-url: url('{{ asset('images/ornaments/footer-ornament.png') }}'); }</style>
 </head>
 @php
     $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
@@ -108,9 +108,6 @@
                         </a>
                         <a href="{{ $siteContact['telegram_url'] ?? 'https://t.me/urbanrunninggames' }}" target="_blank" rel="noopener" class="navbar__social-link" aria-label="Telegram">
                             <svg class="navbar__social-icon" width="24" height="24" aria-hidden="true"><use href="#icon-nav-telegram"/></svg>
-                        </a>
-                        <a href="{{ $siteContact['rutube_url'] ?? 'https://rutube.ru' }}" target="_blank" rel="noopener" class="navbar__social-link" aria-label="RuTube">
-                            <svg class="navbar__social-icon" width="24" height="24" aria-hidden="true"><use href="#icon-nav-rutube"/></svg>
                         </a>
                     </div>
                 </div>
@@ -223,6 +220,36 @@
             img.classList.add('img-placeholder');
             console.warn('[Storage 404]', img.alt || img.getAttribute('src'), window.location.href);
         }, true);
+        // Лого в hero с видео: обрезается по границам hero (как заходит под фон)
+        (function() {
+            var hero = document.querySelector('.hero.hero--with-video');
+            var wrap = document.getElementById('heroLogoWrap');
+            if (!hero || !wrap) return;
+
+            function updateClip() {
+                var r = hero.getBoundingClientRect();
+                var top = Math.max(0, r.top);
+                var right = Math.max(0, window.innerWidth - r.right);
+                var bottom = Math.max(0, window.innerHeight - r.bottom);
+                var left = Math.max(0, r.left);
+                wrap.style.clipPath = 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px)';
+            }
+
+            var ticking = false;
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        updateClip();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            updateClip();
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+        })();
     </script>
     @stack('scripts')
 </body>

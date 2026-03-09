@@ -21,7 +21,7 @@
         </div>
     </header>
 
-    <div class="container max-w-[1200px] mx-auto px-5 py-8 md:py-12">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">
         {{-- Вводный блок — цитата с левой полосой, как на странице партнёров --}}
         <section class="contact-intro mb-10">
             <blockquote class="contact-intro__quote text-lg text-white/90 italic border-l-4 border-[#8D49EE] pl-6 py-2 m-0">

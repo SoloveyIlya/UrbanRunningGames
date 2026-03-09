@@ -10,7 +10,7 @@
 <div id="events-list" class="events-list-anchor"></div>
 
 <section class="events-section events-filters-section py-12 md:py-16" aria-label="Фильтры">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         <p class="events-section__rules-link mb-6">
             <a href="{{ route('rules') }}" class="btn btn--rules">Правила забега</a>
         </p>
@@ -71,7 +71,7 @@
 </section>
 
 <section class="events-section upcoming-races py-12 md:py-16 text-white" aria-labelledby="upcoming-heading">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         <h2 id="upcoming-heading" class="upcoming-races__title text-2xl md:text-3xl font-bold uppercase tracking-wide text-white mb-8">Предстоящие гонки</h2>
         @if($upcomingEvents->count() > 0)
             <div class="upcoming-races__list">
@@ -108,7 +108,7 @@
 </section>
 
 <section class="events-section archive-races py-12 md:py-16" aria-labelledby="archive-heading">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         <h2 id="archive-heading" class="archive-races__title text-2xl md:text-3xl font-bold uppercase tracking-wide text-white mb-8">Архив гонок</h2>
         @if($pastEventsPaginator->count() > 0)
             <div class="upcoming-races__list archive-races__list">

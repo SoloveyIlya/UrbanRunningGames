@@ -20,13 +20,13 @@
 
 @media (max-width: 768px) {
     .header-sticky {
-        padding: 8px 16px 0 16px;
+        padding: 8px 14px 0 14px;
     }
 }
 
 @media (max-width: 480px) {
     .header-sticky {
-        padding: 8px 12px 0 12px;
+        padding: 8px 10px 0 10px;
     }
 }
 
@@ -268,10 +268,11 @@
     width: 24px;
     height: 24px;
     color: #FFFFFF;
+    opacity: 0.75;
 }
 
 .navbar__social-link:hover {
-    opacity: 0.9;
+    opacity: 1;
 }
 
 .navbar__social-icon {
@@ -354,7 +355,7 @@ body.has-alerts .nav-menu--mobile {
 
 @media (max-width: 900px) {
     .header-sticky {
-        padding: 8px 16px 0 16px;
+        padding: 8px 13px 0 13px;
     }
     .navbar {
         max-width: none;
@@ -399,9 +400,9 @@ body.has-alerts .nav-menu--mobile {
     .nav-menu--mobile {
         position: fixed;
         top: 80px;
-        left: 16px;
-        right: 16px;
-        padding: 1rem 20px;
+        left: 24px;
+        right: 24px;
+        padding: 0.75rem 1.25rem;
         background: var(--navbar-bg);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
@@ -443,9 +444,9 @@ body.has-alerts .nav-menu--mobile {
     }
     .nav-menu--mobile {
         top: 72px;
-        left: 12px;
-        right: 12px;
-        padding: 1rem 16px;
+        left: 20px;
+        right: 20px;
+        padding: 0.75rem 1rem;
         border-radius: 0 0 var(--radius-new, 8px) var(--radius-new, 8px);
     }
     .nav-menu--mobile a {

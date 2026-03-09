@@ -6,14 +6,14 @@
 <div class="page-rating">
 <section class="page-hero relative min-h-[38vh] flex items-center justify-center text-center bg-gradient-to-br from-[#1a1525] via-[#0c0c10] to-[#1a1525] text-white">
     <div class="hero__overlay absolute inset-0 pointer-events-none"></div>
-    <div class="container relative z-10 max-w-[1200px] mx-auto px-5 py-12">
+    <div class="container relative z-10 max-w-[1200px] mx-auto px-4 sm:px-5 py-12">
         <h1 class="text-3xl md:text-4xl font-bold italic uppercase tracking-wide text-white mb-2">Сводный рейтинг</h1>
         <p class="page-hero__sub text-lg text-white/85 m-0">Рейтинг команд по результатам всех проведённых забегов-игр</p>
     </div>
 </section>
 
 <section class="rating-section py-12 md:py-16 text-gray-100">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         <div class="rating-info"> 
         </div>
 

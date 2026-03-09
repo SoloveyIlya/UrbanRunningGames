@@ -31,7 +31,7 @@
 </div>
 
 <section class="shop-section py-12 md:py-16 text-gray-100">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         {{-- Пункт «Новинки» и панель фильтров --}}
         <div class="shop-toolbar flex flex-wrap items-center justify-between gap-4 mb-8">
             <nav class="shop-tabs" aria-label="Разделы каталога">

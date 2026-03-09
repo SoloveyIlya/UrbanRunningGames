@@ -32,7 +32,7 @@
     </div>
 </section>
 
-<div class="container max-w-[1200px] mx-auto px-5 py-8 md:py-12">
+<div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">
     {{-- Вводный текст из админки --}}
     @if(!empty($content))
         <section class="about-intro">

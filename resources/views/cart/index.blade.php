@@ -5,7 +5,7 @@
 @section('content')
 <div class="page-cart">
 <div class="page-header page-header--cart bg-[#111] text-gray-200 py-8 px-0">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         <nav class="breadcrumb-nav flex items-center gap-1 text-sm text-white/80 mb-2" aria-label="Хлебные крошки">
             <a href="{{ route('shop.index') }}">Магазин</a>
             <span class="breadcrumb-sep">/</span>
@@ -16,7 +16,7 @@
 </div>
 
 <section class="cart-section py-12 md:py-16">
-    <div class="container max-w-[1200px] mx-auto px-5">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
         @if(count($items) > 0)
             <div class="cart-table-wrap">
                 <table class="cart-table">
