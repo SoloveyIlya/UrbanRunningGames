@@ -998,26 +998,53 @@
 }
 
 .btn {
-    display: inline-block;
-    padding: 0.5rem 1.5rem;
-    background:#26203a ;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 14px 18px;
+    background: #26203a;
     color: #fff;
     text-decoration: none;
-    border-radius: 20px;
-    transition: background 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+    border: none;
+    transition: background 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    font-size: 1rem;
 }
 
+/* Кнопка «Подробнее» на карточке товара — как в макете: 215×48, #8D49EE, 8px */
 .product-card__btn {
     margin-top: 0.75rem;
     align-self: flex-start;
+    width: 215px;
+    min-width: 215px;
+    height: 48px;
+    padding: 14px 18px;
+    background: #8D49EE !important;
+    color: #fff !important;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.product-card__btn:hover {
+    background: #a366f5 !important;
+    color: #fff !important;
 }
 
 @media (max-width: 768px) {
     .product-card__btn {
         margin-top: 0.4rem;
-        padding: 0.4rem 0.6rem;
+        padding: 14px 18px;
+        width: 215px;
+        min-width: 215px;
+        height: 48px;
         font-size: 0.8rem;
     }
 }
@@ -1025,8 +1052,11 @@
 @media (max-width: 600px) {
     .product-card__btn {
         margin-top: 0.3rem;
-        padding: 0.3rem 0.5rem;
-        font-size: 0.65rem;
+        padding: 14px 18px;
+        width: 215px;
+        min-width: 215px;
+        height: 48px;
+        font-size: 0.75rem;
     }
 }
 

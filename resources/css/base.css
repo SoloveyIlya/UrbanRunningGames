@@ -1,10 +1,46 @@
 /* Базовые стили: сброс, шрифты, контейнер, main, hero */
 
+/* Единый радиус скругления для главной и общих элементов. Новая вёрстка: 8px по макету. */
+:root {
+    --radius-base: 12px;
+    --radius-new: 8px;
+    --color-bg-page: #121315;
+    --color-accent: #8D49EE;
+    --color-glass: rgba(39, 40, 42, 0.6);
+    --color-glass-accent: rgba(141, 73, 238, 0.6);
+    --container-max: 1200px;
+    --container-padding: 20px;
+}
+
 @font-face {
     font-family: 'Houschka Rounded';
-    src: url('../fonts/Houschka_Rounded_Bold_Italic.otf') format('opentype');
+    src: url('../fonts/HouschkaRoundedAltBoldRegular.otf') format('opentype');
     font-weight: 700;
-    font-style: italic;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Houschka Rounded';
+    src: url('../fonts/houschka-rounded-medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Houschka Rounded';
+    src: url('../fonts/HouschkaRoundedAltDemiBoldRegular.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Houschka Rounded';
+    src: url('../fonts/HouschkaRoundedAltThinRegular.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
     font-display: swap;
 }
 
@@ -15,38 +51,78 @@
 }
 
 html {
-    background-color: #111111;
+    background-color: var(--color-bg-page, #121315);
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Houschka Rounded', sans-serif;
     line-height: 1.6;
     color: #eee;
-    background-color: #111111;
+    background-color: var(--color-bg-page, #121315);
     position: relative;
     min-height: 100vh;
 }
 
+/* Карта на заднем фоне: отзеркалена. Эталон 1200px — размер и позиция фиксированы в px, не зависят от масштаба/ширины окна и прокрутки. */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    background-image: var(--map-bg-url);
+    background-size: 1540px auto; /* фиксированный размер по эталону 1200px */
+    background-position: -600px 508px; /* фиксированная позиция — карта не смещается при изменении окна */
+    background-attachment: fixed; /* привязка к viewport — не двигается при прокрутке */
+    background-repeat: no-repeat;
+    opacity: 1;
+    pointer-events: none;
+    transform: scaleX(-1);
+}
+
 .container {
-    max-width: 1200px;
+    max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 var(--container-padding);
+}
+
+@media (min-width: 1400px) {
+    :root {
+        --container-max: 1280px;
+        --container-padding: 24px;
+    }
+}
+
+@media (min-width: 1600px) {
+    :root {
+        --container-max: 1360px;
+        --container-padding: 28px;
+    }
+}
+
+@media (min-width: 1920px) {
+    :root {
+        --container-max: 1440px;
+        --container-padding: 32px;
+    }
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 0 16px;
+    :root {
+        --container-padding: 16px;
     }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 0 12px;
+    :root {
+        --container-padding: 12px;
     }
 }
 
 .main-after-header {
-    background-color: #111111;
+    background-color: transparent;
     position: relative;
 }
 
@@ -107,6 +183,20 @@ body {
     align-items: center;
 }
 
+/* Hero с видео на главной: масштабируется по контейнеру, пропорции 1200×738 */
+.main-after-header .hero.hero--with-video:has(.hero__overlay) {
+    margin-top: calc(-1 * var(--header-height, 102px));
+    padding-top: var(--header-height, 102px);
+    width: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    aspect-ratio: 1200 / 738;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block;
+}
+
 @media (max-width: 1024px) {
     .hero--with-video {
         min-height: 115vh;
@@ -130,7 +220,9 @@ body {
         margin-top: calc(-1 * var(--header-height, 100px));
         padding-top: var(--header-height, 100px);
     }
-    .main-after-header .hero.hero--with-video .hero__overlay,
+    .main-after-header .hero.hero--with-video .hero__overlay {
+        top: calc(-1 * var(--header-height, 100px));
+    }
     .main-after-header .hero.hero--with-video .hero__video {
         top: calc(-1 * var(--header-height, 100px));
         height: calc(100% + var(--header-height, 100px));
@@ -142,7 +234,9 @@ body {
         margin-top: calc(-1 * var(--header-height, 90px));
         padding-top: var(--header-height, 90px);
     }
-    .main-after-header .hero.hero--with-video .hero__overlay,
+    .main-after-header .hero.hero--with-video .hero__overlay {
+        top: calc(-1 * var(--header-height, 90px));
+    }
     .main-after-header .hero.hero--with-video .hero__video {
         top: calc(-1 * var(--header-height, 90px));
         height: calc(100% + var(--header-height, 90px));
@@ -152,11 +246,24 @@ body {
 .main-after-header .hero:has(.hero__overlay) {
     margin-top: calc(-1 * var(--header-height, 102px));
     padding-top: var(--header-height, 102px);
+    width: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    aspect-ratio: 1200 / 738;
+    height: auto;
+    min-height: 0;
 }
 
 .main-after-header .hero:has(.hero__overlay) .hero__overlay {
-    top: calc(-1 * var(--header-height, 102px));
-    height: calc(100% + var(--header-height, 102px));
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    transform: none;
 }
 
 .main-after-header .hero.hero--with-video .hero__video {
@@ -190,8 +297,47 @@ body {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    aspect-ratio: 1200 / 738;
+    height: auto;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    z-index: 1;
+}
+
+.hero__ornament {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+/* Мобильный орнамент — по центру; на десктопе скрыт */
+.hero__ornament--mobile {
+    display: block;
+}
+
+.hero__ornament--desktop {
+    display: none;
+    background-size: cover;
+    background-position: center;
+}
+
+@media (min-width: 769px) {
+    .hero__ornament--mobile {
+        display: none;
+    }
+    .hero__ornament--desktop {
+        display: block;
+    }
 }
 
 .hero__logo {
@@ -199,8 +345,8 @@ body {
     left: 100px;
     top: 50%;
     transform: translateY(-50%);
-    width: 560px;
-    height: 183px;
+    width: 320px;
+    height: 104px;
     max-width: calc(100% - 200px);
     z-index: 2;
     display: flex;
@@ -213,13 +359,15 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: left center;
 }
 
 @media (max-width: 1200px) {
     .hero__logo {
         left: 80px;
-        width: 480px;
-        height: 156px;
+        width: min(320px, calc(100% - 160px));
+        height: auto;
+        aspect-ratio: 320 / 104;
         max-width: calc(100% - 160px);
     }
 }
@@ -227,8 +375,9 @@ body {
 @media (max-width: 1024px) {
     .hero__logo {
         left: 60px;
-        width: 400px;
-        height: 130px;
+        width: min(280px, calc(100% - 120px));
+        height: auto;
+        aspect-ratio: 320 / 104;
         max-width: calc(100% - 120px);
     }
 }
@@ -236,9 +385,9 @@ body {
 @media (max-width: 900px) {
     .hero__logo {
         left: 36px;
-        width: min(320px, calc(100% - 72px));
+        width: min(240px, calc(100% - 72px));
         height: auto;
-        aspect-ratio: 560 / 183;
+        aspect-ratio: 320 / 104;
         max-width: calc(100% - 72px);
     }
 }
@@ -246,7 +395,9 @@ body {
 @media (max-width: 480px) {
     .hero__logo {
         left: 28px;
-        width: min(260px, calc(100% - 56px));
+        width: min(200px, calc(100% - 56px));
+        height: auto;
+        aspect-ratio: 320 / 104;
         max-width: calc(100% - 56px);
     }
 }

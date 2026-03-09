@@ -11,15 +11,15 @@
 {{-- Hero — заголовок и подзаголовок из админки; фон и оверлей настраиваются в Hero-контент → Hero страницы «О команде» --}}
 <div class="hero about-hero" @if($heroBgStyle) style="{{ $heroBgStyle }}" @endif>
     <div class="about-hero__overlay" style="opacity: {{ is_numeric($hero_overlay_opacity ?? '') ? (float) $hero_overlay_opacity : 0.35 }};"></div>
-    <div class="about-hero__content">
-        <div class="container">
-            <h1 class="about-hero__title">{{ $hero_title ?? 'Команда' }}</h1>
-            <p class="about-hero__sub">{{ $hero_subtitle ?? 'Люди, которые делают Urban Running Games — забеги-игры в вашем городе' }}</p>
+    <div class="about-hero__content relative z-10 flex items-center">
+        <div class="container max-w-[1200px] mx-auto px-5 py-12 text-center">
+            <h1 class="about-hero__title text-4xl md:text-5xl font-bold text-white mb-2">{{ $hero_title ?? 'Команда' }}</h1>
+            <p class="about-hero__sub text-lg text-white/90 m-0">{{ $hero_subtitle ?? 'Люди, которые делают Urban Running Games — забеги-игры в вашем городе' }}</p>
         </div>
     </div>
 </div>
 
-<section class="about-mission" aria-labelledby="about-mission-heading">
+<section class="about-mission relative py-16 md:py-20" aria-labelledby="about-mission-heading">
     <div class="about-mission__bg" aria-hidden="true"></div>
     <div class="about-mission__wrap">
         <h2 id="about-mission-heading" class="visually-hidden">Наша миссия</h2>
@@ -32,7 +32,7 @@
     </div>
 </section>
 
-<div class="container">
+<div class="container max-w-[1200px] mx-auto px-5 py-8 md:py-12">
     {{-- Вводный текст из админки --}}
     @if(!empty($content))
         <section class="about-intro">

@@ -1,39 +1,76 @@
-/* Футер — форма по SVG, градиент #26203A → #6958A0 */
+/* Футер — по макету новой вёрстки: фиолетовый фон, логотип слева, контакты, орнамент справа внизу */
 
+/* Адаптив как у навбара: ≥1200 контейнер масштабируется (var(--container-max)), ниже — 1199/1024/768/480/360. */
+
+/* Футер — по макету: 1100×272px, фиолетовое стекло в едином SVG (форма + орнамент), blur 5px, скругление 8px */
 .footer {
     position: relative;
-    width: calc(100% - 1rem);
-    max-width: 1340px;
-    margin: 0 auto 2rem;
-    aspect-ratio: 1340 / 636;
-    min-height: 280px;
+    width: calc(100% - 100px);
+    max-width: 1100px;
+    margin: 12px 50px;
+    min-height: 272px;
     overflow: hidden;
     contain: layout paint;
+    border-radius: 8px;
+    background: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    clip-path: url(#footer-clip);
+    -webkit-clip-path: url(#footer-clip);
+}
+
+/* ≥1200px: полоса футера удлиняется влево и вправо при масштабировании (отступы фиксированы, контент — в контейнере) */
+@media (min-width: 1200px) {
+    .footer {
+        width: calc(100% - 48px);
+        max-width: none;
+        margin-left: 24px;
+        margin-right: 24px;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        padding-left: 0;
+        padding-right: 0;
+        box-sizing: border-box;
+    }
+    .footer__content-wrap {
+        max-width: var(--container-max);
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: var(--container-padding);
+        padding-right: var(--container-padding);
+        box-sizing: border-box;
+    }
 }
 
 .footer__shape-wrap {
     position: absolute;
     inset: 0;
     z-index: 0;
+    pointer-events: none;
 }
 
-.footer__shape {
+.footer__shape-wrap .footer__shape {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: fill;
-    object-position: center;
+}
+
+/* Орнамент: белый узор на чёрном — через lighten чёрное просвечивает в цвет футера */
+.footer__shape-wrap .footer__ornament-img {
+    mix-blend-mode: lighten;
 }
 
 .footer__content-wrap {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    inset: auto;
     z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem 2.5rem;
     box-sizing: border-box;
+    min-height: 272px;
 }
 
 .footer__container {
@@ -57,12 +94,12 @@
 .footer__grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem 9rem;
+    gap: 2rem 2rem;
     align-items: start;
     color: #fff;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .footer__col--brand {
@@ -75,26 +112,29 @@
 }
 
 .footer__logo-img {
-    height: 110px;
-    margin-left: -2rem;
-    width: auto;
+    height: 48px;
+    width: 147px;
+    margin-left: 0;
     display: block;
-    filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
 .footer__social {
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
     margin-bottom: 0.75rem;
+    width: 78px;
+    height: 24px;
+    align-items: center;
 }
 
 .footer__social-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    border-radius: 0;
     border: none;
     color: #fff;
     text-decoration: none;
@@ -108,17 +148,65 @@
 
 .footer__social-icon {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
 }
 
-/* Цветные фоны убраны — иконки уже в цвете из SVG */
+/* Иконки как в навбаре (currentColor) — без фона */
 .footer__social-link--tg,
 .footer__social-link--vk,
-.footer__social-link--r {
+.footer__social-link--rutube {
     background: transparent;
     border: none;
+}
+
+/* Часы работы (левая колонка) — по макету: 16px, 20px line-height, Houschka, #FFF */
+.footer__schedule {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin-top: 0;
+    max-width: 279px;
+}
+
+.footer__schedule p {
+    margin: 0 0 4px 0;
+}
+
+.footer__schedule p:first-child {
+    white-space: nowrap;
+}
+
+.footer__schedule p:last-child {
+    margin-bottom: 0;
+}
+
+/* Центральная колонка: email и телефон */
+.footer__col--contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.footer__contact-item {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 700;
+    color: #fff;
+}
+
+.footer__contact-item a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer__contact-item a:hover {
+    text-decoration: underline;
 }
 
 .footer__contacts {
@@ -203,21 +291,26 @@
     margin: 0;
 }
 
-/* Планшет и узкий десктоп */
-@media (min-width: 769px) and (max-width: 1200px) {
+/* Планшет и узкий десктоп — как у навбара: ниже 1200 контейнер на всю доступную ширину */
+@media (max-width: 1199px) {
     .footer__grid {
         gap: 1.5rem 2rem;
     }
 
     .footer__content-wrap {
-        padding: 1.5rem 1rem;
+        padding: 2.5rem 2rem 2.5rem;
     }
 
     .footer__logo-img {
-        height: 88px;
+        height: 42px;
     }
 
+    .footer__schedule,
     .footer__contacts {
+        font-size: 1rem;
+    }
+
+    .footer__contact-item {
         font-size: 1rem;
     }
 
@@ -229,52 +322,68 @@
     .footer__company {
         font-size: 1rem;
     }
+
+    .footer__col--contacts {
+        text-align: left;
+    }
 }
 
-/* Планшет вертикально и большой телефон — простой футер того же цвета, без SVG-формы */
-@media (max-width: 768px) {
-    .footer {
-        display: flex;
-        flex-direction: column;
-        width: calc(100% - 1.5rem);
-        margin: 2rem auto 1.5rem;
-        min-height: 0;
-        height: auto;
-        aspect-ratio: none;
-        overflow: visible;
-        contain: none;
+/* Ещё уже — как шаг 1024 у навбара */
+@media (max-width: 1024px) {
+    .footer__content-wrap {
+        padding: 2rem 1.5rem 2rem;
     }
 
-    .footer__shape-wrap {
-        display: none;
+    .footer__grid {
+        gap: 1.25rem 1.5rem;
+    }
+
+    .footer__logo-img {
+        height: 40px;
+    }
+
+    .footer__schedule,
+    .footer__contacts,
+    .footer__links a,
+    .footer__company,
+    .footer__contact-item {
+        font-size: 0.95rem;
+    }
+
+    .footer__heading {
+        font-size: 1.05rem;
+    }
+}
+
+/* Планшет и телефон — футер без формы, тот же градиент */
+@media (max-width: 768px) {
+    .footer {
+        display: block;
+        width: 100%;
+        max-width: none;
+        margin: 2rem 0 0;
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+        contain: none;
+        clip-path: none;
+        -webkit-clip-path: none;
     }
 
     .footer__content-wrap {
         position: relative;
-        inset: auto;
-        width: 100%;
-        flex: 0 0 auto;
         padding: 1.5rem 1rem 1.5rem;
-        justify-content: flex-start;
         min-height: 0;
-        z-index: 1;
-        overflow: visible;
-        background: linear-gradient(to right, #26203A 0%, #6958A0 100%);
-        border-radius: 12px;
     }
 
     .footer__container {
-        padding-top: 0.75rem;
+        padding-top: 0;
         flex: 0 0 auto;
         width: 100%;
         overflow: visible;
     }
 
     .footer .container {
-        overflow: visible;
-    }
-
-    .footer__grid {
         overflow: visible;
     }
 
@@ -296,7 +405,7 @@
     }
 
     .footer__logo-img {
-        height: 72px;
+        height: 40px;
         margin-left: 0 !important;
     }
 
@@ -304,14 +413,18 @@
         justify-content: center;
     }
 
+    .footer__schedule,
     .footer__contacts {
         text-align: center;
         margin-top: 0;
         font-size: 1rem;
     }
 
-    .footer__col--nav,
-    .footer__col--info {
+    .footer__col--contacts {
+        text-align: center;
+    }
+
+    .footer__col--links {
         text-align: center;
     }
 
@@ -347,13 +460,12 @@
 /* Телефон */
 @media (max-width: 480px) {
     .footer {
-        width: calc(100% - 1rem);
-        margin: 1.5rem auto 1rem;
+        margin: 1.5rem 0 0;
     }
 
     .footer__content-wrap {
         padding: 1rem 0.75rem 1.25rem;
-        min-height: 240px;
+        min-height: 220px;
     }
 
     .footer__grid {
@@ -361,7 +473,7 @@
     }
 
     .footer__logo-img {
-        height: 56px;
+        height: 36px;
     }
 
     .footer__social-link {
@@ -375,7 +487,9 @@
     }
 
     .footer__contacts,
-    .footer__links a {
+    .footer__schedule,
+    .footer__links a,
+    .footer__contact-item {
         font-size: 0.9rem;
     }
 
@@ -391,8 +505,7 @@
 /* Маленький телефон */
 @media (max-width: 360px) {
     .footer {
-        width: calc(100% - 0.5rem);
-        margin: 1rem auto;
+        margin: 1rem 0 0;
     }
 
     .footer__content-wrap {
@@ -401,12 +514,14 @@
     }
 
     .footer__logo-img {
-        height: 44px;
+        height: 32px;
     }
 
     .footer__contacts,
+    .footer__schedule,
     .footer__links a,
-    .footer__company {
+    .footer__company,
+    .footer__contact-item {
         font-size: 0.85rem;
     }
 

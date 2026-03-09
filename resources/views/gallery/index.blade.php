@@ -4,18 +4,18 @@
 
 @section('content')
 <div class="page-gallery">
-<section class="page-hero">
-    <div class="hero__overlay"></div>
-    <div class="container">
-        <h1>Фотогалерея</h1>
-        <p class="page-hero__sub">Альбомы по событиям</p>
+<section class="page-hero relative min-h-[38vh] flex items-center justify-center text-center bg-gradient-to-br from-[#1a1525] via-[#0c0c10] to-[#1a1525] text-white">
+    <div class="hero__overlay absolute inset-0 pointer-events-none"></div>
+    <div class="container relative z-10 max-w-[1200px] mx-auto px-5 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold italic uppercase tracking-wide text-white mb-2">Фотогалерея</h1>
+        <p class="page-hero__sub text-lg text-white/85 m-0">Альбомы по событиям</p>
     </div>
 </section>
 
-<section class="gallery-section gallery-filters-section" aria-label="Фильтры">
-    <div class="container">
+<section class="gallery-section gallery-filters-section py-12 md:py-16" aria-label="Фильтры">
+    <div class="container max-w-[1200px] mx-auto px-5">
         <form method="get" action="{{ route('gallery.index') }}" class="gallery-filters">
-            <div class="gallery-filters__row">
+            <div class="gallery-filters__row flex flex-wrap items-end gap-4">
                 <label class="gallery-filters__label">
                     <span class="gallery-filters__label-text">Город</span>
                     <select name="city_id" class="gallery-filters__select" aria-label="Выберите город">

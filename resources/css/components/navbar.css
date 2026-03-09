@@ -1,20 +1,85 @@
 /* ============================================
-   NAVBAR — по макету Figma + форма с картинки
+   NAVBAR — по макету новой вёрстки (doсs/new verstka)
+   Планка: 80px, rgba(141,73,238,0.6), blur 5px, radius 8px, ссылки 16px
    ============================================ */
 
 /* Header — фиксированный при скролле */
 :root {
-    --navbar-bg: rgba(38, 32, 58, 0.8);
+    --navbar-bg: rgba(141, 73, 238, 0.6);
 }
 
-/* Обёртка: навбар + алерты двигаются вместе при скролле */
+/* Обёртка: навбар + алерты. По макету: отступ слева 50px, справа 21px (navbar 1129px при 1200px). */
 .header-sticky {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 14px 24px 0;
+    padding: 8px 21px 0 50px;
+}
+
+@media (max-width: 768px) {
+    .header-sticky {
+        padding: 8px 16px 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-sticky {
+        padding: 8px 12px 0 12px;
+    }
+}
+
+/* ≥1200px: полоса навбара удлиняется влево и вправо при масштабировании (отступы фиксированы) */
+@media (min-width: 1200px) {
+    .header-sticky {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    .navbar {
+        width: 100%;
+        max-width: none;
+    }
+    .navbar .container {
+        max-width: none;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: var(--container-padding);
+        padding-right: var(--container-padding);
+    }
+}
+
+/* Ниже 1200px: навбар с отступами слева/справа, контейнер на всю ширину навбара (как в старом коммите) */
+@media (max-width: 1200px) {
+    .navbar {
+        left: 20px;
+        right: 20px;
+        width: calc(100% - 40px);
+    }
+    .navbar .container {
+        max-width: none;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    .navbar__inner {
+        gap: 16px;
+    }
+    .navbar__logo,
+    .navbar__logo-img {
+        width: 130px;
+        height: 42px;
+    }
+    .navbar__left a,
+    .navbar__link {
+        font-size: 15px;
+    }
+    .navbar__left {
+        gap: 16px;
+    }
+    .navbar__right {
+        gap: 20px;
+    }
 }
 
 .header-sticky .navbar {
@@ -25,36 +90,55 @@
     width: auto;
 }
 
+/* Rectangle 44 по макету: 1129×80, left 50px, top 8px, rgba(141,73,238,0.6), blur(5px), border-radius 8px. Форма по SVG 1118×80. */
 .navbar {
-    position: fixed;
-    left: 24px;
-    right: 24px;
-    top: 14px;
-    width: auto;
-    height: 88px;
-    background: var(--navbar-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 1129px;
+    height: 80px;
+    background: rgba(141, 73, 238, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     color: #FFFFFF;
     z-index: 1000;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Houschka Rounded', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 20px;
     clip-path: url(#navbar-clip);
     -webkit-clip-path: url(#navbar-clip);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-/* Group 7 — текст ближе к краям на десктопе */
+@media (min-width: 1200px) {
+    .navbar {
+        max-width: none;
+    }
+}
+
+/* Контент навбара: по макету первый пункт «Магазин» left 100px от края страницы → 50px от края планки.
+   Адаптив как в старом коммите: контейнер max-width на десктопе, ниже 1200 — на всю ширину, затем 1024/900/480. */
 .navbar .container {
     position: relative;
     width: 100%;
-    max-width: 1360px;
+    max-width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 50px;
     box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+    .navbar .container {
+        max-width: var(--container-max);
+        padding-left: var(--container-padding);
+        padding-right: var(--container-padding);
+    }
 }
 
 .navbar .container .mobile-menu-toggle {
@@ -79,11 +163,11 @@
     justify-self: end;
 }
 
-/* Frame 84 — слева: Магазин, Команда, Партнёры, Контакты */
+/* Слева: Магазин, Команда, Партнёры, Контакты — по макету «Магазин»: left 100px, top 38px, 16px/20px, weight 400 */
 .navbar__left {
     display: flex;
     flex-direction: row;
-    align-items: left;
+    align-items: center;
     gap: 20px;
     list-style: none;
     margin: 0;
@@ -94,10 +178,11 @@
 .navbar__left a {
     color: #FFFFFF;
     text-decoration: none;
-    font-family: 'Montserrat';
+    font-family: 'Houschka Rounded', sans-serif;
     font-style: normal;
-    font-size: 20px;
-    line-height: 24px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
     white-space: nowrap;
 }
 
@@ -105,20 +190,20 @@
     opacity: 0.9;
 }
 
-/* Sprut logo — увеличен */
+/* Логотип по макету: 147×48 */
 .navbar__logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px;
-    height: 52px;
+    width: 147px;
+    height: 48px;
     flex-shrink: 0;
     justify-self: center;
 }
 
 .navbar__logo-img {
-    width: 160px;
-    height: 52px;
+    width: 147px;
+    height: 48px;
     display: block;
     object-fit: contain;
 }
@@ -140,14 +225,15 @@
     gap: 10px;
 }
 
+/* Справа: Гонки | Рейтинг | Фото + иконки — 16px, uppercase для Гонки/Рейтинг/Фото */
 .navbar__link {
     color: #FFFFFF;
     text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Houschka Rounded', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 20px;
     text-transform: uppercase;
     white-space: nowrap;
 }
@@ -156,22 +242,23 @@
     opacity: 0.9;
 }
 
-/* Line 6, Line 7 — вертикальный разделитель */
+/* Вертикальные разделители по макету: 20px, rgba(255,255,255,0.6) */
 .navbar__line {
-    width: 24px;
+    width: 20px;
     height: 0;
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
     transform: rotate(90deg);
     flex-shrink: 0;
 }
 
-/* Frame 85 — иконки VK и Telegram 24×24, gap 10px */
+/* Иконки соцсетей по макету: блок 58×24, две иконки 24×24, gap 10px (VK fill, Telegram stroke) */
 .navbar__social {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    margin-right: 29px;
 }
 
 .navbar__social-link {
@@ -183,27 +270,30 @@
     color: #FFFFFF;
 }
 
-.navbar__social-link svg {
-    width: 24px;
-    height: 24px;
+.navbar__social-link:hover {
+    opacity: 0.9;
 }
 
-.navbar__social-link--outline svg {
-    fill: none;
-    stroke: #FFFFFF;
+.navbar__social-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.navbar__social-link--outline .navbar__social-icon {
+    stroke: currentColor;
 }
 
 .main-after-header {
-    /* Высота шапки: top 14px + navbar 88px — контент не под шапкой; для hero с видео --header-height используется в base.css */
-    --header-height: 102px;
+    --header-height: 88px;
 }
 
 body.has-alerts .main-after-header {
-    --header-height: 172px;
+    --header-height: 152px;
 }
 
 body.has-alerts .nav-menu--mobile {
-    top: 172px;
+    top: 152px;
 }
 
 .mobile-menu-toggle {
@@ -232,35 +322,10 @@ body.has-alerts .nav-menu--mobile {
 .nav-menu--mobile a {
     color: #FFFFFF;
     text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Houschka Rounded', sans-serif;
     font-weight: 500;
     font-size: 20px;
     line-height: 24px;
-}
-
-@media (max-width: 1200px) {
-    .navbar .container {
-        padding: 0 20px;
-        max-width: none;
-    }
-    .navbar__inner {
-        gap: 20px;
-    }
-    .navbar__logo,
-    .navbar__logo-img {
-        width: 140px;
-        height: 46px;
-    }
-    .navbar__left a,
-    .navbar__link {
-        font-size: 18px;
-    }
-    .navbar__left {
-        gap: 16px;
-    }
-    .navbar__right {
-        gap: 16px;
-    }
 }
 
 @media (max-width: 1024px) {
@@ -277,27 +342,26 @@ body.has-alerts .nav-menu--mobile {
     }
     .navbar__left a,
     .navbar__link {
-        font-size: 16px;
+        font-size: 14px;
     }
     .navbar__left {
         gap: 12px;
     }
     .navbar__right {
-        gap: 12px;
+        gap: 10px;
     }
 }
 
 @media (max-width: 900px) {
     .header-sticky {
-        padding: 14px 16px 0;
+        padding: 8px 16px 0 16px;
     }
     .navbar {
-        left: 16px;
-        right: 16px;
+        max-width: none;
         height: 72px;
         clip-path: none;
         -webkit-clip-path: none;
-        border-radius: 20px;
+        border-radius: var(--radius-new, 8px);
         overflow: visible;
     }
     .navbar .container {
@@ -334,14 +398,14 @@ body.has-alerts .nav-menu--mobile {
     }
     .nav-menu--mobile {
         position: fixed;
-        top: 86px;
-        left: 36px;
-        right: 36px;
+        top: 80px;
+        left: 16px;
+        right: 16px;
         padding: 1rem 20px;
-        background: rgba(38, 32, 58, 0.8);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 0 0 20px 20px;
+        background: var(--navbar-bg);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border-radius: 0 0 var(--radius-new, 8px) var(--radius-new, 8px);
         z-index: 999;
         box-sizing: border-box;
     }
@@ -350,27 +414,24 @@ body.has-alerts .nav-menu--mobile {
         z-index: 1;
     }
     .main-after-header {
-        padding-top: 100px;
-        --header-height: 100px;
+        padding-top: 92px;
+        --header-height: 92px;
     }
     body.has-alerts .main-after-header {
-        padding-top: 170px;
-        --header-height: 170px;
+        padding-top: 156px;
+        --header-height: 156px;
     }
     body.has-alerts .nav-menu--mobile {
-        top: 170px;
+        top: 156px;
     }
 }
 
 @media (max-width: 480px) {
-    .header-sticky {
-        padding: 14px 12px 0;
-    }
     .navbar {
-        left: 12px;
-        right: 12px;
         height: 64px;
-        border-radius: 16px;
+        clip-path: none;
+        -webkit-clip-path: none;
+        border-radius: var(--radius-new, 8px);
     }
     .navbar .container {
         padding: 0 16px;
@@ -381,25 +442,25 @@ body.has-alerts .nav-menu--mobile {
         height: 33px;
     }
     .nav-menu--mobile {
-        top: 78px;
-        left: 28px;
-        right: 28px;
+        top: 72px;
+        left: 12px;
+        right: 12px;
         padding: 1rem 16px;
-        border-radius: 0 0 16px 16px;
+        border-radius: 0 0 var(--radius-new, 8px) var(--radius-new, 8px);
     }
     .nav-menu--mobile a {
         align-items: center;
         font-size: 18px;
     }
     .main-after-header {
-        padding-top: 90px;
-        --header-height: 90px;
+        padding-top: 82px;
+        --header-height: 82px;
     }
     body.has-alerts .main-after-header {
-        padding-top: 160px;
-        --header-height: 160px;
+        padding-top: 146px;
+        --header-height: 146px;
     }
     body.has-alerts .nav-menu--mobile {
-        top: 160px;
+        top: 146px;
     }
 }

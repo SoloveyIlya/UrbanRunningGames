@@ -30,10 +30,10 @@
     </div>
 </div>
 
-<section class="shop-section">
-    <div class="container">
+<section class="shop-section py-12 md:py-16 text-gray-100">
+    <div class="container max-w-[1200px] mx-auto px-5">
         {{-- Пункт «Новинки» и панель фильтров --}}
-        <div class="shop-toolbar">
+        <div class="shop-toolbar flex flex-wrap items-center justify-between gap-4 mb-8">
             <nav class="shop-tabs" aria-label="Разделы каталога">
                 <a href="{{ route('shop.index') }}" class="shop-tab {{ !request('sort') || request('sort') !== 'newest' ? 'shop-tab--active' : '' }}">Все товары</a>
                 <a href="{{ route('shop.index', ['sort' => 'newest']) }}" class="shop-tab {{ request('sort') === 'newest' ? 'shop-tab--active' : '' }}">Новинки</a>
@@ -92,7 +92,7 @@
         </div>
 
         @if($products->count() > 0)
-            <div class="products-grid">
+            <div class="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach($products as $product)
                     <a href="{{ route('shop.show', $product) }}" class="product-card">
                         <div class="product-card-image">
@@ -121,8 +121,8 @@
                 </div>
             @endif
         @else
-            <div class="empty-state">
-                <p>В каталоге пока нет товаров. Следите за обновлениями!</p>
+            <div class="empty-state text-center py-12 px-4">
+                <p class="text-white/80 m-0">В каталоге пока нет товаров. Следите за обновлениями!</p>
             </div>
         @endif
     </div>
