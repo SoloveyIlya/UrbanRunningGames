@@ -24,6 +24,7 @@ class SitePage extends Model
     public static function slugs(): array
     {
         return [
+            self::SLUG_HOME_INFO,
             self::SLUG_ABOUT,
             self::SLUG_RULES,
             self::SLUG_PRIVACY,

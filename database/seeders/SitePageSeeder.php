@@ -10,6 +10,7 @@ class SitePageSeeder extends Seeder
     public function run(): void
     {
         $pages = [
+            SitePage::SLUG_HOME_INFO => ['title' => 'Информация', 'content' => null],
             SitePage::SLUG_ABOUT => ['title' => 'О команде организатора', 'content' => null],
             SitePage::SLUG_RULES => ['title' => 'Правила забега', 'content' => null],
             SitePage::SLUG_PRIVACY => ['title' => 'Политика конфиденциальности', 'content' => null],

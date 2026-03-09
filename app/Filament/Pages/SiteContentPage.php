@@ -943,6 +943,7 @@ class SiteContentPage extends Page implements HasForms
     protected function defaultTitle(string $slug): string
     {
         return match ($slug) {
+            SitePage::SLUG_HOME_INFO => 'Информация',
             SitePage::SLUG_ABOUT => 'О команде организатора',
             SitePage::SLUG_RULES => 'Правила забега',
             SitePage::SLUG_PRIVACY => 'Политика конфиденциальности',
