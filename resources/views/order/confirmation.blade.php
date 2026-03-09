@@ -38,6 +38,14 @@
             @endif
             <p class="order-confirmation-total"><strong>Итого: {{ $order->total_amount }}</strong></p>
 
+            @if($order->isPaid())
+                <p class="order-confirmation-paid">Оплачено {{ $order->paid_at?->format('d.m.Y H:i') }}</p>
+            @elseif($order->payment?->pay_url)
+                <div class="order-confirmation-actions" style="margin-top: 1rem;">
+                    <a href="{{ $order->payment->pay_url }}" class="btn btn-primary">Перейти к оплате</a>
+                </div>
+            @endif
+
             <div class="order-confirmation-actions">
                 <a href="{{ route('shop.index') }}" class="btn btn-primary">Вернуться в магазин</a>
                 <a href="{{ route('home') }}" class="btn btn-secondary">На главную</a>

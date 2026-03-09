@@ -15,15 +15,22 @@ class Order extends Model
         'status',
         'promo_code_id',
         'discount_amount',
+        'payment_id',
     ];
 
     protected $casts = [
         'discount_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
     ];
 
     public function promoCode(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(PromoCode::class, 'promo_code_id');
+    }
+
+    public function payment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
     }
 
     public function items(): HasMany
@@ -40,6 +47,11 @@ class Order extends Model
     {
         $total = $this->getSubtotalAmountAttribute() - (float) ($this->discount_amount ?? 0);
         return number_format(max(0, $total), 0, ',', ' ') . ' ₽';
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->paid_at !== null || ($this->payment && $this->payment->isPaid());
     }
 
     public static function statusOptions(): array

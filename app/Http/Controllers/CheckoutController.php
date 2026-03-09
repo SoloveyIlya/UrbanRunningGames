@@ -6,6 +6,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Mail\OrderReceived;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
@@ -62,12 +63,24 @@ class CheckoutController extends Controller
 
         CartController::clearCart();
 
+        $paymentService = PaymentService::fromConfig();
+        $usePayment = $paymentService->isTestMode()
+            || config('payment.tbank.terminal_key')
+            || config('payment.tbank.use_demo_terminal');
+        if ($usePayment) {
+            $order->load('items');
+            $payment = $paymentService->createPaymentForOrder($order);
+            if ($payment->pay_url) {
+                return redirect()->away($payment->pay_url);
+            }
+        }
+
         return redirect()->route('order.confirmation', $order)->with('success', 'Заявка успешно отправлена.');
     }
 
     public function confirmation(Order $order)
     {
-        $order->load('items.product', 'items.productVariant', 'promoCode');
+        $order->load('items.product', 'items.productVariant', 'promoCode', 'payment');
         return view('order.confirmation', compact('order'));
     }
 }

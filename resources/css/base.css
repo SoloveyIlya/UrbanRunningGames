@@ -99,23 +99,29 @@ body {
 
 .hero--with-video {
     overflow: hidden;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 130vh;
+    min-height: 130dvh;
+    height: 130vh;
+    height: 130dvh;
     display: flex;
     align-items: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .hero--with-video {
-        min-height: 65vh;
-        min-height: 65dvh;
+        min-height: 115vh;
+        min-height: 115dvh;
+        height: 115vh;
+        height: 115dvh;
     }
 }
 
 @media (max-width: 480px) {
     .hero--with-video {
-        min-height: 55vh;
-        min-height: 55dvh;
+        min-height: 110vh;
+        min-height: 110dvh;
+        height: 110vh;
+        height: 110dvh;
     }
 }
 
