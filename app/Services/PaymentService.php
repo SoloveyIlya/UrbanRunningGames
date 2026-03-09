@@ -113,6 +113,12 @@ class PaymentService
         $body = $response->json();
 
         if (! $response->successful() || empty($body['PaymentId']) || empty($body['Status'])) {
+            Log::error('PaymentService T-Bank Init failed', [
+                'order_id' => $order->id,
+                'http_status' => $response->status(),
+                'body' => $body,
+                'raw_body' => $response->body(),
+            ]);
             throw new \RuntimeException(
                 $body['Message'] ?? 'Ошибка создания платежа: ' . $response->body()
             );

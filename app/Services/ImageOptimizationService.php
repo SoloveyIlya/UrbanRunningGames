@@ -72,11 +72,57 @@ class ImageOptimizationService
 
     /**
      * Обработка изображения по пути (например, временный файл из Filament).
+     * SVG сохраняется как есть (без декодирования Intervention Image).
      */
     public function processUploadFromPath(string $path, ?string $originalName = null, ?int $createdByAdminId = null): MediaAsset
     {
         $originalName = $originalName ?? basename($path);
-        $file = new UploadedFile($path, $originalName, mime_content_type($path), 0, true);
+        $mime = mime_content_type($path);
+        $isSvg = in_array(strtolower($mime), ['image/svg+xml', 'image/svg'], true)
+            || (pathinfo($path, PATHINFO_EXTENSION) === 'svg');
+
+        if ($isSvg) {
+            return $this->storeFileAsIs($path, $originalName, $mime, $createdByAdminId);
+        }
+
+        $file = new UploadedFile($path, $originalName, $mime, 0, true);
         return $this->processUpload($file, $createdByAdminId);
     }
+
+    /**
+     * Сохранить файл как есть (SVG и др.) без декодирования через Intervention Image.
+     */
+    public function storeFileAsIs(string $path, string $originalName, string $mimeType, ?int $createdByAdminId = null): MediaAsset
+    {
+        $disk = 'public';
+        $directory = 'gallery/' . date('Y/m/d');
+        $baseName = pathinfo($originalName, PATHINFO_FILENAME);
+        $safeName = \Illuminate\Support\Str::slug($baseName) ?: 'file';
+        $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION)) ?: 'svg';
+        $uniqueId = uniqid('', true);
+        $mainPath = $directory . '/' . $safeName . '-' . $uniqueId . '.' . $ext;
+
+        $mainFullPath = Storage::disk($disk)->path($mainPath);
+        File::ensureDirectoryExists(dirname($mainFullPath));
+        copy($path, $mainFullPath);
+
+        $sizeBytes = filesize($mainFullPath);
+
+        $asset = new MediaAsset([
+            'type' => 'image',
+            'disk' => $disk,
+            'path' => $mainPath,
+            'thumbnail_path' => $mainPath,
+            'mime_type' => $mimeType,
+            'size_bytes' => $sizeBytes,
+            'width' => null,
+            'height' => null,
+            'original_name' => $originalName,
+            'created_by_admin_id' => $createdByAdminId,
+        ]);
+        $asset->save();
+
+        return $asset;
+    }
 }
+

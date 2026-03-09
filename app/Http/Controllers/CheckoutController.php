@@ -7,6 +7,7 @@ use App\Mail\OrderReceived;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\PaymentService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
@@ -57,8 +58,15 @@ class CheckoutController extends Controller
 
         $adminEmail = config('mail.admin');
         if ($adminEmail) {
-            $order->load('items.product', 'items.productVariant', 'promoCode');
-            Mail::to($adminEmail)->send(new OrderReceived($order));
+            try {
+                $order->load('items.product', 'items.productVariant', 'promoCode');
+                Mail::to($adminEmail)->send(new OrderReceived($order));
+            } catch (\Throwable $e) {
+                Log::warning('Checkout: не удалось отправить письмо администратору', [
+                    'order_id' => $order->id,
+                    'message' => $e->getMessage(),
+                ]);
+            }
         }
 
         CartController::clearCart();
