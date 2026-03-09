@@ -997,6 +997,20 @@
     text-decoration: underline;
 }
 
+/* Подчёркнутые span в контенте (например из редактора) — как ссылки по виду */
+.info-accordion__content span[style*="text-decoration: underline"] {
+    color: #b8a9e0;
+    text-decoration: none !important;
+    display: inline-block;
+    padding: 0.35em 0.6em;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.info-accordion__content span[style*="text-decoration: underline"]:hover {
+    background: rgba(167, 139, 250, 0.15);
+}
+
 .info-section__action {
     text-align: center;
 }

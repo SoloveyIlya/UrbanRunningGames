@@ -106,64 +106,34 @@
 
 <section class="info-section" aria-labelledby="info-heading">
     <div class="container">
-        <h2 id="info-heading" class="info-section__title">ИНФОРМАЦИЯ</h2>
+        <h2 id="info-heading" class="info-section__title">{{ $infoSectionTitle }}</h2>
         <div class="info-accordion">
-            <div class="info-accordion__item" data-accordion-item>
-                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-1" id="info-btn-1" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Коротко о главном</span>
-                    <span class="info-accordion__icon" aria-hidden="true">+</span>
-                </button>
-                <div id="info-body-1" class="info-accordion__body" role="region" aria-labelledby="info-btn-1" hidden>
-                    <div class="info-accordion__content">
-                        <ul class="info-links info-links--column">
-                            <li><a href="{{ route('events.index') }}">Гонки</a></li>
-                            <li><a href="{{ route('shop.index') }}">Магазин</a></li>
-                            <li><a href="{{ route('about') }}">О нас</a></li>
-                            <li><a href="{{ route('contact') }}">Контакты</a></li>
-                        </ul>
+            @foreach($infoAccordionItems ?? [] as $index => $item)
+                @php
+                    $idx = $index + 1;
+                    $bodyId = 'info-body-' . $idx;
+                    $btnId = 'info-btn-' . $idx;
+                @endphp
+                <div class="info-accordion__item" data-accordion-item>
+                    <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="{{ $bodyId }}" id="{{ $btnId }}" data-accordion-trigger>
+                        <span class="info-accordion__title-text">{{ $item['title'] ?? '' }}</span>
+                        <span class="info-accordion__icon" aria-hidden="true">+</span>
+                    </button>
+                    <div id="{{ $bodyId }}" class="info-accordion__body" role="region" aria-labelledby="{{ $btnId }}" hidden>
+                        <div class="info-accordion__content {{ ($item['content_type'] ?? '') === 'prose' ? 'info-accordion__content--prose' : '' }}">
+                            @if(($item['content_type'] ?? '') === 'links' && !empty($item['links']))
+                                <ul class="info-links info-links--column">
+                                    @foreach($item['links'] as $link)
+                                        <li><a href="{{ isset($link['url']) ? e($link['url']) : '#' }}">{{ e($link['text'] ?? '') }}</a></li>
+                                    @endforeach
+                                </ul>
+                            @elseif(($item['content_type'] ?? '') === 'prose' && isset($item['content']))
+                                {!! $item['content'] !!}
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="info-accordion__item" data-accordion-item>
-                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-2" id="info-btn-2" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Основные условия</span>
-                    <span class="info-accordion__icon" aria-hidden="true">+</span>
-                </button>
-                <div id="info-body-2" class="info-accordion__body" role="region" aria-labelledby="info-btn-2" hidden>
-                    <div class="info-accordion__content">
-                        <ul class="info-links info-links--column">
-                            <li><a href="{{ route('legal.privacy') }}">Политика конфиденциальности</a></li>
-                            <li><a href="{{ route('legal.consent') }}">Согласие на обработку ПДн</a></li>
-                            <li><a href="{{ route('legal.terms') }}">Условия продажи мерча</a></li>
-                            <li><a href="{{ route('legal.returns') }}">Правила возвратов</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="info-accordion__item" data-accordion-item>
-                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-3" id="info-btn-3" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Место старта, финиша, выдача номеров и стартовых пакетов</span>
-                    <span class="info-accordion__icon" aria-hidden="true">+</span>
-                </button>
-                <div id="info-body-3" class="info-accordion__body" role="region" aria-labelledby="info-btn-3" hidden>
-                    <div class="info-accordion__content info-accordion__content--prose">
-                        <p>Старт и финиш каждой гонки указаны на странице конкретного события. Там же — время и место выдачи стартовых номеров и стартовых пакетов.</p>
-                        <p>Актуальную информацию по каждой гонке смотрите в разделе <a href="{{ route('events.index') }}">Гонки</a>. По вопросам организации обращайтесь в <a href="{{ route('contact') }}">Контакты</a>.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="info-accordion__item" data-accordion-item>
-                <button type="button" class="info-accordion__header" aria-expanded="false" aria-controls="info-body-4" id="info-btn-4" data-accordion-trigger>
-                    <span class="info-accordion__title-text">Где жить, как добраться до места старта</span>
-                    <span class="info-accordion__icon" aria-hidden="true">+</span>
-                </button>
-                <div id="info-body-4" class="info-accordion__body" role="region" aria-labelledby="info-btn-4" hidden>
-                    <div class="info-accordion__content">
-                        <p>Рекомендации по проживанию и проезду до места старта — на отдельной странице.</p>
-                        <a href="{{ route('legal.travel') }}" class="btn btn--info-inline">Где жить и как добраться →</a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
         <div class="info-section__action">
             <a href="{{ route('rules') }}" class="btn btn--info-position">
