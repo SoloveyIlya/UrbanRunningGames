@@ -66,6 +66,13 @@ class SiteSetting extends Model
     public const KEY_HOME_INFO_SECTION_TITLE = 'home_info_section_title';
     public const KEY_HOME_INFO_ACCORDION_ITEMS = 'home_info_accordion_items';
 
+    /** Hero главной: орнамент поверх видео (media_id или пусто = дефолт maze-1, 'none' = без орнамента), прозрачность 0–1 */
+    public const KEY_HERO_ORNAMENT_MEDIA_ID = 'hero_ornament_media_id';
+    /** Орнамент для десктопа (отдельный media_id; если пусто — используется ornament-desktop.svg или тот же что и мобильный) */
+    public const KEY_HERO_ORNAMENT_DESKTOP_MEDIA_ID = 'hero_ornament_desktop_media_id';
+    public const KEY_HERO_ORNAMENT_DISABLED = 'hero_ornament_disabled';
+    public const KEY_HERO_ORNAMENT_OPACITY = 'hero_ornament_opacity';
+
     /** Блок статистики на главной (4 карточки) */
     public static function homeStatKeys(): array
     {

@@ -4,15 +4,15 @@
 
 @section('content')
 <div class="page-rules">
-    <div class="page-header page-header--rules">
-        <div class="container">
-            <h1>{{ $title ?? 'Правила забега' }}</h1>
+    <div class="page-header page-header--rules bg-[#111] text-gray-200 py-10 px-0">
+        <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
+            <h1 class="text-3xl font-bold italic uppercase tracking-wide text-white m-0">{{ $title ?? 'Правила забега' }}</h1>
         </div>
     </div>
 
-    <section class="rules-section">
-        <div class="container">
-            <div class="rules-card">
+    <section class="rules-section py-12 md:py-16">
+        <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
+            <div class="rules-card rounded-lg overflow-hidden bg-white/5 backdrop-blur-sm p-6 md:p-8">
                 <div class="rules-card__content content">
                     @if(!empty($content))
                         {!! $content !!}

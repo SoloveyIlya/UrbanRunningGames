@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="12 0 29700 21000">
+  <defs>
+    <style type="text/css">
+   
+    .fil0 {fill:#26203A;fill-rule:nonzero}
+   
+  </style>
+  </defs>
+  <foreignObject x="-10" y="-10" width="340" height="278" transform="matrix(26.458334, 0, 0, 26.458334, 14437.750252, 9835.161467)" style="transform-box: fill-box; transform-origin: 48.866% 8.85563%;"/>
+  <foreignObject x="-10" y="-10" width="340" height="278" transform="matrix(26.45833396911621, 0, 0, 26.45833396911621, 24268.114690957293, 10313.09392747391)"/>
+  <path data-figma-bg-blur-radius="10" d="M 11074.6 7396.45 C 11074.6 7279.55 11169.4 7184.75 11286.3 7184.75 L 19329.6 7184.75 C 19446.5 7184.75 19541.3 7279.55 19541.3 7396.45 L 19541.3 12204.6 C 19541.3 12260.1 19519.5 12313.5 19480.5 12353 L 18734.3 13111.5 L 17869.9 13951.2 C 17830.4 13989.6 17777.5 14011 17722.4 14011 L 11286.3 14011 C 11169.4 14011 11074.6 13916.3 11074.6 13799.4 L 11074.6 7396.45 Z" fill="#8D49EE" fill-opacity="0.6" style="stroke-width: 26.458;"/>
+</svg>

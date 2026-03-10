@@ -55,7 +55,29 @@ class HomeController extends Controller
             $infoAccordionItems = $this->defaultInfoAccordionItems();
         }
 
-        return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats', 'infoSectionTitle', 'infoAccordionItems'));
+        $heroOrnamentUrl = null;
+        $heroOrnamentOpacity = 0.85;
+        if (Schema::hasTable('site_settings')) {
+            $ornamentDisabled = SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_DISABLED) === '1';
+            if (!$ornamentDisabled) {
+                $mediaId = SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_MEDIA_ID);
+                $heroOrnamentOpacity = (float) (SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_OPACITY) ?? '0.85');
+                $heroOrnamentOpacity = max(0, min(1, $heroOrnamentOpacity));
+                if ($mediaId && $mediaId !== 'none') {
+                    $asset = \App\Models\MediaAsset::find($mediaId);
+                    $heroOrnamentUrl = $asset?->url;
+                }
+                if (!$heroOrnamentUrl) {
+                    $heroOrnamentUrl = asset('images/ornaments/maze-1.svg');
+                }
+            }
+        } else {
+            $heroOrnamentUrl = asset('images/ornaments/maze-1.svg');
+        }
+
+        $heroOrnamentDesktopUrl = $heroOrnamentUrl;
+
+        return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats', 'infoSectionTitle', 'infoAccordionItems', 'heroOrnamentUrl', 'heroOrnamentDesktopUrl', 'heroOrnamentOpacity'));
     }
 
     private function defaultStatNumber(int $i): string

@@ -1,5 +1,7 @@
 /* Urban Running Games — главный файл стилей */
 
+@import "tailwindcss";
+
 @import './components/navbar.css';
 @import './partials/footer.css';
 @import './base.css';

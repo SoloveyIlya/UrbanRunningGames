@@ -17,23 +17,23 @@
 @endphp
 
 {{-- Hero — тёмный, асимметричный, без полноэкранного градиента (уникально для сайта) --}}
-<header class="partners-hero">
-    <div class="partners-hero__blobs" aria-hidden="true">
+<header class="partners-hero relative overflow-hidden">
+    <div class="partners-hero__blobs absolute inset-0 pointer-events-none" aria-hidden="true">
         <span class="partners-hero__blob partners-hero__blob--1"></span>
         <span class="partners-hero__blob partners-hero__blob--2"></span>
         <span class="partners-hero__blob partners-hero__blob--3"></span>
     </div>
     <div class="partners-hero__accent-line"></div>
-    <div class="container partners-hero__container">
-        <div class="partners-hero__content">
-            <p class="partners-hero__label">Кто с нами</p>
-            <h1 class="partners-hero__title">Партнёры<br>и спонсоры</h1>
-            <p class="partners-hero__sub">Компании и люди, которые делают Urban Running Games возможными</p>
+    <div class="container partners-hero__container relative z-10 max-w-[1200px] mx-auto px-4 sm:px-5 py-12 md:py-16">
+        <div class="partners-hero__content text-center max-w-2xl mx-auto">
+            <p class="partners-hero__label text-sm uppercase tracking-wider text-white/70 mb-1">Кто с нами</p>
+            <h1 class="partners-hero__title text-4xl md:text-5xl font-bold text-white mb-2">Партнёры<br>и спонсоры</h1>
+            <p class="partners-hero__sub text-lg text-white/85 m-0">Компании и люди, которые делают Urban Running Games возможными</p>
         </div>
     </div>
 </header>
 
-<div class="container">
+<div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">
     {{-- Вводный блок — цитата с левой полосой, не как на других страницах --}}
     <section class="partners-intro">
         <blockquote class="partners-intro__quote">

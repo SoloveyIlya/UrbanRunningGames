@@ -5,32 +5,32 @@
 @section('content')
 <div class="contact-page">
     {{-- Hero в стиле партнёров: тёмный, с блобами и акцентной полосой --}}
-    <header class="contact-hero">
-        <div class="contact-hero__blobs" aria-hidden="true">
+    <header class="contact-hero relative overflow-hidden">
+        <div class="contact-hero__blobs absolute inset-0 pointer-events-none" aria-hidden="true">
             <span class="contact-hero__blob contact-hero__blob--1"></span>
             <span class="contact-hero__blob contact-hero__blob--2"></span>
             <span class="contact-hero__blob contact-hero__blob--3"></span>
         </div>
         <div class="contact-hero__accent-line"></div>
-        <div class="container contact-hero__container">
-            <div class="contact-hero__content">
-                <p class="contact-hero__label">Связь</p>
-                <h1 class="contact-hero__title">Контакты</h1>
-                <p class="contact-hero__sub">Вопросы, партнёрство, забеги — напишите нам, мы ответим</p>
+        <div class="container contact-hero__container relative z-10 py-12 md:py-16">
+            <div class="contact-hero__content text-center max-w-2xl mx-auto">
+                <p class="contact-hero__label text-sm uppercase tracking-wider text-white/70 mb-1">Связь</p>
+                <h1 class="contact-hero__title text-4xl md:text-5xl font-bold text-white mb-2">Контакты</h1>
+                <p class="contact-hero__sub text-lg text-white/85 m-0">Вопросы, партнёрство, забеги — напишите нам, мы ответим</p>
             </div>
         </div>
     </header>
 
-    <div class="container">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">
         {{-- Вводный блок — цитата с левой полосой, как на странице партнёров --}}
-        <section class="contact-intro">
-            <blockquote class="contact-intro__quote">
+        <section class="contact-intro mb-10">
+            <blockquote class="contact-intro__quote text-lg text-white/90 italic border-l-4 border-[#8D49EE] pl-6 py-2 m-0">
                 Мы на связи в будни и в дни мероприятий. Напишите по почте или в мессенджер — подберём удобный формат общения.
             </blockquote>
         </section>
 
-        <div class="contact-page__content">
-            <aside class="contact-page__info">
+        <div class="contact-page__content grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 lg:gap-12">
+            <aside class="contact-page__info flex flex-col gap-6">
                 <div class="contact-page__card">
                     <h2 class="contact-page__card-title">Контактная информация</h2>
                     <ul class="contact-page__details">

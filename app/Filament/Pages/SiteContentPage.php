@@ -107,6 +107,9 @@ class SiteContentPage extends Page implements HasForms
             'title' => $heroMain?->title,
             'button_text' => $heroMain?->button_text,
             'button_url' => $heroMain?->button_url,
+            'ornament_upload' => null,
+            'ornament_remove' => SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_DISABLED) === '1',
+            'ornament_opacity' => SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_OPACITY, '0.85'),
         ];
 
         $heroEvents = HeroVideo::where('page', HeroVideo::PAGE_EVENTS)->first();
@@ -218,6 +221,45 @@ class SiteContentPage extends Page implements HasForms
                         ->nullable()
                         ->placeholder('/events')
                         ->helperText('Относительный путь (например /events) или полный URL'),
+                    Forms\Components\Placeholder::make('hero_main.ornament_heading')
+                        ->label('Орнамент поверх видео')
+                        ->content('Орнамент накладывается поверх hero-видео с заданной прозрачностью. По умолчанию — maze-1.svg.')
+                        ->columnSpanFull(),
+                    Forms\Components\Toggle::make('hero_main.ornament_remove')
+                        ->label('Убрать орнамент')
+                        ->helperText('Включите, чтобы не показывать орнамент на главной')
+                        ->default(false),
+                    Forms\Components\TextInput::make('hero_main.ornament_opacity')
+                        ->label('Прозрачность орнамента (0–1)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->maxValue(1)
+                        ->step(0.05)
+                        ->default(0.85)
+                        ->helperText('Рекомендуется 0.8–0.85 (80–85%)')
+                        ->visible(fn (\Filament\Forms\Get $get): bool => !($get('ornament_remove') ?? false)),
+                    Forms\Components\FileUpload::make('hero_main.ornament_upload')
+                        ->label('Заменить орнамент (изображение или SVG)')
+                        ->acceptedFileTypes(['image/svg+xml', 'image/svg', 'image/png', 'image/jpeg', 'image/webp'])
+                        ->maxSize(2 * 1024 * 1024)
+                        ->disk('local')
+                        ->directory('livewire-tmp')
+                        ->visibility('private')
+                        ->nullable()
+                        ->storeFiles(false)
+                        ->helperText('Один файл для мобильной и десктопной версий. По умолчанию — maze-1.svg.')
+                        ->visible(fn (\Filament\Forms\Get $get): bool => !($get('ornament_remove') ?? false)),
+                    Forms\Components\Placeholder::make('hero_main.current_ornament')
+                        ->label('Текущий орнамент')
+                        ->content(function () {
+                            $id = SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_MEDIA_ID);
+                            if ($id && $id !== 'none') {
+                                $asset = MediaAsset::find($id);
+                                return $asset ? new \Illuminate\Support\HtmlString('<img src="' . e($asset->thumbnail_url ?? $asset->url) . '" alt="" style="max-height:80px;">') : 'Загруженный файл';
+                            }
+                            return 'По умолчанию: maze-1.svg';
+                        })
+                        ->visible(fn (\Filament\Forms\Get $get): bool => !($get('ornament_remove') ?? false)),
                 ])
                 ->columns(1)
                 ->collapsible()
@@ -741,6 +783,39 @@ class SiteContentPage extends Page implements HasForms
                         @unlink($fullPath);
                     }
                 }
+            }
+
+            $ornamentRemove = (bool) ($heroMainData['ornament_remove'] ?? false);
+            SiteSetting::set(SiteSetting::KEY_HERO_ORNAMENT_DISABLED, $ornamentRemove ? '1' : '0');
+            if (!$ornamentRemove) {
+                SiteSetting::set(SiteSetting::KEY_HERO_ORNAMENT_OPACITY, (string) ($heroMainData['ornament_opacity'] ?? '0.85'));
+                $ornamentUpload = $heroMainData['ornament_upload'] ?? null;
+                if (is_array($ornamentUpload)) {
+                    $ornamentUpload = array_values($ornamentUpload)[0] ?? null;
+                }
+                if ($ornamentUpload instanceof TemporaryUploadedFile && $ornamentUpload->exists()) {
+                    $imageService = app(ImageOptimizationService::class);
+                    try {
+                        $fullPath = $ornamentUpload->getRealPath();
+                        $asset = $imageService->processUploadFromPath($fullPath, $ornamentUpload->getClientOriginalName(), $adminId);
+                        SiteSetting::set(SiteSetting::KEY_HERO_ORNAMENT_MEDIA_ID, (string) $asset->id);
+                    } finally {
+                        $ornamentUpload->delete();
+                    }
+                } elseif (is_string($ornamentUpload) && $ornamentUpload !== '') {
+                    $fullPath = Storage::disk('local')->path($ornamentUpload);
+                    if (is_file($fullPath)) {
+                        $imageService = app(ImageOptimizationService::class);
+                        try {
+                            $asset = $imageService->processUploadFromPath($fullPath, basename($fullPath), $adminId);
+                            SiteSetting::set(SiteSetting::KEY_HERO_ORNAMENT_MEDIA_ID, (string) $asset->id);
+                        } finally {
+                            @unlink($fullPath);
+                        }
+                    }
+                }
+            } else {
+                SiteSetting::set(SiteSetting::KEY_HERO_ORNAMENT_MEDIA_ID, '');
             }
         }
 

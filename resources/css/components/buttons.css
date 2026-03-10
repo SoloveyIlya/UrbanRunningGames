@@ -2,21 +2,23 @@
 
 .btn {
     display: inline-block;
-    padding: 0.5rem 1.5rem;
+    box-sizing: border-box;
+    padding: 14px 18px;
     background: #26203a;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     text-align: center;
     font-size: 1rem;
+    line-height: 1.25;
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 @media (max-width: 480px) {
     .btn {
-        padding: 0.65rem 1.25rem;
+        padding: 14px 18px;
         font-size: 0.9375rem;
     }
 }
@@ -64,47 +66,63 @@
     font-size: 0.875rem;
 }
 
+/* Кнопка «Подробнее» по макету Frame 87: 215×48, padding 14px 18px, #8D49EE, 8px */
 .btn--race {
-    display: inline-block;
-    background: #2b223f;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 215px;
+    min-width: 215px;
+    height: 48px;
+    padding: 14px 18px;
+    gap: 10px;
+    background: #8D49EE !important;
     color: #fff !important;
-    width: 100%;
-    padding: 0.6rem 1.25rem;
-    border-radius: 30px;
+    text-decoration: none !important;
+    border: none;
+    border-radius: 8px;
     font-weight: 600;
-    text-transform: uppercase;
     font-size: 0.8rem;
     letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-align: center;
+    box-sizing: border-box;
     transition: background 0.2s;
 }
 
 .btn--race:hover {
-    background: #4f436e;
+    background: #a366f5 !important;
+    color: #fff !important;
 }
 
 .btn--info-position {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 14rem;
+    width: 121px;
+    height: 48px;
     gap: 0.5rem;
-    padding: 0.9rem 1.75rem;
-    background: #26203A;
+    padding: 0 1rem;
+    background: var(--color-accent, #8D49EE);
     color: #fff !important;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     text-decoration: none;
     border: none;
-    border-radius: 29px;
+    border-radius: var(--radius-new, 8px);
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
 
 .btn--info-position:hover {
     opacity: 0.95;
     transform: translateY(-1px);
+    background: #a366f5;
+    color: #fff !important;
 }
 
 .btn--info-position__arrow {

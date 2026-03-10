@@ -29,20 +29,20 @@
 @endphp
 
 @section('content')
-<div class="page-header page-header--product">
-    <div class="container">
-        <nav class="breadcrumb-nav">
+<div class="page-header page-header--product py-6 px-0 bg-[#111] text-gray-200">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
+        <nav class="breadcrumb-nav flex items-center gap-1 text-sm text-white/80 mb-2" aria-label="Хлебные крошки">
             <a href="{{ route('shop.index') }}">Магазин</a>
             <span class="breadcrumb-sep">/</span>
             <span>{{ $product->name }}</span>
         </nav>
-        <h1>{{ $product->name }}</h1>
+        <h1 class="text-3xl md:text-4xl font-bold italic uppercase tracking-wide text-white m-0">{{ $product->name }}</h1>
     </div>
 </div>
 
-<section class="product-detail-section">
-    <div class="container">
-        <div class="product-detail-grid">
+<section class="product-detail-section py-12 md:py-16">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
+        <div class="product-detail-grid grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12">
             <div class="product-detail-gallery">
                 @if(count($galleryImages) > 0)
                     <div class="product-carousel" id="productCarousel">
