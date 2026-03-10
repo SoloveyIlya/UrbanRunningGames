@@ -28,15 +28,23 @@ class ImageOptimizationService
         $directory = 'gallery/' . date('Y/m/d');
         $baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeName = \Illuminate\Support\Str::slug($baseName) ?: 'image';
+        $fullPath = $file->getRealPath();
+        $image = Image::read($fullPath);
+
+        $mime = strtolower($file->getMimeType());
+        $extOriginal = strtolower($file->getClientOriginalExtension());
+        $preserveTransparency = in_array($mime, ['image/png', 'image/webp'], true)
+            || in_array($extOriginal, ['png', 'webp'], true);
+
+        if ($preserveTransparency) {
+            return $this->processUploadAsPng($image, $fullPath, $disk, $directory, $safeName, $file->getClientOriginalName(), $createdByAdminId);
+        }
+
         $ext = 'jpg';
         $uniqueId = uniqid('', true);
         $mainPath = $directory . '/' . $safeName . '-' . $uniqueId . '.' . $ext;
         $thumbPath = $directory . '/' . self::THUMB_DIR . '/' . $safeName . '-' . $uniqueId . '.' . $ext;
 
-        $fullPath = $file->getRealPath();
-        $image = Image::read($fullPath);
-
-        // Оптимизация: уменьшение по большей стороне с сохранением пропорций
         $image->scaleDown(width: self::MAX_SIZE, height: self::MAX_SIZE);
         $mainFullPath = Storage::disk($disk)->path($mainPath);
         File::ensureDirectoryExists(dirname($mainFullPath));
@@ -46,7 +54,6 @@ class ImageOptimizationService
         $width = $image->width();
         $height = $image->height();
 
-        // Генерация превью (квадрат по центру) — тот же uniqueId, чтобы имена совпадали
         $thumbImage = Image::read($fullPath);
         $thumbImage->cover(self::THUMB_SIZE, self::THUMB_SIZE);
         $thumbFullPath = Storage::disk($disk)->path($thumbPath);
@@ -63,6 +70,41 @@ class ImageOptimizationService
             'width' => $width,
             'height' => $height,
             'original_name' => $file->getClientOriginalName(),
+            'created_by_admin_id' => $createdByAdminId,
+        ]);
+        $asset->save();
+
+        return $asset;
+    }
+
+    /**
+     * Сохранение изображения в PNG без потери прозрачности (для товаров без фона).
+     */
+    private function processUploadAsPng($image, string $fullPath, string $disk, string $directory, string $safeName, string $originalName, ?int $createdByAdminId = null): MediaAsset
+    {
+        $ext = 'png';
+        $uniqueId = uniqid('', true);
+        $mainPath = $directory . '/' . $safeName . '-' . $uniqueId . '.' . $ext;
+
+        $image->scaleDown(width: self::MAX_SIZE, height: self::MAX_SIZE);
+        $mainFullPath = Storage::disk($disk)->path($mainPath);
+        File::ensureDirectoryExists(dirname($mainFullPath));
+        $image->toPng()->save($mainFullPath);
+
+        $sizeBytes = filesize($mainFullPath);
+        $width = $image->width();
+        $height = $image->height();
+
+        $asset = new MediaAsset([
+            'type' => 'image',
+            'disk' => $disk,
+            'path' => $mainPath,
+            'thumbnail_path' => $mainPath,
+            'mime_type' => 'image/png',
+            'size_bytes' => $sizeBytes,
+            'width' => $width,
+            'height' => $height,
+            'original_name' => $originalName,
             'created_by_admin_id' => $createdByAdminId,
         ]);
         $asset->save();

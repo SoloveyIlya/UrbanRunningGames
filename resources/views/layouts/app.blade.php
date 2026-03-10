@@ -44,7 +44,7 @@
 @php
     $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
 @endphp
-<body class="min-h-screen antialiased @if($hasAlertContent) has-alerts @endif">
+<body class="min-h-screen antialiased @if($hasAlertContent) has-alerts @endif @if(request()->routeIs('home')) page-home @endif">
     <svg width="0" height="0" aria-hidden="true">
         <defs>
             <!-- Форма navbar из макета (SVG 1118×80): скругление 8px слева, срез справа внизу -->

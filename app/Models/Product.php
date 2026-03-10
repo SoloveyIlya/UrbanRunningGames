@@ -15,6 +15,7 @@ class Product extends Model
         'price_amount',
         'currency',
         'is_active',
+        'product_type',
         'cover_media_id',
     ];
 
@@ -85,5 +86,21 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /** Тип товара (из справочника product_types по slug). */
+    public function typeRelation(): BelongsTo
+    {
+        return $this->belongsTo(ProductType::class, 'product_type', 'slug');
+    }
+
+    /** Список slug => label для типов товаров (фильтр в каталоге и админке). */
+    public static function getTypeLabels(): array
+    {
+        return [
+            'running' => 'Беговые футболки',
+            'urban' => 'Городские футболки',
+            'hoodies' => 'Толстовки',
+        ];
     }
 }
