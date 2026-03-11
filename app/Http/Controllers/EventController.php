@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\HeroVideo;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Schema;
 
 class EventController extends Controller
 {
     public function index(Request $request)
     {
-        $heroVideo = HeroVideo::where('page', HeroVideo::PAGE_EVENTS)->first();
-
         $query = Event::where('status', 'published')
             ->with(['albums' => fn ($q) => $q->orderBy('sort_order')->with('media'), 'city', 'coverMedia']);
 
@@ -63,15 +63,37 @@ class EventController extends Controller
         $upcomingEvents = $filterByParams($upcomingEvents);
         $pastEvents = $filterByParams($pastEvents);
 
-        $pastEventsPerPage = 6;
+        $statusFilter = $request->input('status', '');
+        if (!in_array($statusFilter, ['', 'upcoming', 'past'], true)) {
+            $statusFilter = '';
+        }
+
+        $perPage = 12;
         $page = $request->integer('page', 1);
-        $pastEventsPaginator = new LengthAwarePaginator(
-            $pastEvents->forPage($page, $pastEventsPerPage)->values(),
-            $pastEvents->count(),
-            $pastEventsPerPage,
-            $page,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
+
+        if ($statusFilter === 'upcoming') {
+            $eventsList = $upcomingEvents;
+            $eventsPaginator = null;
+        } elseif ($statusFilter === 'past') {
+            $eventsList = $pastEvents->forPage($page, $perPage)->values();
+            $eventsPaginator = new LengthAwarePaginator(
+                $eventsList,
+                $pastEvents->count(),
+                $perPage,
+                $page,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+        } else {
+            $allEvents = $upcomingEvents->concat($pastEvents)->values();
+            $eventsList = $allEvents->forPage($page, $perPage)->values();
+            $eventsPaginator = new LengthAwarePaginator(
+                $eventsList,
+                $allEvents->count(),
+                $perPage,
+                $page,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+        }
 
         $cities = \App\Models\City::whereHas('events', fn ($q) => $q->where('status', 'published'))
             ->orderBy('name')
@@ -87,7 +109,67 @@ class EventController extends Controller
             ->values()
             ->all();
 
-        return view('events.index', compact('heroVideo', 'upcomingEvents', 'pastEventsPaginator', 'cities', 'years'));
+        $infoSectionTitle = Schema::hasTable('site_settings')
+            ? (SiteSetting::get(SiteSetting::KEY_HOME_INFO_SECTION_TITLE) ?? 'ИНФОРМАЦИЯ')
+            : 'ИНФОРМАЦИЯ';
+
+        $infoAccordionJson = Schema::hasTable('site_settings')
+            ? SiteSetting::get(SiteSetting::KEY_HOME_INFO_ACCORDION_ITEMS)
+            : null;
+
+        if ($infoAccordionJson !== null && $infoAccordionJson !== '') {
+            $infoAccordionItems = json_decode($infoAccordionJson, true);
+            $infoAccordionItems = is_array($infoAccordionItems) ? $infoAccordionItems : $this->defaultInfoAccordionItems();
+        } else {
+            $infoAccordionItems = $this->defaultInfoAccordionItems();
+        }
+
+        return view('events.index', compact(
+            'eventsList',
+            'eventsPaginator',
+            'statusFilter',
+            'cities',
+            'years',
+            'infoSectionTitle',
+            'infoAccordionItems'
+        ));
+    }
+
+    /** @return array<int, array{title: string, content_type: string, links?: array, content?: string}> */
+    private function defaultInfoAccordionItems(): array
+    {
+        return [
+            [
+                'title' => 'Коротко о главном',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Гонки', 'url' => '/events'],
+                    ['text' => 'Магазин', 'url' => '/shop'],
+                    ['text' => 'О нас', 'url' => '/about'],
+                    ['text' => 'Контакты', 'url' => '/contact'],
+                ],
+            ],
+            [
+                'title' => 'Основные условия',
+                'content_type' => 'links',
+                'links' => [
+                    ['text' => 'Политика конфиденциальности', 'url' => '/privacy'],
+                    ['text' => 'Согласие на обработку ПДн', 'url' => '/consent'],
+                    ['text' => 'Условия продажи мерча', 'url' => '/terms'],
+                    ['text' => 'Правила возвратов', 'url' => '/returns'],
+                ],
+            ],
+            [
+                'title' => 'Место старта, финиша, выдача номеров и стартовых пакетов',
+                'content_type' => 'prose',
+                'content' => '<p>Старт и финиш каждой гонки указаны на странице конкретного события. Там же — время и место выдачи стартовых номеров и стартовых пакетов.</p><p>Актуальную информацию по каждой гонке смотрите в разделе <a href="/events">Гонки</a>. По вопросам организации обращайтесь в <a href="/contact">Контакты</a>.</p>',
+            ],
+            [
+                'title' => 'Где жить, как добраться до места старта',
+                'content_type' => 'prose',
+                'content' => '<p>Рекомендации по проживанию и проезду до места старта — на отдельной странице.</p><a href="/travel" class="btn btn--info-inline">Где жить и как добраться →</a>',
+            ],
+        ];
     }
 
     public function show(string $slug)
