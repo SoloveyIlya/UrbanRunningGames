@@ -3,99 +3,145 @@
 @section('title', $event->title . ' - Urban Running Games')
 
 @section('content')
-<div class="page-header">
-    <div class="container">
-        <h1>{{ $event->title }}</h1>
-        <span class="event-status {{ $event->isUpcoming() ? 'upcoming' : 'past' }}">
-            {{ $event->status_label }}
-        </span>
+@php
+    $coverUrl = $event->cover_url ?? $event->albums->sortBy('sort_order')->first()?->getCoverUrl();
+    $useVideo = $event->hero_video_media_id && $event->hero_video_url;
+    $posterUrl = $coverUrl ?? $event->cover_url;
+    $levelLabelEn = $event->level ? \App\Models\LevelTranslation::labelFor($event->level, 'en') : null;
+    $levelLabelRu = $event->level ? \App\Models\LevelTranslation::labelFor($event->level, 'ru') : null;
+@endphp
+<div class="race-detail-page">
+    {{-- Hero: видео/постер и орнамент настраиваются в самой гонке --}}
+    <div class="race-detail-hero hero {{ $useVideo ? 'hero--with-video' : '' }}">
+        @if($useVideo)
+            <video
+                class="hero__video"
+                autoplay
+                muted
+                loop
+                playsinline
+                @if($posterUrl) poster="{{ $posterUrl }}" @endif
+            >
+                <source src="{{ $event->hero_video_url }}" type="video/mp4">
+            </video>
+        @elseif($posterUrl)
+            <div class="hero__poster" style="background-image: url('{{ e($posterUrl) }}');"></div>
+        @endif
+        <div class="hero__overlay"></div>
+        @if($event->hero_ornament_url ?? null)
+            <div class="hero__ornament hero__ornament--mobile" style="background-image: url('{{ e($event->hero_ornament_url) }}'); opacity: {{ max(0, min(1, $event->hero_ornament_opacity)) }};"></div>
+        @endif
+        @if($event->hero_ornament_url ?? null)
+            <div class="hero__ornament hero__ornament--desktop" style="background-image: url('{{ e($event->hero_ornament_url) }}'); opacity: {{ max(0, min(1, $event->hero_ornament_opacity)) }};"></div>
+        @endif
+        <div class="race-detail-hero__inner">
+            <nav class="race-detail-breadcrumb" aria-label="Хлебные крошки">
+                <a href="{{ route('home') }}">Главная</a>
+                <span class="race-detail-breadcrumb__sep">/</span>
+                <a href="{{ route('events.index') }}">Гонки</a>
+                <span class="race-detail-breadcrumb__sep">/</span>
+                <span class="race-detail-breadcrumb__current" aria-current="page">{{ $event->title }}</span>
+            </nav>
+            <div class="race-detail-hero__illustration" style="background-image: url('{{ asset('images/illustration-races.png') }}');" role="img" aria-hidden="true"></div>
+            <h1 class="race-detail-hero__title">{{ $event->title }}</h1>
+            @if($event->level && $levelLabelEn)
+                <div class="race-detail-hero__level">
+                    <span class="race-detail-hero__level-en">Level: {{ $levelLabelEn }}</span>
+                    @if($levelLabelRu)
+                        <span class="race-detail-hero__level-ru">(Уровень: {{ $levelLabelRu }})</span>
+                    @else
+                        <span class="race-detail-hero__level-ru">(Уровень: {{ $levelLabelEn }})</span>
+                    @endif
+                </div>
+            @endif
+            <p class="race-detail-hero__date">{{ $event->starts_at->translatedFormat('d F Y, H:i') }}</p>
+            <a href="#register" class="btn btn--race mt-2">Регистрация</a>
+        </div>
     </div>
-</div>
 
-<section class="event-detail">
-    <div class="container">
-        <div class="event-main-info">
-            <div class="info-block">
-                <h3>Дата и время</h3>
-                <p>{{ $event->starts_at->translatedFormat('d F Y, H:i') }}</p>
+    <div class="race-detail-content">
+        <div class="race-detail-content__inner">
+            <h2 class="race-detail-content__heading">Уникальная беговая игра, единая история и легенда</h2>
+            @if($event->description)
+                <div class="race-detail-content__text">
+                    {!! nl2br(e($event->description)) !!}
+                </div>
+            @else
+                <p class="race-detail-content__text">Динамичный сценарий с историей, где каждая загадка приближает вас к финишу. Вы будете не просто бежать, а исследовать, искать подсказки и видеть образ города под новым углом. Пройдя игру, вы станете частью уникальной истории, которая больше не повторится.</p>
+            @endif
+
+            {{-- Карточки дистанций --}}
+            <div class="race-detail-cards">
+                @forelse($event->distances as $d)
+                <article class="race-detail-card">
+                    <h3 class="race-detail-card__label">Дистанция</h3>
+                    <div class="race-detail-card__heading">
+                        <h4 class="race-detail-card__title">{{ strtoupper($d->title ?: ($d->distance ?? 'Дистанция')) }}</h4>
+                        <span class="race-detail-card__subtitle">({{ $d->title_ru ?? $d->title ?? $d->distance ?? 'Дистанция' }})</span>
+                    </div>
+                    <dl class="race-detail-card__params">
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--map" aria-hidden="true"></span>
+                            <dd>Расстояние от {{ $d->distance ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--up" aria-hidden="true"></span>
+                            <dd>Набор высоты {{ $d->elevation_gain ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--location" aria-hidden="true"></span>
+                            <dd>Чекпоинты с заданиями {{ $d->checkpoints_count ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--time" aria-hidden="true"></span>
+                            <dd>Лимит времени {{ $d->time_limit ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--group" aria-hidden="true"></span>
+                            <dd>Лимит команд {{ $d->teams_count ?? '—' }} ед</dd>
+                        </div>
+                    </dl>
+                </article>
+                @empty
+                <article class="race-detail-card">
+                    <h3 class="race-detail-card__label">Дистанция</h3>
+                    <div class="race-detail-card__heading">
+                        <h4 class="race-detail-card__title">{{ strtoupper($event->distance ?? 'Дистанция') }}</h4>
+                        <span class="race-detail-card__subtitle">({{ $event->distance ?? 'Дистанция' }})</span>
+                    </div>
+                    <dl class="race-detail-card__params">
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--map" aria-hidden="true"></span>
+                            <dd>Расстояние от {{ $event->distance ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--up" aria-hidden="true"></span>
+                            <dd>Набор высоты от 100 м</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--location" aria-hidden="true"></span>
+                            <dd>Чекпоинты с заданиями {{ $event->locations_count ?? '—' }} шт</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--time" aria-hidden="true"></span>
+                            <dd>Лимит времени {{ $event->time_limit ?? '—' }}</dd>
+                        </div>
+                        <div class="race-detail-card__row">
+                            <span class="race-detail-card__icon race-detail-card__icon--group" aria-hidden="true"></span>
+                            <dd>Лимит команд {{ $event->teams_count ?? '—' }} ед</dd>
+                        </div>
+                    </dl>
+                </article>
+                @endforelse
             </div>
-            
-            @if($event->city || $event->location_text)
-                <div class="info-block">
-                    <h3>Место проведения</h3>
-                    <p>
-                        @if($event->city)
-                            {{ $event->city->name }}
-                        @endif
-                        @if($event->location_text)
-                            @if($event->city), @endif
-                            {{ $event->location_text }}
-                        @endif
-                    </p>
+
+            @if($event->rules)
+                <h2 class="race-detail-content__heading">Правила</h2>
+                <div class="race-detail-rules">
+                    <div class="race-detail-rules__text">{!! nl2br(e($event->rules)) !!}</div>
                 </div>
             @endif
         </div>
-
-        @if($event->description)
-            <div class="content-block">
-                <h2>Описание формата</h2>
-                <div class="content">
-                    {!! nl2br(e($event->description)) !!}
-                </div>
-            </div>
-        @endif
-
-        @if($event->rules)
-            <div class="content-block">
-                <h2>Правила и требования</h2>
-                <div class="content">
-                    {!! nl2br(e($event->rules)) !!}
-                </div>
-            </div>
-        @endif
-
-        @if($event->partners->count() > 0)
-            <div class="content-block">
-                <h2>Партнёры события</h2>
-                <div class="partners-list">
-                    @foreach($event->partners as $partner)
-                        <div class="partner-item">
-                            @if($partner->logo_media_id)
-                                <img src="#" alt="{{ $partner->name }}" class="partner-logo">
-                            @endif
-                            <h4>{{ $partner->name }}</h4>
-                            @if($partner->description)
-                                <p>{{ $partner->description }}</p>
-                            @endif
-                            @if($partner->website_url)
-                                <a href="{{ $partner->website_url }}" target="_blank" rel="noopener">Сайт партнёра</a>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        @if($event->albums->count() > 0)
-            <div class="content-block">
-                <h2>Фотогалерея</h2>
-                <div class="albums-grid">
-                    @foreach($event->albums as $album)
-                        <a href="{{ route('gallery.show', $album) }}" class="album-card">
-                            <h4>{{ $album->title }}</h4>
-                            @if($album->description)
-                                <p>{{ $album->description }}</p>
-                            @endif
-                            <span class="btn btn-sm">Смотреть альбом</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <div class="event-actions">
-            <a href="{{ route('events.index') }}" class="btn">← Вернуться к событиям</a>
-        </div>
     </div>
-</section>
+</div>
 @endsection

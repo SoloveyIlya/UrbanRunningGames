@@ -19,7 +19,11 @@ class Event extends Model
         'description',
         'rules',
         'status',
+        'level',
         'cover_media_id',
+        'hero_video_media_id',
+        'hero_ornament_media_id',
+        'hero_ornament_opacity',
         'distance',
         'locations_count',
         'time_limit',
@@ -64,6 +68,30 @@ class Event extends Model
         return $this->belongsTo(\App\Models\MediaAsset::class, 'cover_media_id');
     }
 
+    public function heroVideoMedia()
+    {
+        return $this->belongsTo(\App\Models\MediaAsset::class, 'hero_video_media_id');
+    }
+
+    public function heroOrnamentMedia()
+    {
+        return $this->belongsTo(\App\Models\MediaAsset::class, 'hero_ornament_media_id');
+    }
+
+    public function distances()
+    {
+        return $this->hasMany(EventDistance::class)->orderBy('sort_order');
+    }
+
+    /** Подпись уровня для текущей локали (из level_translations). */
+    public function getLevelLabelAttribute(): ?string
+    {
+        if (!$this->level) {
+            return null;
+        }
+        return LevelTranslation::labelFor($this->level);
+    }
+
     /**
      * URL главной картинки события (для карточки на главной). Задаётся в админке.
      */
@@ -73,6 +101,27 @@ class Event extends Model
             return $this->coverMedia->thumbnail_url ?? $this->coverMedia->url;
         }
         return null;
+    }
+
+    /** URL видео для hero страницы гонки (если задано у гонки). */
+    public function getHeroVideoUrlAttribute(): ?string
+    {
+        return $this->heroVideoMedia?->url;
+    }
+
+    /** URL орнамента для hero страницы гонки (если задано у гонки). */
+    public function getHeroOrnamentUrlAttribute(): ?string
+    {
+        return $this->heroOrnamentMedia?->url;
+    }
+
+    /** Прозрачность орнамента hero (0–1), по умолчанию 0.85. */
+    public function getHeroOrnamentOpacityAttribute($value): float
+    {
+        if ($value !== null && $value !== '') {
+            return (float) $value;
+        }
+        return 0.85;
     }
 
     /**

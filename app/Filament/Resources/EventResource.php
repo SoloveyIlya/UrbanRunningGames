@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventResource\Pages;
 use App\Models\Album;
 use App\Models\Event;
+use App\Models\LevelTranslation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -71,8 +72,54 @@ class EventResource extends Resource
                             ])
                             ->default('draft')
                             ->required(),
+                        Forms\Components\Select::make('level')
+                            ->label('Уровень')
+                            ->options(fn () => LevelTranslation::optionsForLocale('ru'))
+                            ->searchable()
+                            ->nullable()
+                            ->helperText('Отображается на странице гонки под заголовком. Переводы в таблице level_translations.'),
                     ])
                     ->columns(2),
+                Forms\Components\Section::make('Hero страницы гонки')
+                    ->description('Видео, орнамент и прозрачность для hero на странице этой гонки. Если не заданы — используется только обложка гонки.')
+                    ->schema([
+                        Forms\Components\FileUpload::make('hero_video_upload')
+                            ->label('Видео hero')
+                            ->acceptedFileTypes(['video/mp4', 'video/webm'])
+                            ->maxSize(100 * 1024 * 1024)
+                            ->disk('local')
+                            ->directory('livewire-tmp')
+                            ->visibility('private')
+                            ->helperText('MP4 или WebM. Если задано — в hero показывается видео.'),
+                        Forms\Components\FileUpload::make('hero_ornament_upload')
+                            ->label('Орнамент hero')
+                            ->image()
+                            ->maxSize(10 * 1024)
+                            ->disk('local')
+                            ->directory('livewire-tmp')
+                            ->visibility('private')
+                            ->helperText('Изображение (SVG/PNG) поверх hero.'),
+                        Forms\Components\TextInput::make('hero_ornament_opacity')
+                            ->label('Прозрачность орнамента')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(1)
+                            ->step(0.05)
+                            ->default(0.85)
+                            ->helperText('0—1, например 0.85'),
+                        Forms\Components\Placeholder::make('hero_video_preview')
+                            ->label('Текущее видео')
+                            ->content(fn (?Event $record) => $record && $record->heroVideoMedia ? 'Задано' : 'Не задано')
+                            ->visibleOn('edit'),
+                        Forms\Components\Placeholder::make('hero_ornament_preview')
+                            ->label('Текущий орнамент')
+                            ->content(fn (?Event $record) => $record && $record->heroOrnamentMedia
+                                ? new \Illuminate\Support\HtmlString('<img src="' . e($record->heroOrnamentMedia->url) . '" alt="" style="max-width:120px;height:auto;">')
+                                : 'Не задан')
+                            ->visibleOn('edit'),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
                 Forms\Components\Section::make('Карточка на главной')
                     ->description('Главная картинка и параметры для блока «Ближайшие гонки».')
                     ->schema([
@@ -246,6 +293,7 @@ class EventResource extends Resource
     {
         return [
             EventResource\RelationManagers\AlbumsRelationManager::class,
+            EventResource\RelationManagers\DistancesRelationManager::class,
         ];
     }
 

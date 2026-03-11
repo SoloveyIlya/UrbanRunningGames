@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Models\HeroVideo;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -176,7 +175,7 @@ class EventController extends Controller
     {
         $event = Event::where('slug', $slug)
             ->where('status', 'published')
-            ->with(['city', 'partners', 'albums' => fn ($q) => $q->published()->orderBy('sort_order')])
+            ->with(['city', 'partners', 'coverMedia', 'heroVideoMedia', 'heroOrnamentMedia', 'albums' => fn ($q) => $q->published()->orderBy('sort_order'), 'distances'])
             ->firstOrFail();
 
         return view('events.show', compact('event'));
