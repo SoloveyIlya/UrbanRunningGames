@@ -44,7 +44,7 @@
 @php
     $hasAlertContent = (session('success') !== null && session('success') !== '') || (session('error') !== null && session('error') !== '') || $errors->any();
 @endphp
-<body class="min-h-screen antialiased @if($hasAlertContent) has-alerts @endif">
+<body class="min-h-screen antialiased @if($hasAlertContent) has-alerts @endif @if(request()->routeIs('home')) page-home @endif">
     <svg width="0" height="0" aria-hidden="true">
         <defs>
             <!-- Форма navbar из макета (SVG 1118×80): скругление 8px слева, срез справа внизу -->
@@ -96,7 +96,7 @@
                 </a>
                 <div class="navbar__right">
                     <div class="navbar__links">
-                        <a href="{{ route('events.index') }}" class="navbar__link">Гонки</a>
+                        <a href="{{ route('events.index') }}" class="navbar__link">Игры</a>
                         <span class="navbar__line"></span>
                         <a href="{{ route('rating') }}" class="navbar__link">Рейтинг</a>
                         <span class="navbar__line"></span>
@@ -251,6 +251,7 @@
             window.addEventListener('resize', onScroll);
         })();
     </script>
+    @stack('modals')
     @stack('scripts')
 </body>
 </html>

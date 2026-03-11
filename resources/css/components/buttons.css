@@ -1,5 +1,18 @@
 /* Кнопки: общие и варианты */
 
+/* Единый стиль первичных кнопок (фиолетовые): высота, скругление, типографика */
+:root {
+    --btn-primary-height: 48px;
+    --btn-primary-padding-y: 14px;
+    --btn-primary-padding-x: 18px;
+    --btn-primary-radius: 8px;
+    --btn-primary-font-size: 0.875rem;
+    --btn-primary-font-weight: 600;
+    --btn-primary-letter-spacing: 0.03em;
+    --btn-primary-bg: #8D49EE;
+    --btn-primary-bg-hover: #a366f5;
+}
+
 .btn {
     display: inline-block;
     box-sizing: border-box;
@@ -66,26 +79,26 @@
     font-size: 0.875rem;
 }
 
-/* Кнопка «Подробнее» по макету Frame 87: 215×48, padding 14px 18px, #8D49EE, 8px */
+/* Кнопка «Подробнее» по макету Frame 87: 215×48, единый стиль с остальными первичными кнопками */
 .btn--race {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 215px;
     min-width: 215px;
-    height: 48px;
-    padding: 14px 18px;
+    min-height: var(--btn-primary-height);
+    height: var(--btn-primary-height);
+    padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
     gap: 10px;
-    background: #8D49EE !important;
+    background: var(--btn-primary-bg) !important;
     color: #fff !important;
     text-decoration: none !important;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    border-radius: var(--btn-primary-radius);
+    font-weight: var(--btn-primary-font-weight);
+    font-size: var(--btn-primary-font-size);
+    letter-spacing: var(--btn-primary-letter-spacing);
     line-height: 1;
     text-align: center;
     box-sizing: border-box;
@@ -93,7 +106,7 @@
 }
 
 .btn--race:hover {
-    background: #a366f5 !important;
+    background: var(--btn-primary-bg-hover) !important;
     color: #fff !important;
 }
 
@@ -102,26 +115,27 @@
     align-items: center;
     justify-content: center;
     width: 121px;
-    height: 48px;
+    min-width: 121px;
+    min-height: var(--btn-primary-height);
+    height: var(--btn-primary-height);
+    padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
     gap: 0.5rem;
-    padding: 0 1rem;
-    background: var(--color-accent, #8D49EE);
+    background: var(--color-accent, var(--btn-primary-bg));
     color: #fff !important;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    font-size: var(--btn-primary-font-size);
+    font-weight: var(--btn-primary-font-weight);
+    letter-spacing: var(--btn-primary-letter-spacing);
     text-decoration: none;
     border: none;
-    border-radius: var(--radius-new, 8px);
+    border-radius: var(--radius-new, var(--btn-primary-radius));
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s, background 0.2s;
+    transition: background 0.2s, opacity 0.2s, transform 0.2s;
 }
 
 .btn--info-position:hover {
     opacity: 0.95;
     transform: translateY(-1px);
-    background: #a366f5;
+    background: var(--btn-primary-bg-hover);
     color: #fff !important;
 }
 

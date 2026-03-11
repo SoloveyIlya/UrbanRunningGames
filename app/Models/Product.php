@@ -15,7 +15,9 @@ class Product extends Model
         'price_amount',
         'currency',
         'is_active',
+        'product_type',
         'cover_media_id',
+        'gender',
     ];
 
     protected $casts = [
@@ -85,5 +87,36 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /** Тип товара (из справочника product_types по slug). */
+    public function typeRelation(): BelongsTo
+    {
+        return $this->belongsTo(ProductType::class, 'product_type', 'slug');
+    }
+
+    /** Варианты для пола: M, Ж, null = М и Ж */
+    public static function getGenderLabels(): array
+    {
+        return [
+            'M' => 'М',
+            'Ж' => 'Ж',
+            null => 'М и Ж',
+        ];
+    }
+
+    public function getGenderLabelAttribute(): string
+    {
+        return self::getGenderLabels()[$this->gender] ?? (string) $this->gender;
+    }
+
+    /** Список slug => label для типов товаров (фильтр в каталоге и админке). */
+    public static function getTypeLabels(): array
+    {
+        return [
+            'running' => 'Беговые футболки',
+            'urban' => 'Городские футболки',
+            'hoodies' => 'Толстовки',
+        ];
     }
 }

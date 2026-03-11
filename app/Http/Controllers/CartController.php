@@ -137,11 +137,13 @@ class CartController extends Controller
         if ($variantId) {
             $variant = $product->adminVariants()->findOrFail($variantId);
             if (! $variant->is_active) {
-                return back()->with('error', 'Выбранный вариант недоступен.');
+                $msg = 'Выбранный вариант недоступен.';
+                return $request->wantsJson() ? response()->json(['success' => false, 'message' => $msg], 422) : back()->with('error', $msg);
             }
         } else {
             if ($product->variants()->exists()) {
-                return back()->with('error', 'Выберите вариант (размер/цвет).');
+                $msg = 'Выберите вариант (размер/цвет).';
+                return $request->wantsJson() ? response()->json(['success' => false, 'message' => $msg], 422) : back()->with('error', $msg);
             }
         }
 
@@ -153,6 +155,14 @@ class CartController extends Controller
             'quantity' => ($cart[$key]['quantity'] ?? 0) + $quantity,
         ];
         Session::put(self::SESSION_KEY, $cart);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Товар добавлен в корзину.',
+                'cart_count' => self::getCount(),
+            ]);
+        }
 
         return redirect()->route('cart.index')->with('success', 'Товар добавлен в корзину.');
     }

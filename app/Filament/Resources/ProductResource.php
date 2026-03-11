@@ -73,6 +73,20 @@ class ProductResource extends Resource
                         Forms\Components\Toggle::make('is_active')
                             ->label('Показывать в каталоге')
                             ->default(true),
+                        Forms\Components\Select::make('product_type')
+                            ->label('Тип товара')
+                            ->options(
+                                \Illuminate\Support\Facades\Schema::hasTable('product_types')
+                                    ? \App\Models\ProductType::orderBy('sort_order')->orderBy('label')->pluck('label', 'slug')
+                                    : \App\Models\Product::getTypeLabels()
+                            )
+                            ->nullable()
+                            ->placeholder('— не выбран'),
+                        Forms\Components\Select::make('gender')
+                            ->label('Пол')
+                            ->options(['M' => 'М', 'Ж' => 'Ж'])
+                            ->nullable()
+                            ->placeholder('М и Ж'),
                     ])
                     ->columns(2),
             ]);
@@ -91,6 +105,21 @@ class ProductResource extends Resource
                     ->label('Название')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('product_type')
+                    ->label('Тип')
+                    ->formatStateUsing(function (?string $state, \App\Models\Product $record) {
+                        if (\Illuminate\Support\Facades\Schema::hasTable('product_types') && $record->relationLoaded('typeRelation')) {
+                            return $record->typeRelation?->label ?? $state ?? '—';
+                        }
+                        if (blank($state)) {
+                            return '—';
+                        }
+                        return \App\Models\Product::getTypeLabels()[$state] ?? $state;
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('gender')
+                    ->label('Пол')
+                    ->formatStateUsing(fn ($state) => \App\Models\Product::getGenderLabels()[$state] ?? $state ?? '—'),
                 Tables\Columns\TextColumn::make('price_amount')
                     ->label('Цена')
                     ->money('RUB')
@@ -139,7 +168,6 @@ class ProductResource extends Resource
                                 : null;
                             $replica->adminVariants()->create([
                                 'size' => $v->size,
-                                'color' => $v->color,
                                 'sku' => $newSku,
                                 'price_override' => $v->price_override,
                                 'is_active' => $v->is_active,

@@ -10,7 +10,6 @@ class ProductVariant extends Model
     protected $fillable = [
         'product_id',
         'size',
-        'color',
         'sku',
         'price_override',
         'is_active',
@@ -36,11 +35,10 @@ class ProductVariant extends Model
     }
 
     /**
-     * Краткое описание варианта (размер / цвет).
+     * Краткое описание варианта (размер).
      */
     public function getAttributeLabelAttribute(): string
     {
-        $parts = array_filter([$this->size, $this->color]);
-        return implode(' · ', $parts) ?: '—';
+        return $this->size !== null && $this->size !== '' ? $this->size : '—';
     }
 }

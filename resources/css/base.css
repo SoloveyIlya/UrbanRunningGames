@@ -24,6 +24,14 @@
 @font-face {
     font-family: 'Houschka Rounded';
     src: url('../fonts/houschka-rounded-medium.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Houschka Rounded';
+    src: url('../fonts/houschka-rounded-medium.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -52,6 +60,7 @@
 }
 
 html {
+    font-family: 'Houschka Rounded', sans-serif;
     background-color: var(--color-bg-page, #121315);
     overflow-x: hidden;
 }
@@ -68,9 +77,9 @@ body {
     overflow-x: hidden;
 }
 
-/* Карта на заднем фоне: эталон 1200px — размер и позиция фиксированы (как home-stats__grid).
+/* Карта на заднем фоне: только на главной. Эталон 1200px — размер и позиция фиксированы (как home-stats__grid).
    Фиксированный отступ снизу от hero__overlay (--map-padding-below-hero), карта прокручивается со страницей — не двигается относительно hero. */
-body::before {
+body.page-home::before {
     content: '';
     position: absolute;
     top: 0;
@@ -98,14 +107,14 @@ body::before {
 
 /* На узких экранах (<1200px) позиция карты как при эталоне 1200px: -600px */
 @media (max-width: 1199px) {
-    body::before {
+    body.page-home::before {
         background-position-x: -600px;
     }
 }
 
 /* Мобильная версия: карта на заднем фоне меньше по размеру */
 @media (max-width: 768px) {
-    body::before {
+    body.page-home::before {
         background-size: 1100px auto;
     }
 }

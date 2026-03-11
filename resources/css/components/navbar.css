@@ -8,29 +8,29 @@
     --navbar-bg: rgba(141, 73, 238, 0.6);
 }
 
-/* Обёртка: навбар + алерты. По макету: отступ слева 50px, справа 21px (navbar 1129px при 1200px). */
+/* Обёртка: навбар + алерты. Одинаковые отступы слева и справа. */
 .header-sticky {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 8px 21px 0 50px;
+    padding: 8px 24px 0 24px;
 }
 
 @media (max-width: 768px) {
     .header-sticky {
-        padding: 8px 14px 0 14px;
+        padding: 8px 16px 0 16px;
     }
 }
 
 @media (max-width: 480px) {
     .header-sticky {
-        padding: 8px 10px 0 10px;
+        padding: 8px 12px 0 12px;
     }
 }
 
-/* ≥1200px: полоса навбара удлиняется влево и вправо при масштабировании (отступы фиксированы) */
+/* ≥1200px: полоса навбара на всю ширину с одинаковыми отступами */
 @media (min-width: 1200px) {
     .header-sticky {
         padding-left: 24px;
@@ -355,7 +355,7 @@ body.has-alerts .nav-menu--mobile {
 
 @media (max-width: 900px) {
     .header-sticky {
-        padding: 8px 13px 0 13px;
+        padding: 8px 16px 0 16px;
     }
     .navbar {
         max-width: none;
