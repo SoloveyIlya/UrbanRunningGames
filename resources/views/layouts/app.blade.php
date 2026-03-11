@@ -251,6 +251,7 @@
             window.addEventListener('resize', onScroll);
         })();
     </script>
+    @stack('modals')
     @stack('scripts')
 </body>
 </html>

@@ -39,6 +39,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Магазин мерча (каталог)
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
+Route::get('/shop/product/{product}/data', [ProductController::class, 'productData'])->name('shop.product.data');
 Route::get('/shop/product/{product}', [ProductController::class, 'show'])->name('shop.show');
 
 // Корзина и оформление заявки

@@ -87,6 +87,47 @@ class ProductController extends Controller
     }
 
     /**
+     * API: данные товара для модалки (JSON).
+     */
+    public function productData(Product $product)
+    {
+        if (! $product->is_active) {
+            abort(404);
+        }
+        $product->load(['coverMedia', 'media', 'variants']);
+        $variants = $product->variants;
+        $hasSize = $variants->contains(fn ($v) => $v->size !== null && $v->size !== '');
+        $sizes = $variants->pluck('size')->filter()->unique()->values()->all();
+        $variantsMap = [];
+        $variantBySize = [];
+        foreach ($variants as $v) {
+            $key = ($v->size ?? '') . '|';
+            $variantsMap[$key] = ['id' => $v->id, 'price' => $v->display_price];
+            if ($v->size !== null && $v->size !== '') {
+                $variantBySize[$v->size] = ['id' => $v->id, 'price' => $v->display_price];
+            }
+        }
+        $firstVariant = $variants->first();
+        $gallery = $product->media->isEmpty()
+            ? ($product->cover_url ? [['url' => $product->cover_url, 'thumb' => $product->cover_url]] : [])
+            : $product->media->map(fn ($m) => ['url' => $m->url, 'thumb' => $m->thumbnail_url ?? $m->url])->values()->all();
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'display_price' => $product->display_price,
+            'gender' => $product->gender,
+            'gallery' => $gallery,
+            'variants_map' => $variantsMap,
+            'variant_by_size' => $variantBySize,
+            'sizes' => $sizes,
+            'has_size' => $hasSize,
+            'initial_variant_id' => $firstVariant ? $firstVariant->id : null,
+            'initial_price' => $firstVariant ? $firstVariant->display_price : $product->display_price,
+        ]);
+    }
+
+    /**
      * Карточка товара: карусель фото, описание, цена, атрибуты.
      */
     public function show(Product $product)
