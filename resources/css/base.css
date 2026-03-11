@@ -24,6 +24,14 @@
 @font-face {
     font-family: 'Houschka Rounded';
     src: url('../fonts/houschka-rounded-medium.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Houschka Rounded';
+    src: url('../fonts/houschka-rounded-medium.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -52,6 +60,7 @@
 }
 
 html {
+    font-family: 'Houschka Rounded', sans-serif;
     background-color: var(--color-bg-page, #121315);
     overflow-x: hidden;
 }

@@ -96,7 +96,7 @@
                 </a>
                 <div class="navbar__right">
                     <div class="navbar__links">
-                        <a href="{{ route('events.index') }}" class="navbar__link">Гонки</a>
+                        <a href="{{ route('events.index') }}" class="navbar__link">Игры</a>
                         <span class="navbar__line"></span>
                         <a href="{{ route('rating') }}" class="navbar__link">Рейтинг</a>
                         <span class="navbar__line"></span>

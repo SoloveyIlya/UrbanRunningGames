@@ -63,7 +63,7 @@
                                 <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Лимит:</dt><dd class="text-white/65 m-0">{{ $event->time_limit ?? '—' }}</dd></div>
                                 <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Команд:</dt><dd class="text-white/65 m-0">{{ $event->teams_count ?? '—' }}</dd></div>
                             </dl>
-                            <a href="{{ route('events.show', $event->slug) }}" class="btn btn--race inline-flex items-center justify-center w-full sm:w-[215px] min-w-0 sm:min-w-[215px] h-12 px-4 sm:px-[18px] py-3.5 rounded-lg bg-[#8D49EE] text-white font-semibold text-sm uppercase tracking-wide mt-2">Подробнее</a>
+                            <a href="{{ route('events.show', $event->slug) }}" class="btn btn--race mt-2">Подробнее</a>
                         </div>
                     </article>
                 @endforeach
@@ -87,8 +87,8 @@
         <div class="info-section__head flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-between gap-4 mb-6 sm:mb-8">
             <h2 id="info-heading" class="info-section__title text-left text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide ml-0 sm:ml-12 md:ml-0 mb-0 text-white">{{ $infoSectionTitle }}</h2>
             <div class="info-section__action shrink-0 self-start sm:self-center">
-                <a href="{{ route('rules') }}" class="btn btn--info-position inline-flex items-center justify-center min-w-[121px] w-full sm:w-[121px] h-12 px-4 bg-[#8D49EE] text-white font-semibold text-sm uppercase tracking-wide no-underline border-0 rounded-lg cursor-pointer">
-                    <span class="btn--info-position__text">ПОЛОЖЕНИЕ</span>
+                <a href="{{ route('rules') }}" class="btn btn--info-position">
+                    <span class="btn--info-position__text">Положение</span>
                 </a>
             </div>
         </div>

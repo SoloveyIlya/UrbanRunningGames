@@ -273,6 +273,13 @@
     align-self: center;
 }
 
+@media (max-width: 640px) {
+    .race-card__body .btn--race {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
 /* На средних экранах карточка: фото 225px, контент — остальное. Padding тела карточки неизменный (20px). */
 @media (min-width: 901px) and (max-width: 1200px) {
     .race-card--horizontal {
@@ -292,8 +299,8 @@
     }
 
     .btn--race {
-        padding: 14px 18px;
-        font-size: 0.75rem;
+        padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+        font-size: var(--btn-primary-font-size);
     }
 }
 
@@ -330,8 +337,8 @@
     }
 
     .btn--race {
-        padding: 14px 18px;
-        font-size: 0.95rem;
+        padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+        font-size: var(--btn-primary-font-size);
     }
 
     /* Вертикальные карточки (оверлей) */
@@ -407,8 +414,8 @@
     }
 
     .btn--race {
-        padding: 14px 18px;
-        font-size: 0.75rem;
+        padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+        font-size: var(--btn-primary-font-size);
     }
 }
 
@@ -1191,18 +1198,17 @@
     align-items: center;
     width: 121px;
     min-width: 121px;
-    height: 48px;
-    padding: 14px 18px;
+    height: var(--btn-primary-height);
+    padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
     gap: 10px;
-    background: #8D49EE !important;
+    background: var(--btn-primary-bg) !important;
     color: #fff !important;
     text-decoration: none !important;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    border-radius: var(--btn-primary-radius);
+    font-weight: var(--btn-primary-font-weight);
+    font-size: var(--btn-primary-font-size);
+    letter-spacing: var(--btn-primary-letter-spacing);
     line-height: 1;
     text-align: center;
     box-sizing: border-box;
@@ -1218,6 +1224,6 @@
 }
 
 .info-section__action .btn--info-position:hover {
-    background: #a366f5 !important;
+    background: var(--btn-primary-bg-hover) !important;
     color: #fff !important;
 }
