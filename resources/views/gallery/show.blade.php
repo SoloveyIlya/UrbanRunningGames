@@ -31,12 +31,14 @@
                         @endforeach
                     </div>
                     <button type="button" class="album-viewer__nav album-viewer__nav--next" aria-label="Следующее фото" data-dir="1">→</button>
-                    <div class="album-viewer__thumbs" role="tablist" aria-label="Миниатюры фотографий">
-                        @foreach($galleryPhotos as $i => $photo)
-                            @if($photo['is_image'])
-                                <button type="button" class="album-viewer__thumb {{ $i === 0 ? 'album-viewer__thumb--active' : '' }}" role="tab" aria-selected="{{ $i === 0 ? 'true' : 'false' }}" aria-label="Фото {{ $i + 1 }}" data-index="{{ $i }}" style="background-image: url('{{ $photo['thumb'] }}')"></button>
-                            @endif
-                        @endforeach
+                    <div class="album-viewer__thumbs-wrap">
+                        <div class="album-viewer__thumbs" id="album-viewer-thumbs" role="tablist" aria-label="Миниатюры фотографий">
+                            @foreach($galleryPhotos as $i => $photo)
+                                @if($photo['is_image'])
+                                    <button type="button" class="album-viewer__thumb {{ $i === 0 ? 'album-viewer__thumb--active' : '' }}" role="tab" aria-selected="{{ $i === 0 ? 'true' : 'false' }}" aria-label="Фото {{ $i + 1 }}" data-index="{{ $i }}" style="background-image: url('{{ $photo['thumb'] }}')"></button>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,11 +54,26 @@
 document.addEventListener('DOMContentLoaded', function() {
     var viewer = document.getElementById('album-viewer');
     if (!viewer) return;
+    var mainEl = viewer.querySelector('.album-viewer__main');
     var mainImgs = viewer.querySelectorAll('.album-viewer__main-img');
-    var thumbs = viewer.querySelectorAll('.album-viewer__thumb');
+    var thumbsContainer = document.getElementById('album-viewer-thumbs');
+    var thumbs = thumbsContainer ? thumbsContainer.querySelectorAll('.album-viewer__thumb') : [];
     var n = mainImgs.length;
     if (n === 0) return;
     var idx = 0;
+    var isTouch = 'ontouchstart' in window;
+
+    function scrollThumbsToActive() {
+        if (!thumbs.length || !thumbsContainer || !thumbsContainer.parentElement) return;
+        var wrap = thumbsContainer.parentElement;
+        if (wrap.scrollWidth <= wrap.offsetWidth) return;
+        var thumb = thumbs[idx];
+        var wrapWidth = wrap.offsetWidth;
+        var thumbWidth = thumb.offsetWidth;
+        var scrollLeft = thumb.offsetLeft - (wrapWidth / 2) + (thumbWidth / 2);
+        var maxScroll = wrap.scrollWidth - wrap.offsetWidth;
+        wrap.scrollTo({ left: Math.max(0, Math.min(scrollLeft, maxScroll)), behavior: 'smooth' });
+    }
 
     function show(i) {
         var next = parseInt(i, 10);
@@ -67,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.classList.toggle('album-viewer__thumb--active', k === idx);
             btn.setAttribute('aria-selected', k === idx ? 'true' : 'false');
         });
+        scrollThumbsToActive();
     }
 
     viewer.querySelectorAll('.album-viewer__nav').forEach(function(btn) {
@@ -85,6 +103,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    if (isTouch && mainEl) {
+        var startX = 0;
+        mainEl.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+        mainEl.addEventListener('touchend', function(e) {
+            var endX = e.changedTouches[0].clientX;
+            var delta = startX - endX;
+            if (Math.abs(delta) > 50) {
+                show(idx + (delta > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
     viewer.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
@@ -102,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     viewer.setAttribute('tabindex', '0');
+    window.addEventListener('resize', scrollThumbsToActive);
 });
 </script>
 @endif

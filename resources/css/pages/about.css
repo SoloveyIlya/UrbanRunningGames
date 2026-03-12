@@ -583,3 +583,477 @@
 .about-content-section .content a {
     color: #a78bfa;
 }
+
+/* ========== Макет страницы Команда по Figma (как partners-page-figma) ========== */
+.team-page-figma {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: #121315;
+    padding: 168px 50px 3rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team-page-figma .container {
+    width: calc(100% - 100px);
+    max-width: 1200px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .team-page-figma {
+        padding: 100px 16px 1.5rem;
+    }
+    .team-page-figma .container {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-page-figma {
+        padding: 72px 12px 2rem;
+    }
+    .team-page-figma .container {
+        width: calc(100% - 24px);
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+}
+
+/* Хлебные крошки: Главная / Команда */
+.team-page-figma__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #8D49EE;
+}
+
+.team-page-figma__breadcrumb a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.team-page-figma__breadcrumb a:hover {
+    color: #a366f5;
+}
+
+.team-page-figma__breadcrumb .shop-breadcrumb__sep {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.team-page-figma__breadcrumb .shop-breadcrumb__current {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Заголовок «Команда» */
+.team-page-figma__title {
+    margin: 0 0 20px;
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 75px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+/* Подзаголовок */
+.team-page-figma__subtitle {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0 0 100px;
+    max-width: 365px;
+}
+
+/* Блок «Наша миссия» */
+.team-page-figma__mission {
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+.team-page-figma__mission-title {
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 60px;
+    color: #FFFFFF;
+    margin: 0 0 20px;
+}
+
+.team-page-figma__mission-text {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+    max-width: 490px;
+}
+
+.team-page-figma__mission-text p {
+    margin: 0 0 10px;
+}
+
+.team-page-figma__mission-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Двухколоночный блок: видео слева, «О нас» справа */
+.team-page-figma__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 24px;
+    margin-bottom: 80px;
+    align-items: flex-start;
+}
+
+.team-page-figma__video-col {
+    flex: 0 0 auto;
+}
+
+.team-page-figma__video {
+    width: 490px;
+    max-width: 100%;
+    height: 340px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.team-page-figma__about-col {
+    flex: 1;
+    min-width: 280px;
+}
+
+.team-page-figma__about-title {
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 60px;
+    color: #FFFFFF;
+    margin: 0 0 20px;
+}
+
+.team-page-figma__about-text {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.team-page-figma__about-text p {
+    margin: 0 0 10px;
+}
+
+.team-page-figma__about-text p:last-child {
+    margin-bottom: 0;
+}
+
+.team-page-figma__about-text a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.team-page-figma__about-text a:hover {
+    text-decoration: underline;
+}
+
+.team-page-figma__mission-text a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.team-page-figma__mission-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* Большое видео + карусель — как .album-viewer__main-wrap */
+.team-page-figma__carousel-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 0 auto 36px;
+    max-width: 1200px;
+    padding: 0 50px;
+    box-sizing: border-box;
+}
+
+.team-page-figma__video-wrap {
+    position: relative;
+    width: 660px;
+    height: 440px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.team-page-figma__video-large {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.team-page-figma__carousel-section .team-page-figma__video-wrap .team-page-figma__video-large[aria-hidden="true"] {
+    width: 100%;
+    height: 100%;
+    min-height: 440px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.team-page-figma__carousel-btn {
+    flex-shrink: 0;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid #8D49EE;
+    border-radius: 8px;
+    background: transparent;
+    color: #8D49EE;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.team-page-figma__carousel-btn:hover {
+    background: rgba(141, 73, 238, 0.2);
+    color: #fff;
+}
+
+.team-page-figma__carousel-btn:active {
+    background: #8D49EE;
+    color: #fff;
+    border-color: #8D49EE;
+}
+
+.team-page-figma__carousel-btn:focus-visible {
+    outline: 2px solid #8D49EE;
+    outline-offset: 2px;
+}
+
+.team-page-figma__carousel-btn--prev {
+    transform: scaleX(-1);
+}
+
+/* Обёртка ряда миниатюр (на мобильном — скролл, макс. 5 видимых, активная по центру) */
+.team-page-figma__thumbs-wrap {
+    flex-basis: 100%;
+    width: 100%;
+}
+
+/* Ряд миниатюр — как .album-viewer__thumbs */
+.team-page-figma__thumbs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.team-page-figma__thumb {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s, opacity 0.2s;
+    object-fit: cover;
+}
+
+/* Кнопка-миниатюра (если элемент button) */
+button.team-page-figma__thumb {
+    display: block;
+    font: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.team-page-figma__thumb:hover {
+    opacity: 0.9;
+}
+
+.team-page-figma__thumb--active {
+    border-color: #8D49EE;
+}
+
+.team-page-figma__thumb:not(.team-page-figma__thumb--active) {
+    opacity: 0.6;
+}
+
+.team-page-figma__thumb:focus-visible {
+    outline: 2px solid #8D49EE;
+    outline-offset: 2px;
+}
+
+/* Соцсети */
+.team-page-figma__social {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 80px;
+}
+
+.team-page-figma__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #FFFFFF;
+}
+
+.team-page-figma__social-link:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+    .team-page-figma__title {
+        font-size: 40px;
+        line-height: 1.2;
+    }
+    .team-page-figma__mission-title,
+    .team-page-figma__about-title {
+        font-size: 36px;
+        line-height: 1.2;
+    }
+    .team-page-figma__mission-text,
+    .team-page-figma__about-text {
+        font-size: 15px;
+        line-height: 1.35;
+    }
+    .team-page-figma__carousel-section {
+        flex-wrap: wrap;
+        padding: 0 24px;
+        gap: 16px;
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr;
+        align-items: center;
+    }
+    .team-page-figma__carousel-btn {
+        display: none;
+    }
+    .team-page-figma__video-wrap {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 660/440;
+        grid-column: 1;
+        grid-row: 1;
+        touch-action: pan-y pinch-zoom;
+    }
+    .team-page-figma__carousel-section .team-page-figma__video-wrap .team-page-figma__video-large[aria-hidden="true"] {
+        min-height: 0;
+        aspect-ratio: 660/440;
+    }
+    .team-page-figma__thumbs-wrap {
+        grid-column: 1;
+        grid-row: 2;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        width: 100%;
+        max-width: 328px;
+        margin: 0 auto;
+        padding: 0 8px;
+        box-sizing: border-box;
+    }
+    .team-page-figma__thumbs {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 0;
+        margin: 0 auto;
+        width: max-content;
+        min-width: 100%;
+    }
+    .team-page-figma__thumb {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        scroll-snap-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-page-figma__title {
+        font-size: 32px;
+    }
+    .team-page-figma__subtitle {
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+    .team-page-figma__mission-title,
+    .team-page-figma__about-title {
+        font-size: 28px;
+        line-height: 1.25;
+    }
+    .team-page-figma__mission-text,
+    .team-page-figma__about-text {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .team-page-figma__video {
+        width: 100%;
+        height: 220px;
+    }
+    .team-page-figma__carousel-section {
+        padding: 0 16px;
+    }
+    .team-page-figma__thumbs-wrap {
+        max-width: 320px;
+        padding: 0 4px;
+    }
+    .team-page-figma__thumbs {
+        gap: 8px;
+    }
+}

@@ -1,21 +1,59 @@
-/* Страница: Фото — макет 1200×2154, фон #121315 */
+/* Страница: Фото — макет как team-page-figma (ширина, отступы, брейкпоинты) */
 
 .gallery-photo-page {
     position: relative;
     width: 100%;
     min-height: 100vh;
     background: #121315;
+    padding: 168px 50px 3rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .gallery-photo-page__inner {
     position: relative;
-    width: 100%;
+    width: calc(100% - 100px);
     max-width: 1200px;
-    margin-left: auto;
-    margin-top:168px;
-    margin-right: auto;
-    padding: 0 100px 80px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding: 0;
+    padding-bottom: 80px;
     box-sizing: border-box;
+}
+
+@media (max-width: 820px) {
+    .gallery-photo-page {
+        padding: 60px 16px 1.5rem;
+    }
+    .gallery-photo-page__inner {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-photo-page {
+        padding: 40px 16px 1.5rem;
+    }
+    .gallery-photo-page__inner {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-photo-page {
+        padding: 22px 12px 2rem;
+    }
+    .gallery-photo-page__inner {
+        width: calc(100% - 24px);
+        margin-left: 12px;
+        margin-right: 12px;
+    }
 }
 
 /* Главная / Фото — стили как shop-breadcrumb (класс shop-breadcrumb mb-0) */
@@ -25,7 +63,7 @@
 
 /* Заголовок Фото — стили как shop-title (класс shop-title) */
 .gallery-photo-page__title {
-    margin-bottom: 100px !important;
+    margin-bottom: 100px;
     /* наследует .shop-title */
 }
 
@@ -73,7 +111,6 @@
 .gallery-photo-page__card-title {
     margin: 20px 0 16px;
     width: 320px;
-    min-height: 60px;
     font-family: 'Houschka Rounded', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -189,7 +226,7 @@
 
 @media (max-width: 1100px) {
     .gallery-photo-page__inner {
-        padding: 0 24px;
+        padding-bottom: 24px;
     }
     .gallery-photo-page__grid {
         grid-template-columns: repeat(2, 320px);
@@ -218,7 +255,6 @@
     }
     .gallery-photo-page__title {
         margin: 0 0 16px;
-        padding: 0 16px;
     }
     .gallery-photo-page__grid {
         grid-template-columns: 1fr;
@@ -239,10 +275,6 @@
 }
 
 @media (max-width: 480px) {
-    .gallery-photo-page__inner {
-        padding: 0 16px;
-        min-height: auto;
-    }
     .gallery-photo-page__title {
         font-size: 32px;
     }
@@ -592,7 +624,16 @@
     box-sizing: border-box;
 }
 
-/* Главная / Фото / ... — left 100px, top 188px по макету */
+/* На странице альбома (show) хлебные крошки и заголовок — как на странице Фото (index): .gallery-photo-page__breadcrumb и .gallery-photo-page__title */
+.album-photos .shop-breadcrumb.gallery-photo-page__breadcrumb {
+    margin: 0 0 20px;
+}
+
+.album-photos .shop-title.gallery-photo-page__title.album-photos__title {
+    margin: 0 0 100px;
+}
+
+/* Legacy: классы album-photos__breadcrumb / album-photos__title если используются без gallery-photo-page__* */
 .album-photos__breadcrumb {
     font-family: 'Houschka Rounded', sans-serif;
     font-weight: 400;
@@ -600,7 +641,7 @@
     line-height: 20px;
     color: #8D49EE;
     margin: 0 0 20px;
-    padding-left: 50px;
+    padding-left: 0;
 }
 
 .album-photos__breadcrumb a {
@@ -617,10 +658,9 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* Заголовок альбома — left 100px, top 208px, 60px, uppercase */
 .album-photos__title {
-    margin: 0 0 40px;
-    max-width: 858px;
+    margin: 0 0 100px;
+    max-width: 100%;
     font-family: 'Houschka Rounded', sans-serif;
     font-weight: 600;
     font-size: 60px;
@@ -709,6 +749,12 @@
     outline-offset: 2px;
 }
 
+/* Обёртка ряда превью (на мобильном — скролл, макс. 5 видимых, активная по центру) */
+.album-viewer__thumbs-wrap {
+    flex-basis: 100%;
+    width: 100%;
+}
+
 /* Ряд превью: 65×65, первый с обводкой #8D49EE, остальные с затемнением */
 .album-viewer__thumbs {
     display: flex;
@@ -721,7 +767,6 @@
     max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-    flex-basis: 100%;
     width: 100%;
 }
 
@@ -791,6 +836,13 @@
     .album-photos__breadcrumb {
         padding-left: 0;
     }
+    .album-photos .shop-breadcrumb.gallery-photo-page__breadcrumb {
+        margin: 24px 0 8px;
+    }
+    .album-photos .shop-title.gallery-photo-page__title.album-photos__title {
+        margin: 0 0 16px;
+        padding: 0 16px;
+    }
     .album-photos__title {
         font-size: 40px;
         line-height: 1.2;
@@ -802,8 +854,11 @@
         gap: 16px;
         display: grid;
         grid-template-rows: auto auto;
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: 1fr;
         align-items: center;
+    }
+    .album-viewer__nav {
+        display: none;
     }
     .album-viewer {
         margin-bottom: 32px;
@@ -813,33 +868,40 @@
         max-width: 100%;
         height: auto;
         aspect-ratio: 660/440;
-        grid-column: 1 / -1;
-        grid-row: 1;
-    }
-    .album-viewer__nav {
-        width: 56px;
-        height: 56px;
-        grid-row: 2;
-    }
-    .album-viewer__nav--prev {
         grid-column: 1;
-        justify-self: start;
+        grid-row: 1;
+        touch-action: pan-y pinch-zoom;
     }
-    .album-viewer__nav--next {
-        grid-column: 3;
-        justify-self: end;
+    .album-viewer__thumbs-wrap {
+        grid-column: 1;
+        grid-row: 2;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        width: 100%;
+        max-width: 328px;
+        margin: 0 auto;
+        padding: 0 8px;
+        box-sizing: border-box;
     }
     .album-viewer__thumbs {
-        grid-row: 2;
-        grid-column: 2;
-        flex-basis: auto;
-        width: auto;
-        padding: 0 12px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
         gap: 12px;
+        padding: 0;
+        margin: 0 auto;
+        width: max-content;
+        min-width: 100%;
     }
     .album-viewer__thumb {
         width: 56px;
         height: 56px;
+        flex-shrink: 0;
+        scroll-snap-align: center;
     }
     .photos-grid--album {
         grid-template-columns: repeat(2, 1fr);
@@ -856,6 +918,9 @@
         min-height: 600px;
         padding: 20px 16px 0px;
     }
+    .album-photos .shop-title.gallery-photo-page__title.album-photos__title {
+        font-size: 32px;
+    }
     .album-photos__title {
         font-size: 32px;
     }
@@ -865,8 +930,12 @@
     .album-viewer {
         margin-bottom: 24px;
     }
+    .album-viewer__thumbs-wrap {
+        max-width: 320px;
+        padding: 0 4px;
+    }
     .album-viewer__thumbs {
-        padding: 0 8px;
+        gap: 8px;
     }
     .photos-grid--album {
         grid-template-columns: 1fr;
