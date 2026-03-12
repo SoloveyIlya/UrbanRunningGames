@@ -586,3 +586,442 @@
         font-size: 0.9rem;
     }
 }
+
+/* ========== Макет партнёров по Figma (только контент страницы, навбар и футер — общие) ========== */
+.partners-page-figma {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: #121315;
+    padding: 168px 50px 3rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.partners-page-figma .container {
+    width: calc(100% - 100px);
+    max-width: 1200px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma .container {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma .container {
+        width: calc(100% - 24px);
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+}
+
+/* Как .shop-breadcrumb.mb-0 */
+.partners-page-figma__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #8D49EE;
+    margin: 0 0 0;
+}
+
+.partners-page-figma__breadcrumb a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.partners-page-figma__breadcrumb a:hover {
+    color: #a366f5;
+}
+
+.partners-page-figma__breadcrumb .shop-breadcrumb__sep {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.partners-page-figma__breadcrumb .shop-breadcrumb__current {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma__breadcrumb {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma__breadcrumb {
+        font-size: 13px;
+    }
+}
+
+.partners-page-figma__title {
+    margin: 0 0 20px;
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 75px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.partners-page-figma__subtitle {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    width: 918px;
+    max-width: 100%;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0 0 108px;
+}
+
+@media (max-width: 1024px) {
+    .partners-page-figma__subtitle {
+        margin-bottom: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma__subtitle {
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma__subtitle {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 32px;
+    }
+}
+
+.partners-page-figma__section-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 80px;
+    margin-bottom: 54px;
+    width: calc(100% - 100px);
+    max-width: 1200px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma__section-row {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma__section-row {
+        width: calc(100% - 24px);
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+}
+
+.partners-page-figma__section {
+    flex: 1;
+    min-width: 280px;
+    padding-top: 0;
+}
+
+.partners-page-figma__section-title {
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FFFFFF;
+    margin: 0 0 24px;
+}
+
+.partners-page-figma__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 66px 20px;
+}
+
+.partners-page-figma__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.partners-page-figma__card-logo {
+    width: 100%;
+    max-width: 235px;
+    height: 92px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+.partners-page-figma__card-logo:has(img) {
+    background: transparent;
+}
+
+a.partners-page-figma__card-logo:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+a.partners-page-figma__card-logo:has(img):hover {
+    background: transparent;
+}
+
+.partners-page-figma__card-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.partners-page-figma__card-caption {
+    font-family: 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma__card-caption {
+        font-size: 15px;
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma__card-caption {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}
+
+/* CTA блок (Rectangle 64) — серый с формой */
+.partners-page-figma__cta-box {
+    width: 100%;
+    max-width: 1129px;
+    box-sizing: border-box;
+    min-height: 546px;
+    padding: 50px;
+    background: rgba(39, 40, 42, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 1200px) {
+    .partners-page-figma__cta-box {
+        max-width: none;
+    }
+}
+
+.partners-page-figma__cta-title {
+    margin: 0 0 20px;
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 60px;
+    color: #FFFFFF;
+}
+
+.partners-page-figma__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+.partners-page-figma__input,
+.partners-page-figma__textarea {
+    width: 100%;
+    padding: 18px 14px;
+    font-family: 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.partners-page-figma__input::placeholder,
+.partners-page-figma__textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.partners-page-figma__input {
+    height: 56px;
+}
+
+.partners-page-figma__textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.partners-page-figma__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
+    width: 114px;
+    height: 48px;
+    font-family: 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    background: #8D49EE;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.partners-page-figma__submit:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.partners-page-figma__error {
+    display: block;
+    font-size: 0.875rem;
+    color: #f87171;
+    margin-top: 4px;
+}
+
+.partners-page-figma__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-family: 'HouschkaRounded-Medium', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.partners-page-figma__consent a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.partners-page-figma__consent a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптив: отступы как header-sticky */
+@media (max-width: 1024px) {
+    .partners-page-figma {
+        padding: 120px 50px 1.75rem;
+    }
+    .partners-page-figma__section-row {
+        gap: 0 40px;
+    }
+    .partners-page-figma__grid {
+        gap: 40px 20px;
+    }
+    .partners-page-figma__cta-box {
+        padding: 36px 50px;
+    }
+    .partners-page-figma__cta-title {
+        font-size: 36px;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 768px) {
+    .partners-page-figma {
+        padding: 100px 16px 1.5rem;
+    }
+    .partners-page-figma__title {
+        font-size: 40px;
+        line-height: 1.2;
+    }
+    .partners-page-figma__section-row {
+        gap: 0 0;
+        flex-direction: column;
+    }
+    .partners-page-figma__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px 16px;
+    }
+    .partners-page-figma__cta-box {
+        padding: 28px 16px;
+        margin-bottom: 1.5rem;
+    }
+    .partners-page-figma__cta-title {
+        font-size: 28px;
+        line-height: 1.25;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-page-figma {
+        padding: 72px 12px 2rem;
+    }
+    .partners-page-figma__title {
+        font-size: 32px;
+    }
+    .partners-page-figma__section-title {
+        font-size: 20px;
+    }
+    .partners-page-figma__grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .partners-page-figma__card-logo {
+        max-width: 100%;
+    }
+    .partners-page-figma__cta-box {
+        padding: 20px 12px;
+    }
+    .partners-page-figma__cta-title {
+        font-size: 24px;
+    }
+    .partners-page-figma__input,
+    .partners-page-figma__textarea {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .partners-page-figma {
+        padding: 64px 12px 1.5rem;
+    }
+}
