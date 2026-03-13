@@ -12,7 +12,7 @@ class VariantsRelationManager extends RelationManager
 {
     protected static string $relationship = 'adminVariants';
 
-    protected static ?string $title = 'Варианты (размер)';
+    protected static ?string $title = 'Варианты';
 
     protected static ?string $modelLabel = 'вариант';
 
@@ -26,6 +26,11 @@ class VariantsRelationManager extends RelationManager
                     ->label('Размер')
                     ->maxLength(16)
                     ->placeholder('S, M, L, XL…'),
+                Forms\Components\Select::make('gender')
+                    ->label('Пол')
+                    ->options(\App\Models\ProductVariant::getGenderLabels())
+                    ->nullable()
+                    ->placeholder('Универсальный'),
                 Forms\Components\TextInput::make('sku')
                     ->label('Артикул (SKU)')
                     ->maxLength(64)
@@ -52,6 +57,9 @@ class VariantsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('size')
                     ->label('Размер')
                     ->placeholder('—'),
+                Tables\Columns\TextColumn::make('gender')
+                    ->label('Пол')
+                    ->formatStateUsing(fn ($state) => \App\Models\ProductVariant::getGenderLabels()[$state] ?? 'Универсальный'),
                 Tables\Columns\TextColumn::make('sku')
                     ->label('Артикул')
                     ->placeholder('—'),

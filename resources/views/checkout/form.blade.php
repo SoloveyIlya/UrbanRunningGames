@@ -86,7 +86,9 @@
                                 @if($row['variant'])
                                     <span class="checkout-item-variant">{{ $row['variant']->attribute_label }}</span>
                                 @endif
-                                <span class="checkout-item-gender">Пол: {{ $row['product']->gender === null ? 'Универсальный' : ($row['product']->gender_label ?? '—') }}</span>
+                                @if($row['variant'] && $row['variant']->gender)
+                                    <span class="checkout-item-gender">Пол: {{ $row['variant']->gender_label }}</span>
+                                @endif
                                 <span class="checkout-item-qty">{{ $row['quantity'] }} × {{ number_format($row['price'], 0, ',', ' ') }} ₽</span>
                             </li>
                         @endforeach
