@@ -17,7 +17,6 @@ class Product extends Model
         'is_active',
         'product_type',
         'cover_media_id',
-        'gender',
     ];
 
     protected $casts = [
@@ -93,21 +92,6 @@ class Product extends Model
     public function typeRelation(): BelongsTo
     {
         return $this->belongsTo(ProductType::class, 'product_type', 'slug');
-    }
-
-    /** Варианты для пола: M, Ж, null = М и Ж */
-    public static function getGenderLabels(): array
-    {
-        return [
-            'M' => 'М',
-            'Ж' => 'Ж',
-            null => 'М и Ж',
-        ];
-    }
-
-    public function getGenderLabelAttribute(): string
-    {
-        return self::getGenderLabels()[$this->gender] ?? (string) $this->gender;
     }
 
     /** Список slug => label для типов товаров (фильтр в каталоге и админке). */

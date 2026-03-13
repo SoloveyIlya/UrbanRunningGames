@@ -16,7 +16,7 @@
         <p class="shop-subtitle">Вопросы, партнёрство, забеги — напишите нам, мы ответим.</p>
     </div>
 
-    <div class="container py-8 md:py-12">
+    <div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">
         {{-- Блок как на макете: серый контейнер с размытием + три карточки в ряд --}}
         <div class="contact-page__content">
             <div class="contact-page__cards">

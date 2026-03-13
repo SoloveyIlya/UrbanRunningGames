@@ -9,15 +9,18 @@
 
     $variants = $product->variants;
     $hasSize = $variants->contains(fn ($v) => $v->size !== null && $v->size !== '');
+    $hasGender = $variants->contains(fn ($v) => $v->gender !== null && $v->gender !== '');
     $sizes = $variants->pluck('size')->filter()->unique()->values();
+    $genders = $variants->pluck('gender')->filter()->unique()->values();
     $variantsMap = [];
     foreach ($variants as $v) {
-        $key = ($v->size ?? '') . '|';
-        $variantsMap[$key] = ['id' => $v->id, 'price' => $v->display_price];
+        $key = ($v->size ?? '') . '|' . ($v->gender ?? '');
+        $variantsMap[$key] = ['id' => $v->id, 'price' => $v->display_price, 'size' => $v->size, 'gender' => $v->gender];
     }
     $firstVariant = $variants->first();
     $initialPrice = $firstVariant ? $firstVariant->display_price : $product->display_price;
     $initialVariantId = $firstVariant ? $firstVariant->id : null;
+    $initialGender = $firstVariant?->gender;
 @endphp
 
 @section('content')
@@ -98,6 +101,25 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="variant_id" id="product_variant_id" value="{{ $initialVariantId }}">
 
+                                @if($hasGender)
+                                    <div class="product-attribute-group product-attribute-group--gender">
+                                        <h3 class="product-detail-attributes-title">Пол</h3>
+                                        <ul class="product-variants-list product-variants-list--inline">
+                                            @foreach($genders as $gender)
+                                                <li>
+                                                    <label class="variant-option">
+                                                        <input type="radio"
+                                                               name="gender_choice"
+                                                               value="{{ $gender }}"
+                                                               {{ $gender === $initialGender ? 'checked' : '' }}>
+                                                        <span class="variant-label">{{ \App\Models\ProductVariant::getGenderLabels()[$gender] ?? $gender }}</span>
+                                                    </label>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 @if($hasSize)
                                     <div class="product-attribute-group product-attribute-group--size">
                                         <h3 class="product-detail-attributes-title">Размер</h3>
@@ -160,30 +182,82 @@
     if (!form) return;
     var variantInput = document.getElementById('product_variant_id');
     var priceDisplay = document.getElementById('product_price_display');
-    var variantsMap = @json($variantsMap);
+    var variantsMap = @json($variantsMap, JSON_FORCE_OBJECT);
     var hasSize = @json($hasSize);
+    var hasGender = @json($hasGender);
 
     function getSelectedSize() {
         var r = form.querySelector('input[name="size_choice"]:checked');
         return r ? r.value : '';
     }
 
-    function updateVariantAndPrice() {
-        var variantId = null;
-        var price = '';
-        if (hasSize) {
-            var sizeRadio = form.querySelector('input[name="size_choice"]:checked');
-            if (sizeRadio && sizeRadio.dataset.variantId) {
-                variantId = parseInt(sizeRadio.dataset.variantId, 10);
-                var v = variantsMap[getSelectedSize() + '|'];
-                if (v) price = v.price;
+    function getSelectedGender() {
+        var r = form.querySelector('input[name="gender_choice"]:checked');
+        return r ? r.value : '';
+    }
+
+    function findVariant(size, gender) {
+        var key = (size || '') + '|' + (gender || '');
+        if (variantsMap[key]) return variantsMap[key];
+        var keyNoGender = (size || '') + '|';
+        if (variantsMap[keyNoGender]) return variantsMap[keyNoGender];
+        var keyNoSize = '|' + (gender || '');
+        if (variantsMap[keyNoSize]) return variantsMap[keyNoSize];
+        return null;
+    }
+
+    function getSizesForGender(gender) {
+        var sizes = [];
+        for (var key in variantsMap) {
+            var v = variantsMap[key];
+            var s = v.size;
+            if (!s || s === '') continue;
+            var g = v.gender || '';
+            if (!gender || g === '' || g === gender) {
+                if (sizes.indexOf(s) === -1) sizes.push(s);
             }
         }
-        if (variantInput) variantInput.value = variantId || '';
-        if (priceDisplay && price) priceDisplay.textContent = price;
+        return sizes;
+    }
+
+    function updateSizeVisibility() {
+        var gender = hasGender ? getSelectedGender() : '';
+        var available = getSizesForGender(gender);
+        var sizeItems = form.querySelectorAll('input[name="size_choice"]');
+        var activeStillVisible = false;
+        sizeItems.forEach(function(inp) {
+            var li = inp.closest('li');
+            var isAvailable = available.indexOf(inp.value) !== -1;
+            if (li) li.style.display = isAvailable ? '' : 'none';
+            if (!isAvailable && inp.checked) {
+                inp.checked = false;
+            }
+            if (isAvailable && inp.checked) {
+                activeStillVisible = true;
+            }
+        });
+        if (!activeStillVisible && available.length > 0) {
+            sizeItems.forEach(function(inp) {
+                if (inp.value === available[0]) inp.checked = true;
+            });
+        }
+    }
+
+    function updateVariantAndPrice() {
+        if (hasSize && hasGender) updateSizeVisibility();
+        var size = hasSize ? getSelectedSize() : '';
+        var gender = hasGender ? getSelectedGender() : '';
+        var v = findVariant(size, gender);
+        if (v) {
+            if (variantInput) variantInput.value = v.id;
+            if (priceDisplay) priceDisplay.textContent = v.price;
+        }
     }
 
     form.querySelectorAll('input[name="size_choice"]').forEach(function(inp) {
+        inp.addEventListener('change', updateVariantAndPrice);
+    });
+    form.querySelectorAll('input[name="gender_choice"]').forEach(function(inp) {
         inp.addEventListener('change', updateVariantAndPrice);
     });
 

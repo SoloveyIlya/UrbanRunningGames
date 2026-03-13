@@ -10,10 +10,28 @@ class ProductVariant extends Model
     protected $fillable = [
         'product_id',
         'size',
+        'gender',
         'sku',
         'price_override',
         'is_active',
     ];
+
+    public static function getGenderLabels(): array
+    {
+        return [
+            'M' => 'М',
+            'Ж' => 'Ж',
+        ];
+    }
+
+    public function getGenderLabelAttribute(): string
+    {
+        if ($this->gender === null) {
+            return 'Универсальный';
+        }
+
+        return self::getGenderLabels()[$this->gender] ?? (string) $this->gender;
+    }
 
     protected $casts = [
         'price_override' => 'decimal:2',

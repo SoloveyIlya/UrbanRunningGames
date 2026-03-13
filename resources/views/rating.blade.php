@@ -41,6 +41,9 @@
                                         @endif
                                     </div>
                                     <h3 class="rating-podium__team">{{ $entry->team_name }}</h3>
+                                    @if($entry->team_type)
+                                        <span class="rating-podium__type">{{ $entry->team_type_label }}</span>
+                                    @endif
                                     <dl class="rating-podium__stats">
                                         <div><dt>Очки</dt><dd>{{ $entry->points }}</dd></div>
                                         <div><dt>Событий</dt><dd>{{ $entry->events_count }}</dd></div>
@@ -60,6 +63,7 @@
                             <tr>
                                 <th>Место</th>
                                 <th>Название команды</th>
+                                <th>Участники</th>
                                 <th>Очки</th>
                                 <th>Событий</th>
                             </tr>
@@ -69,6 +73,7 @@
                                 <tr>
                                     <td>{{ 3 + $loop->iteration }}</td>
                                     <td>{{ $entry->team_name }}</td>
+                                    <td>{{ $entry->team_type_label }}</td>
                                     <td>{{ $entry->points }}</td>
                                     <td>{{ $entry->events_count }}</td>
                                 </tr>
@@ -82,6 +87,7 @@
                             <tr>
                                 <th>Место</th>
                                 <th>Название команды</th>
+                                <th>Участники</th>
                                 <th>Очки</th>
                                 <th>Событий</th>
                             </tr>
@@ -91,6 +97,7 @@
                                 <tr class="rating-table__row--top-3">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $entry->team_name }}</td>
+                                    <td>{{ $entry->team_type_label }}</td>
                                     <td>{{ $entry->points }}</td>
                                     <td>{{ $entry->events_count }}</td>
                                 </tr>
@@ -110,13 +117,14 @@
                         <tr>
                             <th>Место</th>
                             <th>Название команды</th>
+                            <th>Участники</th>
                             <th>Очки</th>
                             <th>Событий</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4" class="empty-state">Рейтинг будет загружен позже. Редактирование в <a href="{{ url('/admin') }}">админ-панели</a> → Рейтинг.</td>
+                            <td colspan="5" class="empty-state">Рейтинг будет загружен позже. Редактирование в <a href="{{ url('/admin') }}">админ-панели</a> → Рейтинг.</td>
                         </tr>
                     </tbody>
                 </table>
