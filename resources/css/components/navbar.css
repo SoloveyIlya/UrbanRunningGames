@@ -15,7 +15,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 8px 24px 0 24px;
+    padding: 8px 50px 0 50px;
 }
 
 @media (max-width: 768px) {
@@ -33,8 +33,8 @@
 /* ≥1200px: полоса навбара на всю ширину с одинаковыми отступами */
 @media (min-width: 1200px) {
     .header-sticky {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 50px;
+        padding-right: 50px;
     }
     .navbar {
         width: 100%;
@@ -45,8 +45,8 @@
         width: 100%;
         margin-left: 0;
         margin-right: 0;
-        padding-left: var(--container-padding);
-        padding-right: var(--container-padding);
+        padding-left: 50px;
+        padding-right: 50px;
     }
 }
 
@@ -136,8 +136,8 @@
 @media (min-width: 1200px) {
     .navbar .container {
         max-width: var(--container-max);
-        padding-left: var(--container-padding);
-        padding-right: var(--container-padding);
+        padding-left: 50px;
+        padding-right: 50px;
     }
 }
 

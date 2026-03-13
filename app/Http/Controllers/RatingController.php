@@ -33,12 +33,13 @@ class RatingController extends Controller
             $handle = fopen('php://output', 'w');
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); // UTF-8 BOM для корректного открытия в Excel
 
-            fputcsv($handle, ['Место', 'Название команды', 'Очки', 'Событий'], ';');
+            fputcsv($handle, ['Место', 'Название команды', 'Участники', 'Очки', 'Событий'], ';');
 
             foreach ($entries as $index => $entry) {
                 fputcsv($handle, [
                     $index + 1,
                     $entry->team_name,
+                    $entry->team_type_label,
                     $entry->points,
                     $entry->events_count,
                 ], ';');

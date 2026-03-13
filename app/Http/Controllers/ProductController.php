@@ -97,15 +97,18 @@ class ProductController extends Controller
         $product->load(['coverMedia', 'media', 'variants']);
         $variants = $product->variants;
         $hasSize = $variants->contains(fn ($v) => $v->size !== null && $v->size !== '');
+        $hasGender = $variants->contains(fn ($v) => $v->gender !== null && $v->gender !== '');
         $sizes = $variants->pluck('size')->filter()->unique()->values()->all();
+        $genders = $variants->pluck('gender')->filter()->unique()->values()->all();
         $variantsMap = [];
-        $variantBySize = [];
         foreach ($variants as $v) {
-            $key = ($v->size ?? '') . '|';
-            $variantsMap[$key] = ['id' => $v->id, 'price' => $v->display_price];
-            if ($v->size !== null && $v->size !== '') {
-                $variantBySize[$v->size] = ['id' => $v->id, 'price' => $v->display_price];
-            }
+            $key = ($v->size ?? '') . '|' . ($v->gender ?? '');
+            $variantsMap[$key] = [
+                'id' => $v->id,
+                'price' => $v->display_price,
+                'size' => $v->size,
+                'gender' => $v->gender,
+            ];
         }
         $firstVariant = $variants->first();
         $gallery = $product->media->isEmpty()
@@ -116,14 +119,15 @@ class ProductController extends Controller
             'name' => $product->name,
             'description' => $product->description,
             'display_price' => $product->display_price,
-            'gender' => $product->gender,
             'gallery' => $gallery,
             'variants_map' => $variantsMap,
-            'variant_by_size' => $variantBySize,
             'sizes' => $sizes,
+            'genders' => $genders,
             'has_size' => $hasSize,
+            'has_gender' => $hasGender,
             'initial_variant_id' => $firstVariant ? $firstVariant->id : null,
             'initial_price' => $firstVariant ? $firstVariant->display_price : $product->display_price,
+            'initial_gender' => $firstVariant?->gender,
         ]);
     }
 

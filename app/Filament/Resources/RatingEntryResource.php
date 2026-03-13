@@ -36,6 +36,11 @@ class RatingEntryResource extends Resource
                             ->label('Название команды')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\Select::make('team_type')
+                            ->label('Участники команды')
+                            ->options(\App\Models\RatingEntry::getTeamTypeLabels())
+                            ->nullable()
+                            ->placeholder('— не указан'),
                         Forms\Components\TextInput::make('points')
                             ->label('Очки')
                             ->numeric()
@@ -66,6 +71,10 @@ class RatingEntryResource extends Resource
                 Tables\Columns\TextColumn::make('team_name')
                     ->label('Команда')
                     ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('team_type')
+                    ->label('Участники')
+                    ->formatStateUsing(fn ($state) => \App\Models\RatingEntry::getTeamTypeLabels()[$state] ?? '—')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('points')
                     ->label('Очки')

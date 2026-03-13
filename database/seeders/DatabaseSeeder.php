@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EventSeeder::class,
             HeroVideoSeeder::class,
+            LevelTranslationSeeder::class,
         ]);
     }
 }

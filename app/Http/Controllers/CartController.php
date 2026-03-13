@@ -124,13 +124,30 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $request->validate([
+        $variantIdRaw = $request->input('variant_id');
+        $variantIdNormalized = null;
+        if (is_numeric($variantIdRaw) && (int) $variantIdRaw > 0) {
+            $variantIdNormalized = (int) $variantIdRaw;
+        } elseif (is_string($variantIdRaw) && trim($variantIdRaw) !== '' && preg_match('/^\d+$/', trim($variantIdRaw))) {
+            $variantIdNormalized = (int) trim($variantIdRaw);
+        }
+        $request->merge(['variant_id' => $variantIdNormalized]);
+
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'nullable|exists:product_variants,id',
             'quantity' => 'nullable|integer|min:1|max:99',
         ]);
+
+        if ($validator->fails()) {
+            $msg = $validator->errors()->first();
+            return $request->wantsJson()
+                ? response()->json(['success' => false, 'message' => $msg, 'errors' => $validator->errors()], 422)
+                : back()->withErrors($validator)->withInput();
+        }
+
         $productId = (int) $request->product_id;
-        $variantId = $request->variant_id ? (int) $request->variant_id : null;
+        $variantId = $variantIdNormalized !== null ? (int) $variantIdNormalized : null;
         $quantity = (int) ($request->quantity ?: 1);
 
         $product = Product::active()->findOrFail($productId);

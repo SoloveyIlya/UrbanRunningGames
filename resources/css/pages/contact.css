@@ -211,46 +211,270 @@
     }
 }
 
-/* ========== Контент: карточки и форма ========== */
+/* ========== Контент: блок как на макете — серый контейнер + три карточки в ряд ========== */
 .contact-page {
-    padding: 0 0 3rem;
+    padding: 168px 50px 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.contact-page .container {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.contact-page .container.pt-8 {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 100px);
+    max-width: 1200px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .contact-page .container.pt-8 {
+        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-page .container.pt-8 {
+        width: calc(100% - 24px);
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+}
+
+/* Серый контейнер с размытием — по ширине как навбар и футер */
 .contact-page__content {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 2rem;
-    align-items: start;
-    background-color: #363636;
-    border: 1px solid rgba(105, 88, 160, 0.35);
+    background: rgba(39, 40, 42, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     border-radius: 8px;
-    padding: 2rem;
+    padding: 50px;
+    margin-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Три карточки в ряд */
+.contact-page__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Карточка — тёмный прямоугольник #121315, скругление 8px */
+.contact-page__card {
+    background: #121315;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 180px;
+}
+
+.contact-page__card--contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-page__card--schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-page__card--social {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-page__card-label {
+    display: block;
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.contact-page__card-value {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.contact-page__card-value:hover {
+    text-decoration: underline;
+}
+
+.contact-page__schedule {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.contact-page__schedule-note {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.contact-page__schedule-note .contact-page__card-value {
+    color: #8D49EE;
+}
+
+.contact-page__social {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-page__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #FFFFFF;
+}
+
+.contact-page__social-link:hover {
+    opacity: 0.85;
+}
+
+.contact-page__social-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* ——— Адаптивная вёрстка: боковые отступы как у .header-sticky (50px → 16px → 12px) ——— */
+@media (max-width: 1024px) {
+    .contact-page {
+        padding-top: 120px;
+        padding-bottom: 1.75rem;
+    }
+    .contact-page__content {
+        padding: 36px 50px;
+        margin-bottom: 1.75rem;
+    }
+    .contact-page__cards {
+        gap: 16px;
+    }
+    .contact-page__card {
+        min-height: 160px;
+        padding: 18px;
+    }
 }
 
 @media (max-width: 900px) {
-    .contact-page__content {
+    .contact-page__cards {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1.5rem;
+    }
+    .contact-page__card {
+        min-height: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-page {
+        padding: 100px 16px 1.5rem;
+    }
+    .contact-page__content {
+        padding: 28px 16px;
+        margin-bottom: 1.5rem;
+    }
+    .contact-page__card {
+        padding: 20px 18px;
+    }
+    .contact-page__card-label,
+    .contact-page__card-value,
+    .contact-page__schedule,
+    .contact-page__schedule-note {
+        font-size: 15px;
+        line-height: 1.35;
     }
 }
 
 @media (max-width: 480px) {
     .contact-page {
-        padding: 0 0 2rem;
+        padding: 72px 12px 2rem;
+    }
+    .contact-page__content {
+        padding: 20px 12px;
+        margin-bottom: 1.25rem;
+        border-radius: 6px;
+    }
+    .contact-page__cards {
+        gap: 12px;
+    }
+    .contact-page__card {
+        padding: 16px 14px;
+        border-radius: 6px;
+    }
+    .contact-page__card--contact,
+    .contact-page__card--schedule {
+        gap: 8px;
+    }
+    .contact-page__card--social {
+        gap: 10px;
+    }
+    .contact-page__card-label,
+    .contact-page__card-value,
+    .contact-page__schedule,
+    .contact-page__schedule-note {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .contact-page__social {
+        gap: 8px;
     }
 }
 
-/* Карточки */
-.contact-page__card {
-    background: rgba(85, 83, 92, 0.6);
-    border-radius: 16px;
-    padding: 1.5rem 1.5rem 1.75rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+@media (max-width: 360px) {
+    .contact-page {
+        padding: 64px 12px 1.5rem;
+    }
+    .contact-page__content {
+        padding: 16px 12px;
+    }
+    .contact-page__card {
+        padding: 14px 12px;
+    }
+    .contact-page__card-label,
+    .contact-page__card-value,
+    .contact-page__schedule,
+    .contact-page__schedule-note {
+        font-size: 13px;
+    }
 }
 
-.contact-page__card + .contact-page__card {
-    margin-top: 1.25rem;
+.contact-page__form-wrap {
+    margin-top: 2rem;
 }
 
 .contact-page__card--form {
@@ -567,5 +791,348 @@
     }
     .form-row {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ========== Макет контактов по Figma (1200px, #121315, хлебные крошки + блок контактов + футер-полоса) ========== */
+.contact-page-figma {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: #121315;
+    box-sizing: border-box;
+}
+
+.contact-page-figma__inner {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 50px 80px;
+    box-sizing: border-box;
+}
+
+/* Учёт высоты шапки: контент под навбаром */
+.main-after-header .contact-page-figma__inner {
+    padding-top: 100px;
+}
+
+@media (max-width: 900px) {
+    .main-after-header .contact-page-figma__inner {
+        padding-top: 120px;
+    }
+}
+
+/* Хлебные крошки: Главная / Контакты */
+.contact-page-figma__breadcrumb {
+    display: block;
+    margin: 0 0 8px;
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #8D49EE;
+}
+
+.contact-page-figma__breadcrumb a {
+    color: #8D49EE;
+    text-decoration: none;
+}
+
+.contact-page-figma__breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* Заголовок страницы */
+.contact-page-figma__title {
+    margin: 0 0 100px;
+    font-family: 'Houschka Rounded Alt', 'Houschka Rounded', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 75px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+    .contact-page-figma__inner {
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-bottom: 60px;
+    }
+    .contact-page-figma__title {
+        font-size: 40px;
+        line-height: 1.2;
+        margin-bottom: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-page-figma__inner {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 40px;
+    }
+    .contact-page-figma__title {
+        font-size: 32px;
+        margin-bottom: 32px;
+    }
+}
+
+/* Подзаголовок «Контактная информация организатора» */
+.contact-page-figma__section-label {
+    margin: 0 0 20px;
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+}
+
+/* Серый блок с тремя карточками (Rectangle 65) */
+.contact-page-figma__info-box {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 0 80px;
+    padding: 50px;
+    background: rgba(39, 40, 42, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.contact-page-figma__info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 320px);
+    gap: 20px;
+    justify-content: start;
+}
+
+@media (max-width: 1100px) {
+    .contact-page-figma__info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        justify-content: stretch;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-page-figma__info-box {
+        padding: 24px;
+        margin-bottom: 48px;
+    }
+    .contact-page-figma__info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-page-figma__info-box {
+        padding: 16px;
+        margin-bottom: 32px;
+    }
+}
+
+/* Карточка внутри блока (Rectangle 66, 67, 68) */
+.contact-page-figma__card {
+    width: 100%;
+    min-height: 180px;
+    padding: 20px;
+    background: #121315;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.contact-page-figma__card-label {
+    display: block;
+    margin: 0 0 10px;
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+}
+
+.contact-page-figma__card-value {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #8D49EE;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.contact-page-figma__card-value:hover {
+    text-decoration: underline;
+}
+
+.contact-page-figma__card-schedule {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0 0 8px;
+}
+
+.contact-page-figma__card-schedule:last-child {
+    margin-bottom: 0;
+}
+
+/* Соцсети в карточке */
+.contact-page-figma__social {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.contact-page-figma__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+
+.contact-page-figma__social-link svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Футер-полоса (Rectangle 61) — фиолетовая с контактами и ссылками */
+.contact-page-figma__footer-strip {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    min-height: 272px;
+    padding: 50px 50px 40px;
+    background: rgba(141, 73, 238, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.contact-page-figma__footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.contact-page-figma__footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-page-figma__footer-email,
+.contact-page-figma__footer-phone {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.contact-page-figma__footer-email a,
+.contact-page-figma__footer-phone a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.contact-page-figma__footer-email a:hover,
+.contact-page-figma__footer-phone a:hover {
+    text-decoration: underline;
+}
+
+.contact-page-figma__footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-page-figma__footer-links a {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.contact-page-figma__footer-links a:hover {
+    text-decoration: underline;
+}
+
+.contact-page-figma__footer-schedule {
+    font-family: 'Houschka Rounded', 'HouschkaRounded-Medium', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    margin: 24px 0 0;
+    max-width: 279px;
+}
+
+.contact-page-figma__footer-social {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-page-figma__footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #FFFFFF;
+}
+
+.contact-page-figma__footer-logo {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 147px;
+    height: 48px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+@media (max-width: 900px) {
+    .contact-page-figma__footer-strip {
+        padding: 32px 24px;
+        min-height: auto;
+    }
+    .contact-page-figma__footer-logo {
+        position: static;
+        transform: none;
+        margin-top: 16px;
+    }
+    .contact-page-figma__footer-inner {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-page-figma__footer-strip {
+        padding: 24px 16px;
     }
 }

@@ -76,7 +76,9 @@
         @else
             <p class="upcoming-races__empty text-center text-white/80 mb-4">Пока нет предстоящих гонок. Следите за обновлениями!</p>
             <div class="text-center mt-4 flex justify-center">
-                <a href="{{ route('events.index') }}" class="btn btn--primary">Все гонки</a>
+                <a href="{{ route('events.index') }}" class="btn btn--info-position">
+                    <span class="btn--info-position__text">Все гонки</span>
+                </a>
             </div>
         @endif
     </div>

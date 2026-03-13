@@ -129,7 +129,7 @@
                 <button type="button" class="alert-close" aria-label="Закрыть" data-dismiss="alert">×</button>
             </div>
         @endif
-        @if($errors->any())
+        @if($errors->any() && !request()->routeIs('checkout.*'))
             <div class="alert alert-error flex items-center justify-between gap-3 py-3 px-4 rounded-lg" role="alert">
                 <ul class="alert-message">
                     @foreach($errors->all() as $error)
@@ -216,9 +216,13 @@
                 img.dataset.fallbackDone = '1';
                 return;
             }
+            var failedSrc = (img.src || img.getAttribute('src') || '').substring(0, 200);
             img.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect fill="#eee" width="400" height="400"/><text x="50%" y="50%" fill="#999" font-family="sans-serif" font-size="14" text-anchor="middle" dy=".3em">Фото недоступно</text></svg>');
             img.classList.add('img-placeholder');
-            console.warn('[Storage 404]', img.alt || img.getAttribute('src'), window.location.href);
+            img.dataset.fallbackDone = '1';
+            if (failedSrc && failedSrc.indexOf('data:') !== 0) {
+                console.warn('[Image load failed]', failedSrc);
+            }
         }, true);
         // Лого в hero с видео: обрезается по границам hero (как заходит под фон)
         (function() {

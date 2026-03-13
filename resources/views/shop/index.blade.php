@@ -103,6 +103,8 @@
     var csrfToken = document.querySelector('input[name="_token"]') && document.querySelector('input[name="_token"]').value;
 
     var currentData = null;
+    var selectedGender = null;
+    var selectedSize = null;
 
     function openModal() {
         var scrollY = window.scrollY || window.pageYOffset;
@@ -161,19 +163,70 @@
         });
     }
 
-    function updateVariantAndPrice() {
-        if (!currentData) return;
-        var variantId = variantIdInput ? variantIdInput.value : '';
-        var price = currentData.initial_price;
-        if (currentData.variants_map && variantId) {
-            for (var key in currentData.variants_map) {
-                if (currentData.variants_map[key].id == variantId) {
-                    price = currentData.variants_map[key].price;
-                    break;
-                }
+    function findVariant(size, gender) {
+        if (!currentData || !currentData.variants_map) return null;
+        var key = (size || '') + '|' + (gender || '');
+        if (currentData.variants_map[key]) return currentData.variants_map[key];
+        var keyNoGender = (size || '') + '|';
+        if (currentData.variants_map[keyNoGender]) return currentData.variants_map[keyNoGender];
+        var keyNoSize = '|' + (gender || '');
+        if (currentData.variants_map[keyNoSize]) return currentData.variants_map[keyNoSize];
+        return null;
+    }
+
+    function getSizesForGender(gender) {
+        if (!currentData || !currentData.variants_map) return [];
+        var sizes = [];
+        for (var key in currentData.variants_map) {
+            var v = currentData.variants_map[key];
+            var s = v.size;
+            if (!s || s === '') continue;
+            var g = v.gender || '';
+            if (!gender || g === '' || g === gender) {
+                if (sizes.indexOf(s) === -1) sizes.push(s);
             }
         }
-        if (priceEl) priceEl.textContent = price;
+        return sizes;
+    }
+
+    function updateSizeButtons() {
+        if (!sizesContainer || !currentData) return;
+        var available = getSizesForGender(selectedGender);
+        var btns = sizesContainer.querySelectorAll('.product-modal__opt--size');
+        var activeStillVisible = false;
+        btns.forEach(function(btn) {
+            var s = btn.getAttribute('data-size');
+            var isAvailable = available.indexOf(s) !== -1;
+            btn.style.display = isAvailable ? '' : 'none';
+            btn.disabled = !isAvailable;
+            if (!isAvailable && btn.classList.contains('is-active')) {
+                btn.classList.remove('is-active');
+            }
+            if (isAvailable && btn.classList.contains('is-active')) {
+                activeStillVisible = true;
+            }
+        });
+        if (!activeStillVisible && available.length > 0) {
+            btns.forEach(function(btn) {
+                if (btn.getAttribute('data-size') === available[0]) {
+                    btn.classList.add('is-active');
+                    selectedSize = available[0];
+                }
+            });
+        }
+        if (available.length === 0) selectedSize = null;
+    }
+
+    function updateVariantAndPrice() {
+        if (!currentData) return;
+        updateSizeButtons();
+        var v = findVariant(selectedSize, selectedGender);
+        if (v) {
+            if (variantIdInput) variantIdInput.value = v.id;
+            if (priceEl) priceEl.textContent = v.price;
+        } else {
+            if (priceEl) priceEl.textContent = currentData.initial_price;
+        }
     }
 
     function renderSizes(sizes) {
@@ -187,27 +240,16 @@
             btn.className = 'product-modal__opt product-modal__opt--size' + (first ? ' is-active' : '');
             btn.textContent = size;
             btn.setAttribute('data-size', size);
-            var vid = '';
-            if (currentData && currentData.variant_by_size && currentData.variant_by_size[size] !== undefined) {
-                vid = currentData.variant_by_size[size];
-            } else if (currentData && currentData.variants_map) {
-                var key = size + '|';
-                if (currentData.variants_map[key]) {
-                    vid = currentData.variants_map[key].id;
-                }
-            }
-            btn.setAttribute('data-variant-id', vid);
             btn.addEventListener('click', function() {
                 sizesContainer.querySelectorAll('.product-modal__opt--size').forEach(function(b) { b.classList.remove('is-active'); });
                 this.classList.add('is-active');
-                if (variantIdInput) variantIdInput.value = this.getAttribute('data-variant-id') || '';
+                selectedSize = this.getAttribute('data-size');
                 updateVariantAndPrice();
             });
             sizesContainer.appendChild(btn);
+            if (first) selectedSize = size;
             first = false;
         });
-        var firstBtn = sizesContainer.querySelector('.product-modal__opt--size');
-        if (firstBtn && variantIdInput) variantIdInput.value = firstBtn.getAttribute('data-variant-id') || '';
     }
 
     triggers.forEach(function(a) {
@@ -221,6 +263,8 @@
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 currentData = data;
+                selectedGender = data.initial_gender || null;
+                selectedSize = null;
                 if (productIdInput) productIdInput.value = data.id;
                 if (titleEl) titleEl.textContent = data.name;
                 if (descEl) descEl.textContent = data.description || '';
@@ -235,18 +279,21 @@
                     if (thumbsWrap) thumbsWrap.innerHTML = '';
                 }
 
-                if (genderWrap) genderWrap.style.display = 'block';
-                var genderOpts = genderWrap && genderWrap.querySelectorAll('.product-modal__opt--gender');
-                if (genderOpts) {
-                    genderOpts.forEach(function(btn) {
+                if (data.has_gender && data.genders && data.genders.length > 0) {
+                    if (genderWrap) genderWrap.style.display = 'block';
+                    var genderBtns = genderWrap ? genderWrap.querySelectorAll('.product-modal__opt--gender') : [];
+                    genderBtns.forEach(function(btn) {
                         btn.classList.remove('is-active');
-                        var productGender = data.gender;
-                        if (btn.getAttribute('data-value') === productGender) {
+                        if (btn.getAttribute('data-value') === selectedGender) {
                             btn.classList.add('is-active');
-                        } else if (!productGender && btn.getAttribute('data-value') === 'M') {
+                        } else if (!selectedGender && btn.getAttribute('data-value') === data.genders[0]) {
                             btn.classList.add('is-active');
+                            selectedGender = data.genders[0];
                         }
                     });
+                } else {
+                    if (genderWrap) genderWrap.style.display = 'none';
+                    selectedGender = null;
                 }
 
                 if (data.has_size && data.sizes && data.sizes.length > 0) {
@@ -254,7 +301,7 @@
                     renderSizes(data.sizes);
                 } else {
                     sizesWrap.style.display = 'none';
-                    if (variantIdInput) variantIdInput.value = data.initial_variant_id || '';
+                    selectedSize = null;
                 }
 
                 updateVariantAndPrice();
@@ -275,6 +322,8 @@
         btn.addEventListener('click', function() {
             genderOpts.forEach(function(b) { b.classList.remove('is-active'); });
             this.classList.add('is-active');
+            selectedGender = this.getAttribute('data-value');
+            updateVariantAndPrice();
         });
     });
 
