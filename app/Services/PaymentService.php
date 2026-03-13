@@ -49,7 +49,8 @@ class PaymentService
 
     /**
      * Создать платёж для заказа и вернуть URL для перехода на оплату.
-     * В тестовом режиме возвращает ссылку на страницу имитации успешной оплаты.
+     * Редирект ведёт на страницу Т-Банка, где пользователь выбирает способ: СБП (QR) или карта (картой — комиссия выше).
+     * По умолчанию на форме Т-Банка доступен QR для быстрой оплаты.
      */
     public function createPaymentForOrder(Order $order): Payment
     {
@@ -124,13 +125,15 @@ class PaymentService
             );
         }
 
+        $payUrl = $body['PaymentURL'] ?? null;
+
         $payment = Payment::create([
             'provider' => 'tbank',
             'external_payment_id' => (string) $body['PaymentId'],
             'amount' => $totalKopecks / 100,
             'currency' => 'RUB',
             'status' => $this->mapTbankStatus($body['Status']),
-            'pay_url' => $body['PaymentURL'] ?? null,
+            'pay_url' => $payUrl,
             'payload' => $body,
         ]);
 

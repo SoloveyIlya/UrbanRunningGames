@@ -42,6 +42,7 @@
                 <p class="order-confirmation-paid">Оплачено {{ $order->paid_at?->format('d.m.Y H:i') }}</p>
             @elseif($order->payment?->pay_url)
                 <div class="order-confirmation-actions" style="margin-top: 1rem;">
+                    <p class="order-confirmation-pay-hint" style="margin-bottom: 0.75rem; font-size: 0.9rem; color: #666;">На странице Т-Банка выберите <strong>СБП (QR-код)</strong> для быстрой оплаты или оплату картой (комиссия выше).</p>
                     <a href="{{ $order->payment->pay_url }}" class="btn btn-primary">Перейти к оплате</a>
                 </div>
             @endif

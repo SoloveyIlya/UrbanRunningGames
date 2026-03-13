@@ -25,6 +25,9 @@ class CheckoutController extends Controller
     {
         $cart = CartController::getCartForDisplay();
         if (empty($cart['items'])) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Корзина пуста.'], 422);
+            }
             return redirect()->route('cart.index')->with('error', 'Корзина пуста.');
         }
 
@@ -75,14 +78,21 @@ class CheckoutController extends Controller
         $usePayment = $paymentService->isTestMode()
             || config('payment.tbank.terminal_key')
             || config('payment.tbank.use_demo_terminal');
+        $redirectUrl = route('order.confirmation', $order);
         if ($usePayment) {
             $order->load('items');
             $payment = $paymentService->createPaymentForOrder($order);
             if ($payment->pay_url) {
-                return redirect()->away($payment->pay_url);
+                $redirectUrl = $payment->pay_url;
             }
         }
 
+        if ($request->wantsJson()) {
+            return response()->json(['redirect' => $redirectUrl]);
+        }
+        if ($redirectUrl !== route('order.confirmation', $order)) {
+            return redirect()->away($redirectUrl);
+        }
         return redirect()->route('order.confirmation', $order)->with('success', 'Заявка успешно отправлена.');
     }
 
