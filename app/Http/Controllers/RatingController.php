@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RatingEntry;
+use App\Models\SiteSetting;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RatingController extends Controller
@@ -14,7 +15,10 @@ class RatingController extends Controller
             ->orderBy('id')
             ->get();
 
-        return view('rating', compact('entries'));
+        $ratingPageTitle = SiteSetting::get(SiteSetting::KEY_RATING_PAGE_TITLE, 'Сводный рейтинг');
+        $ratingPageSubtitle = SiteSetting::get(SiteSetting::KEY_RATING_PAGE_SUBTITLE, 'Рейтинг команд по результатам всех проведённых забегов-игр');
+
+        return view('rating', compact('entries', 'ratingPageTitle', 'ratingPageSubtitle'));
     }
 
     /**

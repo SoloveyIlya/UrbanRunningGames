@@ -73,6 +73,20 @@ class SiteSetting extends Model
     public const KEY_HERO_ORNAMENT_DISABLED = 'hero_ornament_disabled';
     public const KEY_HERO_ORNAMENT_OPACITY = 'hero_ornament_opacity';
 
+    /** Заголовки и подзаголовки страниц */
+    public const KEY_EVENTS_PAGE_TITLE = 'events_page_title';
+    public const KEY_EVENTS_PAGE_SUBTITLE = 'events_page_subtitle';
+    public const KEY_SHOP_PAGE_TITLE = 'shop_page_title';
+    public const KEY_SHOP_PAGE_SUBTITLE = 'shop_page_subtitle';
+    public const KEY_CONTACT_PAGE_TITLE = 'contact_page_title';
+    public const KEY_CONTACT_PAGE_SUBTITLE = 'contact_page_subtitle';
+    public const KEY_PARTNERS_PAGE_TITLE = 'partners_page_title';
+    public const KEY_PARTNERS_PAGE_SUBTITLE = 'partners_page_subtitle';
+    public const KEY_PARTNERS_CTA_TITLE = 'partners_cta_title';
+    public const KEY_RATING_PAGE_TITLE = 'rating_page_title';
+    public const KEY_RATING_PAGE_SUBTITLE = 'rating_page_subtitle';
+    public const KEY_GALLERY_PAGE_TITLE = 'gallery_page_title';
+
     /** Блок статистики на главной (4 карточки) */
     public static function homeStatKeys(): array
     {

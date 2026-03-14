@@ -17,7 +17,7 @@
     display: inline-block;
     box-sizing: border-box;
     padding: 14px 18px;
-    background: #26203a;
+    background: --btn-primary-bg;
     color: #fff;
     text-decoration: none;
     border-radius: 8px;
@@ -112,6 +112,7 @@
 
 .btn--info-position {
     display: inline-flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 121px;
@@ -119,23 +120,24 @@
     min-height: var(--btn-primary-height);
     height: var(--btn-primary-height);
     padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
-    gap: 0.5rem;
-    background: var(--color-accent, var(--btn-primary-bg));
+    gap: 10px;
+    background: var(--btn-primary-bg) !important;
     color: #fff !important;
+    text-decoration: none !important;
     font-size: var(--btn-primary-font-size);
     font-weight: var(--btn-primary-font-weight);
     letter-spacing: var(--btn-primary-letter-spacing);
-    text-decoration: none;
+    line-height: 1;
+    text-align: center;
     border: none;
-    border-radius: var(--radius-new, var(--btn-primary-radius));
+    border-radius: var(--btn-primary-radius);
+    box-sizing: border-box;
     cursor: pointer;
-    transition: background 0.2s, opacity 0.2s, transform 0.2s;
+    transition: background 0.2s;
 }
 
 .btn--info-position:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
-    background: var(--btn-primary-bg-hover);
+    background: var(--btn-primary-bg-hover) !important;
     color: #fff !important;
 }
 

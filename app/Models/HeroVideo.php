@@ -12,7 +12,9 @@ class HeroVideo extends Model
     protected $fillable = [
         'page',
         'video_media_id',
+        'video_mobile_media_id',
         'poster_media_id',
+        'poster_mobile_media_id',
         'title',
         'button_text',
         'button_url',
@@ -33,14 +35,34 @@ class HeroVideo extends Model
         return $this->belongsTo(MediaAsset::class, 'poster_media_id');
     }
 
+    public function videoMobileMedia()
+    {
+        return $this->belongsTo(MediaAsset::class, 'video_mobile_media_id');
+    }
+
+    public function posterMobileMedia()
+    {
+        return $this->belongsTo(MediaAsset::class, 'poster_mobile_media_id');
+    }
+
     public function getVideoUrlAttribute(): ?string
     {
         return $this->videoMedia?->url;
     }
 
+    public function getVideoMobileUrlAttribute(): ?string
+    {
+        return $this->videoMobileMedia?->url;
+    }
+
     public function getPosterUrlAttribute(): ?string
     {
         return $this->posterMedia?->thumbnail_url ?: $this->posterMedia?->url;
+    }
+
+    public function getPosterMobileUrlAttribute(): ?string
+    {
+        return $this->posterMobileMedia?->thumbnail_url ?: $this->posterMobileMedia?->url;
     }
 
     public static function pageOptions(): array

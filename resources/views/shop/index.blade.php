@@ -13,10 +13,10 @@
         </nav>
 
         {{-- Title — по макету --}}
-        <h1 class="shop-title">SPRUT STYLE STORE</h1>
+        <h1 class="shop-title">{{ $shopPageTitle ?? 'SPRUT STYLE STORE' }}</h1>
 
         {{-- Подзаголовок под заголовком — по макету --}}
-        <p class="shop-subtitle">Твой стиль – твоя жизнь. Наш мерч – твоя мотивация. Бег – это твой ритм, твое движение, твоя свобода. Теперь он может быть и твоим стилем.</p>
+        <p class="shop-subtitle">{{ $shopPageSubtitle ?? '' }}</p>
 
         {{-- Фильтры по типам (Frame 102/101): под заголовком — стекло + активная как btn--race --}}
         <div class="shop-toolbar-row">

@@ -7,8 +7,8 @@
 <section class="page-hero relative min-h-[38vh] flex items-center justify-center text-center bg-gradient-to-br from-[#1a1525] via-[#0c0c10] to-[#1a1525] text-white">
     <div class="hero__overlay absolute inset-0 pointer-events-none"></div>
     <div class="container relative z-10 max-w-[1200px] mx-auto px-4 sm:px-5 py-12">
-        <h1 class="text-3xl md:text-4xl font-bold italic uppercase tracking-wide text-white mb-2">Сводный рейтинг</h1>
-        <p class="page-hero__sub text-lg text-white/85 m-0">Рейтинг команд по результатам всех проведённых забегов-игр</p>
+        <h1 class="text-3xl md:text-4xl font-bold italic uppercase tracking-wide text-white mb-2">{{ $ratingPageTitle ?? 'Сводный рейтинг' }}</h1>
+        <p class="page-hero__sub text-lg text-white/85 m-0">{{ $ratingPageSubtitle ?? 'Рейтинг команд по результатам всех проведённых забегов-игр' }}</p>
     </div>
 </section>
 

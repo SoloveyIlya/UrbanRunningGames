@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactRequest;
 use App\Mail\ContactReceived;
 use App\Models\ContactMessage;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
     public function index()
     {
-        return view('contact');
+        $contactPageTitle = SiteSetting::get(SiteSetting::KEY_CONTACT_PAGE_TITLE, 'Контакты');
+        $contactPageSubtitle = SiteSetting::get(SiteSetting::KEY_CONTACT_PAGE_SUBTITLE, 'Вопросы, партнёрство, забеги — напишите нам, мы ответим.');
+
+        return view('contact', compact('contactPageTitle', 'contactPageSubtitle'));
     }
 
     public function store(ContactRequest $request)

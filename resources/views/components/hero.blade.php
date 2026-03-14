@@ -5,6 +5,8 @@
     $usePoster = $heroVideo && ($heroVideo->poster_url || $heroVideo->video_url);
     $posterUrl = $heroVideo?->poster_url;
     $videoUrl = $heroVideo?->video_url;
+    $videoMobileUrl = $heroVideo?->video_mobile_url;
+    $posterMobileUrl = $heroVideo?->poster_mobile_url;
     $heroTitle = $title ?? $heroVideo?->title;
     $buttonText = $heroVideo?->button_text;
     $buttonUrl = $heroVideo?->button_url;
@@ -12,16 +14,21 @@
 
 <div class="hero {{ $useVideo ? 'hero--with-video' : '' }}">
     @if($useVideo)
-        <video
-            class="hero__video"
-            autoplay
-            muted
-            loop
-            playsinline
-            @if($posterUrl) poster="{{ $posterUrl }}" @endif
-        >
-            <source src="{{ $videoUrl }}" type="{{ $heroVideo->videoMedia->mime_type ?? 'video/mp4' }}">
-        </video>
+        @if($videoMobileUrl)
+            <video class="hero__video hero__video--desktop" autoplay muted loop playsinline
+                @if($posterUrl) poster="{{ $posterUrl }}" @endif>
+                <source src="{{ $videoUrl }}" type="{{ $heroVideo->videoMedia->mime_type ?? 'video/mp4' }}">
+            </video>
+            <video class="hero__video hero__video--mobile" autoplay muted loop playsinline
+                @if($posterMobileUrl ?? $posterUrl) poster="{{ $posterMobileUrl ?? $posterUrl }}" @endif>
+                <source src="{{ $videoMobileUrl }}" type="{{ $heroVideo->videoMobileMedia->mime_type ?? 'video/mp4' }}">
+            </video>
+        @else
+            <video class="hero__video" autoplay muted loop playsinline
+                @if($posterUrl) poster="{{ $posterUrl }}" @endif>
+                <source src="{{ $videoUrl }}" type="{{ $heroVideo->videoMedia->mime_type ?? 'video/mp4' }}">
+            </video>
+        @endif
         <div class="hero__overlay"></div>
         @if($heroOrnamentUrl ?? null)
             <div class="hero__ornament hero__ornament--mobile" style="background-image: url('{{ e($heroOrnamentUrl) }}'); opacity: {{ is_numeric($heroOrnamentOpacity) ? $heroOrnamentOpacity : 0.85 }};"></div>
@@ -35,7 +42,12 @@
             </div>
         </div>
     @elseif($posterUrl)
-        <div class="hero__poster" style="background-image: url('{{ $posterUrl }}');"></div>
+        @if($posterMobileUrl)
+            <div class="hero__poster hero__poster--desktop" style="background-image: url('{{ $posterUrl }}');"></div>
+            <div class="hero__poster hero__poster--mobile" style="background-image: url('{{ $posterMobileUrl }}');"></div>
+        @else
+            <div class="hero__poster" style="background-image: url('{{ $posterUrl }}');"></div>
+        @endif
         <div class="hero__overlay"></div>
         @if($heroOrnamentUrl ?? null)
             <div class="hero__ornament hero__ornament--mobile" style="background-image: url('{{ e($heroOrnamentUrl) }}'); opacity: {{ is_numeric($heroOrnamentOpacity) ? $heroOrnamentOpacity : 0.85 }};"></div>

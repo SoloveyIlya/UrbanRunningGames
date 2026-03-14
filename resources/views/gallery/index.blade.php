@@ -11,7 +11,7 @@
             <span class="shop-breadcrumb__sep" aria-hidden="true">/</span>
             <span class="shop-breadcrumb__current">Фото</span>
         </nav>
-        <h1 class="shop-title gallery-photo-page__title">Фото</h1>
+        <h1 class="shop-title gallery-photo-page__title">{{ $galleryPageTitle ?? 'Фото' }}</h1>
 
         @if($events->count() > 0)
             <div class="gallery-photo-page__grid">

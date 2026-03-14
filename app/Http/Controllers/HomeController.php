@@ -12,7 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $heroVideo = HeroVideo::where('page', HeroVideo::PAGE_MAIN)->first();
+        $heroVideo = HeroVideo::with(['videoMedia', 'videoMobileMedia', 'posterMedia', 'posterMobileMedia'])
+            ->where('page', HeroVideo::PAGE_MAIN)->first();
 
         $upcomingEvents = Event::where('status', 'published')
             ->where('starts_at', '>', now())
@@ -76,6 +77,15 @@ class HomeController extends Controller
         }
 
         $heroOrnamentDesktopUrl = $heroOrnamentUrl;
+        if (Schema::hasTable('site_settings')) {
+            $desktopOrnamentId = SiteSetting::get(SiteSetting::KEY_HERO_ORNAMENT_DESKTOP_MEDIA_ID);
+            if ($desktopOrnamentId) {
+                $desktopAsset = \App\Models\MediaAsset::find($desktopOrnamentId);
+                if ($desktopAsset?->url) {
+                    $heroOrnamentDesktopUrl = $desktopAsset->url;
+                }
+            }
+        }
 
         return view('home', compact('heroVideo', 'upcomingEvents', 'homeStats', 'infoSectionTitle', 'infoAccordionItems', 'heroOrnamentUrl', 'heroOrnamentDesktopUrl', 'heroOrnamentOpacity'));
     }

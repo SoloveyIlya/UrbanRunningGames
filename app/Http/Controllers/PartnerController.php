@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partner;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 
 class PartnerController extends Controller
@@ -15,6 +16,10 @@ class PartnerController extends Controller
             ->get()
             ->groupBy('level');
 
-        return view('partners', compact('partners'));
+        $partnersPageTitle = SiteSetting::get(SiteSetting::KEY_PARTNERS_PAGE_TITLE, 'Партнёры и спонсоры');
+        $partnersPageSubtitle = SiteSetting::get(SiteSetting::KEY_PARTNERS_PAGE_SUBTITLE, 'Компании и люди, которые делают Urban Running Games возможными');
+        $partnersCtaTitle = SiteSetting::get(SiteSetting::KEY_PARTNERS_CTA_TITLE, 'Хотите стать партнёром?');
+
+        return view('partners', compact('partners', 'partnersPageTitle', 'partnersPageSubtitle', 'partnersCtaTitle'));
     }
 }

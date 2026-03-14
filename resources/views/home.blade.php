@@ -86,9 +86,9 @@
 
 <section class="info-section bg-[#121315] text-white py-8 pb-10 sm:py-12 sm:pb-14 md:py-14 md:pb-16" aria-labelledby="info-heading">
     <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
-        <div class="info-section__head flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <div class="info-section__head flex flex-row flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
             <h2 id="info-heading" class="info-section__title text-left text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide ml-0 sm:ml-12 md:ml-0 mb-0 text-white">{{ $infoSectionTitle }}</h2>
-            <div class="info-section__action shrink-0 self-start sm:self-center">
+            <div class="info-section__action shrink-0 self-center">
                 <a href="{{ route('rules') }}" class="btn btn--info-position">
                     <span class="btn--info-position__text">Положение</span>
                 </a>

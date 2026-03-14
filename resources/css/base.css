@@ -252,12 +252,12 @@ body.page-home::before {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .hero--with-video {
-        min-height: 110vh;
-        min-height: 110dvh;
-        height: 110vh;
-        height: 110dvh;
+        min-height: 100vh;
+        min-height: 100dvh;
+        height: 100vh;
+        height: 100dvh;
     }
 }
 
@@ -339,6 +339,16 @@ body.page-home::before {
     inset: 0;
     background-size: cover;
     background-position: center;
+}
+
+.hero__video--mobile,
+.hero__poster--mobile { display: none; }
+
+@media (max-width: 768px) {
+    .hero__video--desktop { display: none; }
+    .hero__video--mobile { display: block; }
+    .hero__poster--desktop { display: none; }
+    .hero__poster--mobile { display: block; }
 }
 
 .hero__overlay {

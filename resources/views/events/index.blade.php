@@ -5,24 +5,21 @@
 @section('content')
 <div class="shop-page-wrap races-page min-h-screen text-gray-100 relative z-10">
     <div class="shop-page-inner races-page__inner max-w-[1200px] mx-auto relative">
-        {{-- Иллюстрация страницы гонок (логотип UR) — по макету --}}
-        <div class="races-page__illustration" role="img" aria-label="Urban Running Games" style="background-image: url('{{ asset('images/illustration-races.png') }}');"></div>
-
-        {{-- Хлебные крошки — как в магазине --}}
-        <nav class="shop-breadcrumb mb-0" aria-label="Хлебные крошки">
-            <a href="{{ route('home') }}">Главная</a>
-            <span class="shop-breadcrumb__sep" aria-hidden="true">/</span>
-            <span class="shop-breadcrumb__current" aria-current="page">Гонки</span>
-        </nav>
+        {{-- Хлебные крошки + иллюстрация на одном уровне --}}
+        <div class="races-page__breadcrumb-row">
+            <nav class="shop-breadcrumb mb-0" aria-label="Хлебные крошки">
+                <a href="{{ route('home') }}">Главная</a>
+                <span class="shop-breadcrumb__sep" aria-hidden="true">/</span>
+                <span class="shop-breadcrumb__current" aria-current="page">Гонки</span>
+            </nav>
+            <div class="races-page__illustration" role="img" aria-label="Urban Running Games" style="background-image: url('{{ asset('images/illustration-races.png') }}');"></div>
+        </div>
 
         {{-- Заголовок — по макету магазина --}}
-        <h1 class="shop-title">Urban Running games</h1>
+        <h1 class="shop-title">{{ $eventsPageTitle ?? 'Urban Running games' }}</h1>
 
         {{-- Подзаголовок --}}
-        <p class="shop-subtitle">Это не измерение пульса и километров. Это интеллектуальный спринт - командная игра, где улицы города превращаются в игровое поле, а ваша эрудиция и смекалка становятся главным двигателем.
-Андерграунд-мероприятие для тех, кто ищет глубину, а не массовость. Здесь ценится не только ваша скорость, но и острота ума, а финишная улыбка — это особая гордость за решенную командой головоломку.
-Присоединяйтесь к коммьюнити, где важны азарт, логика и атмосфера живого приключения.
-Ваша команда уже ждет старта!</p>
+        <p class="shop-subtitle">{{ $eventsPageSubtitle ?? '' }}</p>
 
         {{-- Фильтры по статусу гонки: Все гонки / Предстоящие / Завершённые --}}
         <div class="shop-toolbar-row">
@@ -104,9 +101,9 @@
 {{-- Блок информации — как на главной --}}
 <section class="info-section bg-[#121315] text-white py-8 pb-10 sm:py-12 sm:pb-14 md:py-14 md:pb-16" aria-labelledby="info-heading">
     <div class="container max-w-[1200px] mx-auto px-4 sm:px-5">
-        <div class="info-section__head flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <div class="info-section__head flex flex-row flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
             <h2 id="info-heading" class="info-section__title text-left text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide ml-0 sm:ml-12 md:ml-0 mb-0 text-white">{{ $infoSectionTitle ?? 'ИНФОРМАЦИЯ' }}</h2>
-            <div class="info-section__action shrink-0 self-start sm:self-center">
+            <div class="info-section__action shrink-0 self-center">
                 <a href="{{ route('rules') }}" class="btn btn--info-position">
                     <span class="btn--info-position__text">Положение</span>
                 </a>

@@ -130,32 +130,32 @@
     padding: 0;
 }
 
-/* Иллюстрация страницы гонок (логотип UR) — по макету */
+/* Строка: хлебные крошки слева, иллюстрация справа — на одном уровне, высота по breadcrumb */
+.races-page__breadcrumb-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Иллюстрация страницы гонок (логотип UR) — абсолютно, не влияет на высоту строки */
 .races-page__illustration {
     position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 200px;
     height: 94px;
-    left: 900px;
-    top: -50px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     pointer-events: none;
 }
 
-@media (max-width: 1200px) {
-    .races-page__illustration {
-        left: auto;
-        right: 24px;
-    }
-}
-
 @media (max-width: 768px) {
     .races-page__illustration {
         width: 160px;
         height: 75px;
-        top: -50px;
-        right: 16px;
     }
 }
 
@@ -163,8 +163,6 @@
     .races-page__illustration {
         width: 120px;
         height: 56px;
-        top: -40px;
-        right: 12px;
     }
 }
 

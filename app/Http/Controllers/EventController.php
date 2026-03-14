@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View as ViewFacade;
 
 class EventController extends Controller
 {
@@ -123,6 +124,9 @@ class EventController extends Controller
             $infoAccordionItems = $this->defaultInfoAccordionItems();
         }
 
+        $eventsPageTitle = SiteSetting::get(SiteSetting::KEY_EVENTS_PAGE_TITLE, 'Urban Running games');
+        $eventsPageSubtitle = SiteSetting::get(SiteSetting::KEY_EVENTS_PAGE_SUBTITLE, 'Забеги-игры в формате городского ориентирования: бегите по маршруту, выполняйте задания на чекпоинтах и соревнуйтесь в командном зачёте. Каждая гонка — это уникальная тематика, нестандартные точки на карте и настоящий драйв для тех, кто любит движение и вызов.');
+
         return view('events.index', compact(
             'eventsList',
             'eventsPaginator',
@@ -130,7 +134,9 @@ class EventController extends Controller
             'cities',
             'years',
             'infoSectionTitle',
-            'infoAccordionItems'
+            'infoAccordionItems',
+            'eventsPageTitle',
+            'eventsPageSubtitle'
         ));
     }
 

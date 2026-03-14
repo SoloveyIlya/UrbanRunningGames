@@ -25,8 +25,8 @@
             <span class="shop-breadcrumb__sep" aria-hidden="true">/</span>
             <span class="shop-breadcrumb__current" aria-current="page">Партнёры</span>
         </nav>
-        <h1 class="partners-page-figma__title">Партнёры и спонсоры</h1>
-        <p class="partners-page-figma__subtitle">Компании и люди, которые делают Urban Running Games возможными</p>
+        <h1 class="partners-page-figma__title">{{ $partnersPageTitle ?? 'Партнёры и спонсоры' }}</h1>
+        <p class="partners-page-figma__subtitle">{{ $partnersPageSubtitle ?? 'Компании и люди, которые делают Urban Running Games возможными' }}</p>
     </div>
 
     <div class="partners-page-figma__section-row">
@@ -91,7 +91,7 @@
     </div>
 
     <section class="partners-page-figma__cta-box">
-        <h2 class="partners-page-figma__cta-title">Хотите стать партнёром?</h2>
+        <h2 class="partners-page-figma__cta-title">{{ $partnersCtaTitle ?? 'Хотите стать партнёром?' }}</h2>
         <form action="{{ route('contact.store') }}" method="POST" class="partners-page-figma__form">
             @csrf
             <input type="hidden" name="topic" value="partnership">

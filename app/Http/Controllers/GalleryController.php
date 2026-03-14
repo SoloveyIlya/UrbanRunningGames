@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Album;
 use App\Models\Event;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
@@ -46,7 +47,9 @@ class GalleryController extends Controller
             ->values()
             ->all();
 
-        return view('gallery.index', compact('events', 'cities', 'years'));
+        $galleryPageTitle = SiteSetting::get(SiteSetting::KEY_GALLERY_PAGE_TITLE, 'Фото');
+
+        return view('gallery.index', compact('events', 'cities', 'years', 'galleryPageTitle'));
     }
 
     /**

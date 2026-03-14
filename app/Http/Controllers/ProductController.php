@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MediaAsset;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\SiteSetting;
@@ -50,11 +49,6 @@ class ProductController extends Controller
 
         $products = $query->paginate(9)->withQueryString();
 
-        $shopHeroOverlayOpacity = SiteSetting::get(SiteSetting::KEY_SHOP_HERO_OVERLAY_OPACITY, '0.5');
-        $shopHeroSlide1 = $this->shopHeroSlideUrl(SiteSetting::KEY_SHOP_HERO_SLIDE_1_MEDIA_ID, SiteSetting::KEY_SHOP_HERO_SLIDE_1);
-        $shopHeroSlide2 = $this->shopHeroSlideUrl(SiteSetting::KEY_SHOP_HERO_SLIDE_2_MEDIA_ID, SiteSetting::KEY_SHOP_HERO_SLIDE_2);
-        $shopHeroSlide3 = $this->shopHeroSlideUrl(SiteSetting::KEY_SHOP_HERO_SLIDE_3_MEDIA_ID, SiteSetting::KEY_SHOP_HERO_SLIDE_3);
-
         $activeType = request('type', '');
         if (Schema::hasTable('product_types')) {
             $productTypes = ProductType::orderBy('sort_order')->orderBy('label')->get();
@@ -71,19 +65,10 @@ class ProductController extends Controller
                 : collect();
         }
 
-        return view('shop.index', compact('products', 'shopHeroOverlayOpacity', 'shopHeroSlide1', 'shopHeroSlide2', 'shopHeroSlide3', 'activeType', 'productTypes'));
-    }
+        $shopPageTitle = SiteSetting::get(SiteSetting::KEY_SHOP_PAGE_TITLE, 'SPRUT STYLE STORE');
+        $shopPageSubtitle = SiteSetting::get(SiteSetting::KEY_SHOP_PAGE_SUBTITLE, 'Мерч для тех, кто бегает с характером. Футболки, худи и аксессуары с фирменным дизайном — бери на гонку или носи каждый день.');
 
-    /**
-     * URL слайда: из media_id (приоритет) или из старого ключа (URL строка).
-     */
-    private function shopHeroSlideUrl(string $mediaIdKey, string $legacyUrlKey): string
-    {
-        $mediaId = SiteSetting::get($mediaIdKey);
-        if ($mediaId && $asset = MediaAsset::find($mediaId)) {
-            return $asset->url ?? '';
-        }
-        return (string) SiteSetting::get($legacyUrlKey, '');
+        return view('shop.index', compact('products', 'activeType', 'productTypes', 'shopPageTitle', 'shopPageSubtitle'));
     }
 
     /**

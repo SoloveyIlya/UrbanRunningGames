@@ -11,9 +11,9 @@
             <span class="shop-breadcrumb__current" aria-current="page">Контакты</span>
         </nav>
 
-        <h1 class="shop-title">Контакты</h1>
+        <h1 class="shop-title">{{ $contactPageTitle ?? 'Контакты' }}</h1>
 
-        <p class="shop-subtitle">Вопросы, партнёрство, забеги — напишите нам, мы ответим.</p>
+        <p class="shop-subtitle">{{ $contactPageSubtitle ?? 'Вопросы, партнёрство, забеги — напишите нам, мы ответим.' }}</p>
     </div>
 
     <div class="container max-w-[1200px] mx-auto px-4 sm:px-5 py-8 md:py-12">

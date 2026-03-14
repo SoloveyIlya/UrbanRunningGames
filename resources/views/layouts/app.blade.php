@@ -82,7 +82,7 @@
         </defs>
     </svg>
     <div class="header-sticky">
-        <nav class="navbar">
+        <nav class="navbar backdrop-blur-[5px]">
         <div class="container">
             <div class="navbar__inner">
                 <ul class="navbar__left">
