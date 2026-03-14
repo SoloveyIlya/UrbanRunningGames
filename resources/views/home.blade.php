@@ -47,27 +47,42 @@
                     @php
                         $priorityAlbum = $event->albums->sortBy('sort_order')->first();
                         $coverUrl = $event->cover_url ?? $priorityAlbum?->getCoverUrl();
+                        $isUpcoming = $event->isUpcoming();
+                        $cityPlace = trim(implode(', ', array_filter([$event->city?->name ?? null, $event->location_text ?? null], fn($v) => $v !== null && $v !== '')));
+                        if ($cityPlace === '') { $cityPlace = '—'; }
+                        $timeText = $event->starts_at->format('H:i');
                     @endphp
-                    <article class="race-card race-card--horizontal grid grid-cols-1 sm:grid-cols-[225px_1fr] min-w-0 w-full max-w-[490px] min-h-0 sm:min-h-[303px] rounded-lg overflow-hidden bg-white/5 backdrop-blur-[5px] shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl" @if($coverUrl) style="--race-card-cover: url('{{ e($coverUrl) }}');" @endif>
-                        <div class="race-card__image-wrap relative w-full min-h-[180px] sm:min-h-full col-span-1 self-stretch hidden sm:block">
-                            <div class="race-card__image absolute inset-0 w-full h-full bg-cover bg-center bg-[#2d2d2d] {{ $coverUrl ? '' : 'race-card__image--no-photo' }}" @if($coverUrl) style="background-image: url('{{ e($coverUrl) }}');" @endif></div>
+                    <article class="race-card race-card--horizontal race-card--events-page grid min-w-0 w-full rounded-lg overflow-hidden" @if($coverUrl) style="--race-card-cover: url('{{ e($coverUrl) }}');" @endif>
+                        <div class="race-card__image-wrap race-card__image-wrap--events relative col-span-1 self-stretch sm:block">
+                            @if(!$isUpcoming)
+                                <span class="race-card__status race-card__status--past">Завершено</span>
+                            @endif
+                            <div class="race-card__image race-card__image--events absolute inset-0 w-full h-full bg-cover bg-center bg-[#2d2d2d] {{ $coverUrl ? '' : 'race-card__image--no-photo' }}" @if($coverUrl) style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('{{ e($coverUrl) }}');" @endif></div>
                         </div>
-                        <div class="race-card__body col-span-1 w-full min-w-0 p-4 sm:p-5 flex flex-col justify-between bg-[#363636] sm:bg-transparent">
+                        <div class="race-card__body col-span-1 w-full min-w-0 p-4 sm:p-5 flex flex-col justify-between">
                             <div class="race-card__head flex flex-col items-start gap-1 mb-2 sm:mb-3">
-                                <h3 class="race-card__name text-base sm:text-xl font-bold italic text-white m-0">{{ $event->title }}</h3>
+                                <h3 class="race-card__name text-base sm:text-xl font-bold text-white m-0">{{ $event->title }}</h3>
                                 <span class="race-card__date text-xs sm:text-sm text-white/60 m-0">{{ $event->starts_at->format('d.m.Y') }}</span>
                             </div>
-                            <dl class="race-card__params grid grid-cols-1 gap-0.5 sm:gap-1 m-0 mb-2 text-xs sm:text-sm">
-                                <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Расстояние:</dt><dd class="text-white/65 m-0">{{ $event->distance ?? '—' }}</dd></div>
-                                <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Локаций:</dt><dd class="text-white/65 m-0">{{ $event->locations_count ?? '—' }}</dd></div>
-                                <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Лимит:</dt><dd class="text-white/65 m-0">{{ $event->time_limit ?? '—' }}</dd></div>
-                                <div class="race-card__param flex gap-1 m-0 text-sm"><dt class="text-white/90 font-medium m-0">Команд:</dt><dd class="text-white/65 m-0">{{ $event->teams_count ?? '—' }}</dd></div>
+                            <dl class="race-card__params race-card__params--events grid grid-cols-1 gap-0.5 sm:gap-1 m-0 mb-2">
+                                <div class="race-card__param race-card__param--with-icon flex items-center gap-2 m-0 text-sm">
+                                    <span class="race-card__param-icon shrink-0" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.0856 15.0254L11.4954 14.5626V14.5626L12.0856 15.0254ZM7.91441 15.0254L7.32423 15.4882L7.91441 15.0254ZM10 16.7541V16.0041V16.7541ZM16 7.45652H15.25C15.25 8.32461 14.7922 9.51914 14.0396 10.8497C13.3036 12.1509 12.3503 13.4724 11.4954 14.5626L12.0856 15.0254L12.6758 15.4882C13.5532 14.3693 14.5571 12.9815 15.3452 11.5882C16.1167 10.2242 16.75 8.73884 16.75 7.45652H16ZM7.91441 15.0254L8.50458 14.5626C7.6497 13.4724 6.6964 12.1509 5.96039 10.8497C5.20778 9.51914 4.75 8.32461 4.75 7.45652H4H3.25C3.25 8.73884 3.88326 10.2242 4.65478 11.5882C5.44289 12.9815 6.44679 14.3693 7.32423 15.4882L7.91441 15.0254ZM4 7.45652H4.75C4.75 4.25215 7.15135 1.75 10 1.75V1V0.25C6.22123 0.25 3.25 3.52921 3.25 7.45652H4ZM10 1V1.75C12.8486 1.75 15.25 4.25215 15.25 7.45652H16H16.75C16.75 3.52921 13.7788 0.25 10 0.25V1ZM12.0856 15.0254L11.4954 14.5626C11.0271 15.1598 10.7325 15.5313 10.4733 15.7668C10.2462 15.9731 10.1225 16.0041 10 16.0041V16.7541V17.5041C10.6074 17.5041 11.0746 17.247 11.4819 16.8771C11.857 16.5363 12.2403 16.0435 12.6758 15.4882L12.0856 15.0254ZM7.91441 15.0254L7.32423 15.4882C7.75968 16.0435 8.14295 16.5363 8.51811 16.8771C8.92538 17.247 9.3926 17.5041 10 17.5041V16.7541V16.0041C9.87748 16.0041 9.75379 15.9731 9.52669 15.7668C9.26747 15.5313 8.97291 15.1598 8.50458 14.5626L7.91441 15.0254ZM7.75 7.75H7C7 9.40685 8.34315 10.75 10 10.75V10V9.25C9.17157 9.25 8.5 8.57843 8.5 7.75H7.75ZM10 10V10.75C11.6569 10.75 13 9.40685 13 7.75H12.25H11.5C11.5 8.57843 10.8284 9.25 10 9.25V10ZM12.25 7.75H13C13 6.09315 11.6569 4.75 10 4.75V5.5V6.25C10.8284 6.25 11.5 6.92157 11.5 7.75H12.25ZM10 5.5V4.75C8.34315 4.75 7 6.09315 7 7.75H7.75H8.5C8.5 6.92157 9.17157 6.25 10 6.25V5.5Z" fill="white"/></svg>
+                                    </span>
+                                    <span class="race-card__param-text">{{ $cityPlace }}</span>
+                                </div>
+                                <div class="race-card__param race-card__param--with-icon flex items-center gap-2 m-0 text-sm">
+                                    <span class="race-card__param-icon shrink-0" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.3333 9.16667V14.1667M10 5.83333V14.1667M6.66667 10.8333V14.1667M10 17.5C6.87522 17.5 5.31283 17.5 4.21756 16.7042C3.86383 16.4472 3.55276 16.1362 3.29576 15.7824C2.5 14.6872 2.5 13.1248 2.5 10C2.5 6.87522 2.5 5.31283 3.29576 4.21756C3.55276 3.86383 3.86383 3.55276 4.21756 3.29576C5.31283 2.5 6.87522 2.5 10 2.5C13.1248 2.5 14.6872 2.5 15.7824 3.29576C16.1362 3.55276 16.4472 3.86383 16.7042 4.21756C17.5 5.31283 17.5 6.87522 17.5 10C17.5 13.1248 17.5 14.6872 16.7042 15.7824C16.4472 16.1362 16.1362 16.4472 15.7824 16.7042C14.6872 17.5 13.1248 17.5 10 17.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                    </span>
+                                    <span class="race-card__param-text">{{ $timeText }}</span>
+                                </div>
                             </dl>
                             <a href="{{ route('events.show', $event->slug) }}" class="btn btn--race mt-2">Подробнее</a>
                         </div>
                     </article>
                 @endforeach
-                <a href="{{ route('events.index') }}" class="race-card race-card--all flex items-start justify-start w-full min-w-0 min-h-[200px] sm:h-[303px] sm:min-h-[303px] no-underline text-white overflow-hidden rounded-lg">
+                <a href="{{ route('events.index') }}" class="race-card race-card--all flex items-start justify-start w-full min-w-0 min-h-[200px] sm:h-[277px] sm:min-h-[277px] no-underline text-white overflow-hidden rounded-lg">
                     <span class="race-card--all__inner relative z-[1] inline-flex items-start justify-start p-4 sm:p-5 box-border">
                         <span class="race-card__all-text relative z-[1] text-base sm:text-xl font-bold uppercase tracking-wide text-left m-0 text-white">Смотреть все<br>гонки</span>
                     </span>

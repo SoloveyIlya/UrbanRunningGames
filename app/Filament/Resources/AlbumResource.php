@@ -54,13 +54,22 @@ class AlbumResource extends Resource
                             ->rows(3)
                             ->nullable()
                             ->columnSpanFull(),
-                        Forms\Components\Select::make('cover_media_id')
-                            ->label('Обложка (legacy)')
-                            ->options(fn (?Album $record) => $record ? $record->items()->pluck('original_name', 'id')->toArray() : [])
-                            ->searchable()
+                        Forms\Components\FileUpload::make('cover_image_upload')
+                            ->label('Обложка')
+                            ->image()
+                            ->maxSize(50 * 1024)
+                            ->disk('local')
+                            ->directory('livewire-tmp')
+                            ->visibility('private')
                             ->nullable()
-                            ->visible(fn (?Album $record) => $record && $record->items()->count() > 0)
-                            ->helperText('Только для старых альбомов. У новых обложка = первое фото.'),
+                            ->storeFiles(false)
+                            ->helperText('Загрузите изображение обложки альбома. Если не задана — используется первое фото.'),
+                        Forms\Components\Placeholder::make('cover_preview')
+                            ->label('Текущая обложка')
+                            ->content(fn (?Album $record) => $record && $record->coverMedia
+                                ? new \Illuminate\Support\HtmlString('<img src="' . e($record->coverMedia->thumbnail_url ?? $record->coverMedia->url) . '" alt="" style="max-width:200px;height:auto;border-radius:8px;">')
+                                : 'Не задана')
+                            ->visibleOn('edit'),
                         Forms\Components\DateTimePicker::make('published_at')
                             ->label('Опубликован')
                             ->nullable()
@@ -84,6 +93,10 @@ class AlbumResource extends Resource
                                 ->image()
                                 ->maxSize(50 * 1024)
                                 ->reorderable()
+                                ->openable()
+                                ->previewable()
+                                ->imagePreviewHeight('150')
+                                ->panelLayout('grid')
                                 ->columnSpanFull(),
                         ])
                         ->collapsible(),
@@ -134,9 +147,7 @@ class AlbumResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            AlbumResource\RelationManagers\PhotosRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array
